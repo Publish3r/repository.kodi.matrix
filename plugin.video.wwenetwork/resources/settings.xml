@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="Account">
+        <setting id="username" type="text" visible="false" label="30140" default="" />
+        <setting id="password" type="text" visible="false" label="30150" option="hidden" default="" />
+        <setting id="login_token" type="text" visible="false" default="" />
+        <setting id="refresh_token" type="text" visible="false" default="" />
+        <setting id="last_login" type="text" visible="false" default="" />
+        <setting label="Set Proxy" type="bool" id="proxymodus" default="false" />
+    </category>
+</settings>

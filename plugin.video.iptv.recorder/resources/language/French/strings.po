@@ -1,0 +1,399 @@
+#
+msgid ""
+msgstr ""
+
+msgctxt "#30000"
+msgid "Delete All Recordings?"
+msgstr "Supprimer tous les enregistrements ?"
+
+msgctxt "#30001"
+msgid "Play Channel"
+msgstr "Lire la chaîne"
+
+msgctxt "#30002"
+msgid "Delete Job"
+msgstr "Supprimer la plannification"
+
+msgctxt "#30003"
+msgid "Finished"
+msgstr "Chargement terminé"
+
+msgctxt "#30004"
+msgid "Record Once"
+msgstr "Enregister une fois"
+
+msgctxt "#30005"
+msgid "Play Channel External"
+msgstr "Lire la châine sur un lecteur externe"
+
+msgctxt "#30006"
+msgid "External Player"
+msgstr "Lecteur externe"
+
+msgctxt "#30007"
+msgid "Title Search (% is wildcard)?"
+msgstr "Rechercher par titre (% est joker) ?"
+
+msgctxt "#30008"
+msgid "Delete All Jobs"
+msgstr "Supprimer toutes les plannifications"
+
+msgctxt "#30009"
+msgid "Search Plot"
+msgstr "Recherche par description"
+
+msgctxt "#30010"
+msgid "Add Favourite Channel"
+msgstr "Ajouter la chaîne aux favoris"
+
+msgctxt "#30011"
+msgid "Delete All Rules"
+msgstr "Supprimer toutes les règles"
+
+msgctxt "#30012"
+msgid "Recording Rules"
+msgstr "Règles d'enregistrement"
+
+msgctxt "#30013"
+msgid "Favourite Channels"
+msgstr "Chaînes favorites"
+
+msgctxt "#30014"
+msgid "Delete All Recordings"
+msgstr "Supprimer tous les enregistrements"
+
+msgctxt "#30015"
+msgid "Full EPG"
+msgstr "Programme télé complet"
+
+msgctxt "#30016"
+msgid "Search Title"
+msgstr "Recherche par titre"
+
+msgctxt "#30017"
+msgid "xmltv"
+msgstr "xmltv"
+
+msgctxt "#30018"
+msgid "Delete Search"
+msgstr "Supprimer la recherche"
+
+msgctxt "#30019"
+msgid "Cancel Record?"
+msgstr "Annuler l'enregistrement ?"
+
+msgctxt "#30020"
+msgid "Delete Recording?"
+msgstr "Supprimer l'enregistrement ?"
+
+msgctxt "#30021"
+msgid "New"
+msgstr "Nouveau"
+
+msgctxt "#30022"
+msgid "Remove Favourite Channel"
+msgstr "Retirer la chaîne des favoris"
+
+msgctxt "#30023"
+msgid "Recording Jobs"
+msgstr "Programmations"
+
+msgctxt "#30024"
+msgid "Plot Search (% is wildcard)?"
+msgstr "Rechercher par description (% est joker)?"
+
+msgctxt "#30025"
+msgid "Add Title Search Rule"
+msgstr "Ajouter une règle de recherche par titre"
+
+msgctxt "#30026"
+msgid "Add Plot Search Rule"
+msgstr "Ajouter une règle de recherche par description"
+
+msgctxt "#30027"
+msgid "Delete All Rules?"
+msgstr "Supprimer toutes les règles ?"
+
+msgctxt "#30028"
+msgid "Recordings Folder"
+msgstr "Dossier d'enregistrement"
+
+msgctxt "#30029"
+msgid "ffmpeg exe not found!"
+msgstr "ffmpeg exe non trouvé !"
+
+msgctxt "#30030"
+msgid "Tomorrow"
+msgstr "Demain"
+
+msgctxt "#30031"
+msgid "Today"
+msgstr "Aujourdhui"
+
+msgctxt "#30032"
+msgid "Delete Rule"
+msgstr "Supprimer la règle"
+
+msgctxt "#30033"
+msgid "Channel Groups"
+msgstr "Groupes de chaînes"
+
+msgctxt "#30034"
+msgid "Loading data..."
+msgstr "Chargement des données..."
+
+msgctxt "#30035"
+msgid "Cancel Record"
+msgstr "Annuler l'enregistrement"
+
+msgctxt "#30036"
+msgid "Service"
+msgstr "Service"
+
+msgctxt "#30037"
+msgid "Delete Recording"
+msgstr "Supprimer l'enregistrement"
+
+msgctxt "#30038"
+msgid "Yesterday"
+msgstr "Hier"
+
+msgctxt "#30039"
+msgid "Delete All Jobs?"
+msgstr "Supprimer toutes les programmations ?"
+
+msgctxt "#30040"
+msgid "Recordings"
+msgstr "Enregistrements"
+
+msgctxt "#30041"
+msgid "Record Always"
+msgstr "Enregistrer tout le temps"
+
+msgctxt "#30042"
+msgid "Record Daily"
+msgstr "Enregistrer tous les jours"
+
+msgctxt "#30043"
+msgid "Creating database"
+msgstr "Création de la base de données"
+
+msgctxt "#30044"
+msgid "Copying xmltv file"
+msgstr "Copie du fichier xmltv"
+
+msgctxt "#30045"
+msgid "Unzipping xmltv file"
+msgstr "Décompression du fichier xmltv"
+
+msgctxt "#30046"
+msgid "Finding channels"
+msgstr "Recherche des chaînes"
+
+msgctxt "#30047"
+msgid "Finding programmes"
+msgstr "Recherche des programmes"
+
+msgctxt "#30048"
+msgid "Finding streams"
+msgstr "Recherche des flux"
+
+msgctxt "#30049"
+msgid "NUKE"
+msgstr "Vider"
+
+msgctxt "#30050"
+msgid "Finished loading data"
+msgstr "Chargement des données terminé"
+
+msgctxt "#30051"
+msgid "Watch Daily"
+msgstr "Mettre en veille tous les jours"
+
+msgctxt "#30052"
+msgid "Delete Everything and Start Again?"
+msgstr "Tout supprimer et recharger ?"
+
+msgctxt "#30053"
+msgid "Watch Once"
+msgstr "Mettre en veille une fois"
+
+msgctxt "#30054"
+msgid "Reload Data"
+msgstr "Recharger les données"
+
+msgctxt "#30055"
+msgid "Search Categories"
+msgstr "Recherche Catégorie"
+
+msgctxt "#30056"
+msgid "Watch Always"
+msgstr "Mettre en veille tout le temps"
+
+msgctxt "#30057"
+msgid "Monday"
+msgstr "Lundi"
+
+msgctxt "#30058"
+msgid "Tuesday"
+msgstr "Mardi"
+
+msgctxt "#30059"
+msgid "Wednesday"
+msgstr "Mercredi"
+
+msgctxt "#30060"
+msgid "Thursday"
+msgstr "Jeudi"
+
+msgctxt "#30061"
+msgid "Friday"
+msgstr "Vendredi"
+
+msgctxt "#30062"
+msgid "Saturday"
+msgstr "Samedi"
+
+msgctxt "#30063"
+msgid "Sunday"
+msgstr "Dimanche"
+
+msgctxt "#30064"
+msgid "Remind Daily"
+msgstr "Rappel tous les jours"
+
+msgctxt "#30065"
+msgid "Rules"
+msgstr "Règles"
+
+msgctxt "#30066"
+msgid "Jobs"
+msgstr "Tâches"
+
+msgctxt "#30067"
+msgid "Remind Once"
+msgstr "Rappeler une fois"
+
+msgctxt "#30068"
+msgid "Remind Always"
+msgstr "Rappeler tout le temps"
+
+msgctxt "#30069"
+msgid "Cancel Watch"
+msgstr "Annuler la mise en veille"
+
+msgctxt "#30070"
+msgid "Cancel Remind"
+msgstr "Annuler le rappel"
+
+msgctxt "#30071"
+msgid "% is Wildcard"
+msgstr "% est joker"
+
+msgctxt "#30072"
+msgid "Search"
+msgstr "Rechercher"
+
+msgctxt "#30073"
+msgid "TV Shows"
+msgstr "Programmes"
+
+msgctxt "#30074"
+msgid "Movies"
+msgstr "Films"
+
+msgctxt "#30075"
+msgid "Do Not Load Group"
+msgstr "Ne pas charger le groupe de chaînes"
+
+msgctxt "#30076"
+msgid "Delete ffmpeg"
+msgstr "Supprimer ffmpeg"
+
+msgctxt "#30077"
+msgid "Add Daily Time Rule"
+msgstr "Ajouter une règle quotidienne"
+
+msgctxt "#30078"
+msgid "Add Weekly Time Rule"
+msgstr "Ajouter une règle hebdomadaire"
+
+msgctxt "#30079"
+msgid "Record and Play"
+msgstr "Enregistrer et regarder"
+
+msgctxt "#30080"
+msgid "Watch Weekly"
+msgstr "Regarder chaque semaine"
+
+msgctxt "#30081"
+msgid "Other"
+msgstr "Autres"
+
+msgctxt "#30082"
+msgid "Select Groups To Load"
+msgstr "Sélectionner les groupes de chaînes à charger"
+
+msgctxt "#30083"
+msgid "Record Weekly"
+msgstr "Enregistrer chaque semaine"
+
+msgctxt "#30084"
+msgid "Maintenance"
+msgstr "Maintenance"
+
+msgctxt "#30085"
+msgid "Load Group"
+msgstr "Charger le groupe de chaîne"
+
+msgctxt "#30086"
+msgid "Browse"
+msgstr "Parcourir"
+
+msgctxt "#30087"
+msgid "Add One Time Rule"
+msgstr "Ajouter une règle unique"
+
+msgctxt "#30088"
+msgid "Categories"
+msgstr "Categories"
+
+msgctxt "#30089"
+msgid "Remind Weekly"
+msgstr "Me le rappeler chaque semaine"
+
+msgctxt "#30090"
+msgid "Convert to mp4"
+msgstr "Convertir en mp4"
+
+msgctxt "#30091"
+msgid "All Channels"
+msgstr "Toutes les chaînes"
+
+msgctxt "#30092"
+msgid "Start Time"
+msgstr "Heure de début"
+
+msgctxt "#30093"
+msgid "Number of hours to record"
+msgstr "Nombre d'heures à enregistrer"
+
+msgctxt "#30094"
+msgid "Rule Name"
+msgstr "Nom de la règle"
+
+msgctxt "#30095"
+msgid "Start Date"
+msgstr "Date de début"
+
+msgctxt "#30096"
+msgid "Stop Time"
+msgstr "Date de fin"
+
+msgctxt "#30097"
+msgid "Updating database"
+msgstr "Mise à jour de la base de données"
+
+msgctxt "#30098"
+msgid "Database not found"
+msgstr "Base de données non trouvée, veuillez réessayer dans quelques secondes ..."

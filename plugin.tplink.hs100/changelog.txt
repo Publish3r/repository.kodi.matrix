@@ -1,0 +1,2 @@
+﻿1.0.2 - Added support for more plugs.
+1.0.1 - Release.

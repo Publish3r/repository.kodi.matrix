@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.philizz.media" name="Philizz Media" version="2.4" provider-name="Publish3r">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+    <import addon="script.module.requests" version="2.12.4" />
+    <import addon="script.module.youtube.dl" version="14.810.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Philizz Media</summary>
+    <description lang="en_GB">[B]Philizz Videomixes[/B][CR][CR]Website: philizz.com[CR]Twitter: twitter.com/philizz[CR]Facebook: facebook.com/philizzmedia</description>
+    <disclaimer lang="en_GB"></disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+        <screenshot>resources/screenshot001.png</screenshot>
+        <screenshot>resources/screenshot002.png</screenshot>
+        <screenshot>resources/screenshot003.png</screenshot>
+    </assets>
+  </extension>
+</addon>

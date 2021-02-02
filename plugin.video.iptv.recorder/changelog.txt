@@ -1,0 +1,46 @@
+version 0.3.0
+- Compatibility with Kodi Matrix RC1.
+- Add some missing translations.
+- Fix wrong encoding
+- Fix wrong decoding
+
+version 0.2.0
+- Compatibility with Kodi Matrix.
+- Add some missing translations.
+- Improve "Sort Channels by" settings.
+- Add channel icon in the record list.
+- Improve encoding detection of the XML TV file.
+- Fix search input not supporting non ascii character.
+- Fix kodi crash on startup when user have rules to renew jobs.
+- Fix and improve "record and play" feature.
+- Reducing default startup time to 20 seconds.
+- Add error messag when trying to access database not created.
+- Exit the service smoothly and fastly if the user request Kodi to exit before the startup delay.
+
+version 0.0.11
+- reminders
+- hide finished programmes
+
+version 0.0.7-8
+- category search
+
+version 0.0.6
+- internal database (old jobs will need to be re-added)
+- 2 xmltv/m3u file inputs
+- watch timer rules
+- internationalisation (French so far, thanks to Chychy)
+- customizable display
+- now/next program in channel listings
+
+version 0.0.3
+- title search
+- plot search
+- ffmpeg headers eg http://server.com/stream.m3u|user-agent=Mozilla&something=other
+
+version 0.0.2
+- full service
+- daily timers
+- channel/name timers
+
+version 0.0.1
+- first release

@@ -1,0 +1,53 @@
+# Kodi Media Center language file
+# Addon Name: TP Link HS100
+# Addon id: plugin.tplink.hs100
+
+msgid ""
+msgstr ""
+
+"Last-Translator: Publish3r\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#30051"
+msgid "TP LINK 1"
+msgstr "TP LINK 1"
+
+msgctxt "#30052"
+msgid "TP LINK 2"
+msgstr "TP LINK 2"
+
+msgctxt "#30053"
+msgid "TP LINK 3"
+msgstr "TP LINK 3"
+
+msgctxt "#30054"
+msgid "TP LINK 4"
+msgstr "TP LINK 4"
+
+msgctxt "#30055"
+msgid "TP LINK 5"
+msgstr "TP LINK 5"
+
+msgctxt "#30001"
+msgid "IP"
+msgstr "IP"
+
+msgctxt "#30002"
+msgid "Port"
+msgstr "Port"
+
+msgctxt "#30003"
+msgid "Name"
+msgstr "Name"
+
+msgctxt "#30004"
+msgid "Show / Hide"
+msgstr "Im Menü anzeigen"
+
+msgctxt "#30060"
+msgid "Settings"
+msgstr "Einstellungen"

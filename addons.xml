@@ -1,0 +1,199 @@
+<addons>
+
+<addon id="plugin.soest.page" name="soestPage" version="1.7" provider-name="Publish3r">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+    <import addon="script.module.requests" version="2.12.4" />
+    <import addon="script.module.dateutil" />
+    <import addon="script.module.beautifulsoup4" />
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="de">soestPage</summary>
+    <description lang="de">Alles rund um die Stadt- und den Kreis Soest.</description>
+    <disclaimer lang="de"></disclaimer>
+    <language>de</language>
+    <platform>all</platform>
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>
+
+<addon id="plugin.tplink.hs100" name="TP Link HS100" version="1.0.2" provider-name="Publish3r">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">TP Link HS100</summary>
+    <summary lang="de_DE">TP Link HS100</summary>
+    <description lang="en_GB">TP Link HS100 Control Panel</description>
+    <description lang="de_DE">TP Link HS100 Control Panel</description>
+    <disclaimer lang="en_GB"></disclaimer>
+    <disclaimer lang="de_DE"></disclaimer>
+    <language>en de</language>
+    <platform>all</platform>
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>
+
+<addon id="plugin.video.iptv.recorder" version="1.0" name="IPTV Recorder"
+  provider-name="primaeval, Chychy, Dob!, Publish3r">
+<requires>
+  <import addon="xbmc.python" version="3.0.0" />
+  <import addon="script.module.xbmcswift2" />
+  <import addon="script.module.requests" />
+  <import addon="script.module.chardet" />
+  <import addon="script.module.pytz" />
+  <import addon="script.module.kodi-six" />
+</requires>
+<extension point="xbmc.python.pluginsource" library="main.py">
+  <provides>video</provides>
+</extension>
+<extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+</extension>
+<extension point="kodi.context.item">
+<menu id="kodi.core.main">
+  <item library="context.py">
+    <label>IPTV Recorder Timer</label>
+    <visible>Window.isActive(tvchannels)</visible>
+  </item>
+  <item library="contextEPG.py">
+    <label>Schedule IPTV Recorder</label>
+    <visible>Window.isActive(tvguide)</visible>
+  </item>
+</menu>
+</extension>
+<extension point="xbmc.service" library="server.py" start="login"/>
+<extension point="xbmc.addon.metadata">
+  <summary lang="en">Record from IPTV Simple Client or xmltv/m3u with ffmpeg.</summary>
+  <description lang="en">
+Set your recording path and ffmpeg location.
+On Android ffmpeg will be copied to /data/data to be runnable.
+Complex stream handling might need an extra script instead of ffmpeg.
+ffmpeg simply copies the stream into a transport stream container.
+</description>
+<disclaimer lang="en">Make sure recording streams is legal in your country.</disclaimer>
+<source>https://github.com/Dobi-Dev/plugin.video.iptv.recorder</source>
+<forum>https://forum.kodi.tv/showthread.php?tid=329991</forum>
+<language>en fr de</language>
+<news>
+version 0.2.0
+- Compatibility with Kodi Matrix.
+- Add some missing translations.
+- Improve "Sort Channels by" settings.
+- Add channel icon in the record list.
+- Improve encoding detection of the XML TV file.
+- Fix search input not supporting non ascii character.
+- Fix kodi crash on startup when user have rules to renew jobs.
+- Fix and improve "record and play" feature.
+- Reducing default startup time to 20 seconds.
+- Add error messag when trying to access database not created.
+- Exit the service smoothly and fastly if the user request Kodi to exit before the startup delay.
+</news>
+<assets>
+  <icon>icon.png</icon>
+  <screenshot>resources/screenshots/screenshot-00.jpg</screenshot>
+  <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+  <screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+</assets>
+</extension>
+</addon>
+
+<addon id="plugin.video.philizz.media" name="Philizz Media" version="2.4" provider-name="Publish3r">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+    <import addon="script.module.requests" version="2.12.4" />
+    <import addon="script.module.youtube.dl" version="14.810.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Philizz Media</summary>
+    <description lang="en_GB">[B]Philizz Videomixes[/B][CR][CR]Website: philizz.com[CR]Twitter: twitter.com/philizz[CR]Facebook: facebook.com/philizzmedia</description>
+    <disclaimer lang="en_GB"></disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+        <screenshot>resources/screenshot001.png</screenshot>
+        <screenshot>resources/screenshot002.png</screenshot>
+        <screenshot>resources/screenshot003.png</screenshot>
+    </assets>
+  </extension>
+</addon>
+
+<addon id="plugin.video.playlistloader" name="Playlist Loader" version="1.0.1" provider-name="Forked by Publish3r">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+    <import addon="script.module.requests" version="2.22.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Playlist Loader</summary>
+    <summary lang="de_DE">Playlist Loader</summary>
+    <description lang="en_GB">Manage your various playlists in a simple way.[CR][CR]Note:[CR]This addon does not contain any illegal content. Should you add any illegal content, you are fully responsible for any consequences.</description>
+    <description lang="de_DE">Verwalte auf einfache Art und Weise deine verschiedenen Playlisten.[CR][CR]Hinweis:[CR]Dieses Addon enthält keine illegalen Inhalte. Solltest du irgendwelche illegalen Inhalte hinzufügen, bist du im vollen Umfang für eventuelle Folgen verantwortlich.</description>
+    <language>en de</language>
+    <platform>all</platform>
+      <assets>
+        <icon>icon.png</icon>
+    </assets>
+  </extension>
+</addon>
+
+<addon id="plugin.video.wwenetwork" name="WWE Network" version="2020.11.22" provider-name="lunartic + freyta + Publish3r">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.12.4"/>
+        <import addon="inputstream.adaptive"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="main.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <summary lang="en_GB">Watch content from the WWE Network.</summary>
+        <description lang="en_GB">If you're having issues with your WWE Network live stream: Enable proxy in addon settings.</description>
+        <disclaimer lang="en_GB">Requires a WWE Network account.</disclaimer>
+        <language>en</language>
+        <platform>all</platform>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+        <website>https://watch.wwe.com/</website>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="repository.publish3r" name="Publish3r Repository" version="2021.1" provider-name="Publish3r">
+	<extension point="xbmc.addon.repository" name="Publish3r">
+		<info compressed="true">https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/addons.xml</info>
+		<checksum>https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/addons.xml.md5</checksum>
+		<datadir zip="true">https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/</datadir>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary lang="en">Publish3r's Official Matrix Repository</summary>
+		<summary lang="de">Publish3r's Offizielles Matrix Repository</summary>
+		<description lang="en">Publish3r's development:[CR][CR]Support in the Kodinerds forum.[CR]https://www.kodinerds.net</description>
+		<description lang="de">Publish3r's development:[CR][CR]Support im Kodinerds Forum.[CR]https://www.kodinerds.net</description>
+		<platform>all</platform>
+	</extension>
+</addon>
+
+</addons>

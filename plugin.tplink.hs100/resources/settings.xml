@@ -1,0 +1,155 @@
+<?xml version="1.0" ?>
+<settings version="1">
+	<section id="plugin.tplink.hs100">
+		<category id="tp link 1" label="30051" help="">
+			<group id="1">
+				<setting id="ip" type="string" label="30001" help="">
+					<level>0</level>
+					<default>127.0.0.1</default>
+					<control type="edit" format="string">
+						<heading>30001</heading>
+					</control>
+				</setting>
+				<setting id="port" type="string" label="30002" help="">
+					<level>0</level>
+					<default>9999</default>
+					<control type="edit" format="string">
+						<heading>30002</heading>
+					</control>
+				</setting>
+				<setting id="name" type="string" label="30051" help="">
+					<level>0</level>
+					<default>TP LINK 1</default>
+					<control type="edit" format="string">
+						<heading>30051</heading>
+					</control>
+				</setting>
+				<setting id="onoff" type="boolean" label="30004" help="">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+			</group>
+		</category>
+		<category id="tp link 2" label="30052" help="">
+			<group id="1">
+				<setting id="ip2" type="string" label="30001" help="">
+					<level>0</level>
+					<default>127.0.0.1</default>
+					<control type="edit" format="string">
+						<heading>30001</heading>
+					</control>
+				</setting>
+				<setting id="port2" type="string" label="30002" help="">
+					<level>0</level>
+					<default>9999</default>
+					<control type="edit" format="string">
+						<heading>30002</heading>
+					</control>
+				</setting>
+				<setting id="name2" type="string" label="30052" help="">
+					<level>0</level>
+					<default>TP LINK 2</default>
+					<control type="edit" format="string">
+						<heading>30052</heading>
+					</control>
+				</setting>
+				<setting id="onoff2" type="boolean" label="30004" help="">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+			</group>
+		</category>
+		<category id="tp link 3" label="30053" help="">
+			<group id="1">
+				<setting id="ip3" type="string" label="30001" help="">
+					<level>0</level>
+					<default>127.0.0.1</default>
+					<control type="edit" format="string">
+						<heading>30001</heading>
+					</control>
+				</setting>
+				<setting id="port3" type="string" label="30002" help="">
+					<level>0</level>
+					<default>9999</default>
+					<control type="edit" format="string">
+						<heading>30002</heading>
+					</control>
+				</setting>
+				<setting id="name3" type="string" label="30053" help="">
+					<level>0</level>
+					<default>TP LINK 3</default>
+					<control type="edit" format="string">
+						<heading>30053</heading>
+					</control>
+				</setting>
+				<setting id="onoff3" type="boolean" label="30004" help="">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+			</group>
+		</category>
+		<category id="tp link 4" label="30054" help="">
+			<group id="1">
+				<setting id="ip4" type="string" label="30001" help="">
+					<level>0</level>
+					<default>127.0.0.1</default>
+					<control type="edit" format="string">
+						<heading>30001</heading>
+					</control>
+				</setting>
+				<setting id="port4" type="string" label="30002" help="">
+					<level>0</level>
+					<default>9999</default>
+					<control type="edit" format="string">
+						<heading>30002</heading>
+					</control>
+				</setting>
+				<setting id="name4" type="string" label="30054" help="">
+					<level>0</level>
+					<default>TP LINK 4</default>
+					<control type="edit" format="string">
+						<heading>30054</heading>
+					</control>
+				</setting>
+				<setting id="onoff4" type="boolean" label="30004" help="">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+			</group>
+		</category>
+		<category id="tp link 5" label="30055" help="">
+			<group id="1">
+				<setting id="ip5" type="string" label="30001" help="">
+					<level>0</level>
+					<default>127.0.0.1</default>
+					<control type="edit" format="string">
+						<heading>30001</heading>
+					</control>
+				</setting>
+				<setting id="port5" type="string" label="30002" help="">
+					<level>0</level>
+					<default>9999</default>
+					<control type="edit" format="string">
+						<heading>30002</heading>
+					</control>
+				</setting>
+				<setting id="name5" type="string" label="30055" help="">
+					<level>0</level>
+					<default>TP LINK 5</default>
+					<control type="edit" format="string">
+						<heading>30055</heading>
+					</control>
+				</setting>
+				<setting id="onoff5" type="boolean" label="30004" help="">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+			</group>
+		</category>
+	</section>
+</settings>

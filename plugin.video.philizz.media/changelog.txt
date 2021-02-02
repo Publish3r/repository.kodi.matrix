@@ -1,0 +1,11 @@
+2.4 - Moved
+2.3 - URLs fixed
+2.2 - Yearmix 2020
+2.1 - Changed TXT File
+2.0 - Add-on reprogrammed 
+--------------------------------------------------------------------------
+1.0.5 - Decademixes Section added
+1.0.4 - Latest and Yearmixes fixed
+1.0.3 - Added Tropical Summer 2016, Fixed Minimix Adventures Tokyo Edition
+1.0.2 - Release.
+1.0.1 - Pre-Release.
