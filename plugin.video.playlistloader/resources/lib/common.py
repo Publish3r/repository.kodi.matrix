@@ -18,6 +18,7 @@ import xbmcaddon
 import xbmcgui
 import xbmcvfs
 from io import StringIO
+from io import BytesIO
 
 AddonID = 'plugin.video.playlistloader'
 Addon = xbmcaddon.Addon(AddonID)
@@ -52,49 +53,49 @@ def getFinalUrl(url):
 		xbmc.log(str(ex), 3)
 	return link
 
-
 def OpenURL(url, headers={}, user_data={}, cookieJar=None, justCookie=False):
-	if isinstance(url, str):
-		url = url
-	#url = urllib.quote(url, ':/')
-	cookie_handler = urllib.request.HTTPCookieProcessor(cookieJar)
-	opener = urllib.request.build_opener(cookie_handler, urllib.request.HTTPBasicAuthHandler(), urllib.request.HTTPHandler())
-	if user_data:
-		user_data = urllib.parse.urlencode(user_data)
-		req = urllib.request.Request(url, user_data)
-	else:
-		req = urllib.request.Request(url)
-	req.add_header('Accept-encoding', 'txt')
-	for k, v in list(headers.items()):
-		req.add_header(k, v)
-	if 'User-Agent' not in req.headers or req.headers['User-Agent'] == '':
-		req.add_header('User-Agent', UA)
-	response = opener.open(req)
-	if justCookie == True:
-		if "Set-Cookie" in response.info():
-			data = response.info()['Set-Cookie']
-		else:
-			data = None
-	else:
-		if response.info().get('Content-Encoding') == 'txt':
-			buf = StringIO(response.read())
-			f = gzip.GzipFile(fileobj=buf)
-			data = f.read().decode('utf-8').replace("\r", "")
-		else:
-			data = response.read().decode('utf-8').replace("\r", "")
-	response.close()
-	return data
-
+    if isinstance(url, str):
+        url = url
+    #url = urllib.quote(url, ':/')
+    cookie_handler = urllib.request.HTTPCookieProcessor(cookieJar)
+    opener = urllib.request.build_opener(cookie_handler, urllib.request.HTTPBasicAuthHandler(), urllib.request.HTTPHandler())
+    if user_data:
+        user_data = urllib.parse.urlencode(user_data)
+        req = urllib.request.Request(url, user_data)
+    else:
+        req = urllib.request.Request(url)
+    req.add_header('Accept-encoding', 'txt')
+    for k, v in list(headers.items()):
+        req.add_header(k, v)
+    if 'User-Agent' not in req.headers or req.headers['User-Agent'] == '':
+        req.add_header('User-Agent', UA)
+    response = opener.open(req)
+    if justCookie == True:
+        if "Set-Cookie" in response.info():
+            data = response.info()['Set-Cookie']
+        else:
+            data = None
+    else:
+        if response.info().get('Content-Encoding') == 'txt':
+            buf = StringIO(response.read())
+            f = gzip.GzipFile(fileobj=buf)
+            data = f.read().decode('utf-8').replace("\r", "")
+        else:
+            #data = response.read().decode('utf-8').replace("\r", "")
+            dati = response.read()
+            data = dati.decode(chardet.detect(dati)["encoding"]).replace("\r", "")
+    response.close()
+    return data
 
 def ReadFile(fileName):
-	try:
-		f = xbmcvfs.File(fileName)
-		content = f.read().replace("\n\n", "\n")
-		f.close()
-	except Exception as ex:
-		xbmc.log(str(ex), 3)
-		content = ""
-	return content
+    try:
+        f = xbmcvfs.File(fileName)
+        content = f.read().replace("\n\n", "\n")
+        f.close()
+    except Exception as ex:
+        xbmc.log(str(ex), 3)
+        content = ""
+    return content
 
 
 def SaveFile(fileName, text):
