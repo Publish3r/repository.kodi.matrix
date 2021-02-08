@@ -81,9 +81,11 @@ def OpenURL(url, headers={}, user_data={}, cookieJar=None, justCookie=False):
             f = gzip.GzipFile(fileobj=buf)
             data = f.read().decode('utf-8').replace("\r", "")
         else:
-            #data = response.read().decode('utf-8').replace("\r", "")
             dati = response.read()
-            data = dati.decode(chardet.detect(dati)["encoding"]).replace("\r", "")
+            try:
+                data = dati.decode('utf-8').replace("\r", "")
+            except:
+                data = dati.decode(chardet.detect(dati)["encoding"]).replace("\r", "")
     response.close()
     return data
 
