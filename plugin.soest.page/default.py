@@ -472,13 +472,15 @@ elif mode==5:
     messstellen = messstellen.replace('<span style="font-size: 12pt;"><span style="font-family: &quot;Arial&quot;,sans-serif;">','')
     messstellen = messstellen.replace('<span style="font-family:&quot;Arial&quot;,sans-serif">','')
     messstellen = messstellen.replace('<span style="font-family:&quot;Times New Roman&quot;,serif">','')
+    messstellen = messstellen.replace('<span style="font-family: &quot;Times New Roman&quot;,serif;">','')
+    messstellen = messstellen.replace('<span style="font-family: &quot;Arial&quot;,sans-serif;">','')
     txt = html.unescape(messstellen)
     tags = re.findall("<[^>]+>",messstellen)
     for tag in tags:
         txt=txt.replace(tag,'')
     messstellen = txt
     messstellen = "".join(messstellen.splitlines())
-    messstellen = messstellen[12:]
+    messstellen = messstellen[17:]
     messstellen = messstellen[:-16] 
     messstellen = messstellen.lstrip()
     messstellen = messstellen.rstrip()

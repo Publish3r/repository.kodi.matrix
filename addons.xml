@@ -1,6 +1,6 @@
 <addons>
 
-<addon id="plugin.soest.page" name="soestPage" version="1.8" provider-name="Publish3r">
+<addon id="plugin.soest.page" name="soestPage" version="1.9" provider-name="Publish3r">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" version="2.12.4" />
