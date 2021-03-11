@@ -1,75 +1,75 @@
-#YEARMIXES#NAME=###Yearmix 2020###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2020.mp4###IMAGE=###https://i.ibb.co/K5pgT2y/folder.jpg###
-#YEARMIXES#NAME=###Yearmix 2019###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2019.mp4###IMAGE=###https://www.philizz.nl/images/philizz/Philizz_Video_Yearmix_2019_-_Full_HD.jpg###
-#YEARMIXES#NAME=###Yearmix 2018###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2018.mp4###IMAGE=###https://philizz.nl/images/philizz/Philizz_Video_Yearmix_2018_-_Full_HD.jpg###
-#YEARMIXES#NAME=###Yearmix 2017###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2017.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/thumbnails/thumbnails/Philizz_Video_Yearmix_2017_-_Full_HD.jpg###
-#YEARMIXES#NAME=###Yearmix 2016###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2016.mp4###IMAGE=###https://philizz.nl/images/philizz/Philizz_Video_Yearmix_2016_-_DVD.jpg###
-#YEARMIXES#NAME=###Yearmix 2015###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2015.mp4###IMAGE=###https://philizz.nl/images/philizz/dvdcover2015.jpg###
-#YEARMIXES#NAME=###Yearmix 2014###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2014.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/thumbnails/thumbnails/Philizz_Video_Yearmix_2014_-_DVD_Cover.jpg###
-#YEARMIXES#NAME=###Yearmix 2013###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2013.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/thumbnails/Philizz_Video_Yearmix_2013_DVD_Cover.png###
-#YEARMIXES#NAME=###Yearmix 2012###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2012.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/Philizz_Yearmix_2012_-_Full_HD.jpg###
-#YEARMIXES#NAME=###Yearmix 2011###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2011.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER-2011.jpg###
-#YEARMIXES#NAME=###Yearmix 2010###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2010.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/fullcover_2010.jpg###
-#YEARMIXES#NAME=###Yearmix 2009###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2009.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/fullcover_2009.jpg###
-#YEARMIXES#NAME=###Yearmix 2008###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2008.mp4###IMAGE=###https://i.ibb.co/27GKvhm/folder.jpg###
-#YEARMIXES#NAME=###Yearmix 2002###URL=###https://ia803205.us.archive.org/0/items/PhilizzVideoYearmix2002/Philizz - Video Yearmix 2002.mp4###IMAGE=###https://philizz.nl/images/philizz/Philizz_Yearmix_2002_h264.jpg###
+#YEARMIXES#NAME=###Yearmix 2020###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2020.mp4###IMAGE=###https://i.ibb.co/6DnWgpq/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2019###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2019.mp4###IMAGE=###https://i.ibb.co/kByYHV8/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2018###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2018.mp4###IMAGE=###https://i.ibb.co/rpnyJWf/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2017###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2017.mp4###IMAGE=###https://i.ibb.co/b39nqRG/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2016###URL=###https://www.philizz.nl/chesutsu/1614/32/yrmx2016.mp4###IMAGE=###https://i.ibb.co/gF3F8hj/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2015###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2015.mp4###IMAGE=###https://i.ibb.co/89s8zj5/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2014###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2014.mp4###IMAGE=###https://i.ibb.co/8DpPFrC/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2013###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2013.mp4###IMAGE=###https://i.ibb.co/bdxYjQ1/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2012###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2012.mp4###IMAGE=###https://i.ibb.co/VMnnWdR/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2011###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2011.mp4###IMAGE=###https://i.ibb.co/FJQ4J5b/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2010###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2010.mp4###IMAGE=###https://i.ibb.co/2KSyxh4/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2009###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2009.mp4###IMAGE=###https://i.ibb.co/G2tBGHQ/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2008###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2008.mp4###IMAGE=###https://i.ibb.co/9G8vwxg/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2002###URL=###https://ia803205.us.archive.org/0/items/PhilizzVideoYearmix2002/Philizz - Video Yearmix 2002.mp4###IMAGE=###https://i.ibb.co/ft31dZW/folder.jpg###
 
-#DECADEMIXES#NAME=###Decademix - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/57/decade01.mp4###IMAGE=###https://s1.imagebanana.com/file/201124/nvMejItz.png###
+#DECADEMIXES#NAME=###Decademix - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/57/decade01.mp4###IMAGE=###https://i.ibb.co/HhnPHSG/folder.jpg###
 
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-1.mp4###IMAGE=###https://philizz.nl/images/philizz/DVD_Cover_Episode_1.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 2###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-2.mp4###IMAGE=###https://philizz.nl/images/philizz/DVD_Cover_Episode_2.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 3###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-3.mp4###IMAGE=###https://philizz.nl/images/philizz/Philizz_-_Heroes_Of_The_Zer00s_Episode_3.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 4###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-4.mp4###IMAGE=###https://philizz.nl/images/philizz/Philizz_-_Heroes_Of_The_Zer00s_Episode_4.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 5###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-5.mp4###IMAGE=###https://philizz.nl/images/philizz/DVD_Cover_Episode_5.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 6###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-6.mp4###IMAGE=###https://philizz.nl/images/philizz/Philizz_-_Heroes_Of_The_Zer00s_Episode_6.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 7###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-7.mp4###IMAGE=###https://philizz.nl/images/philizz/DVD_Cover_Episode_7.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 8###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-8.mp4###IMAGE=###https://philizz.nl/images/philizz/Philizz_-_Heroes_Of_The_Zer00s_-_Episode_8.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 9###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-9.mp4###IMAGE=###https://philizz.nl/images/philizz/DVD_Cover_Episode_9.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 10###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-10.mp4###IMAGE=###https://philizz.nl/images/philizz/DVD_Cover_Episode_10.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 11###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-11.mp4###IMAGE=###https://philizz.nl/images/philizz/DVD_Cover_Episode_11.jpg###
-#ZEROS#NAME=###Heroes Of The Zer00s - Episode 12###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-12.mp4###IMAGE=###https://philizz.nl/images/philizz/DVD_Cover_Episode_12.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-1.mp4###IMAGE=###https://i.ibb.co/RphVxwX/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 2###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-2.mp4###IMAGE=###https://i.ibb.co/CJFLj7W/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 3###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-3.mp4###IMAGE=###https://i.ibb.co/jHhD0f1/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 4###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-4.mp4###IMAGE=###https://i.ibb.co/QC1mmBM/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 5###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-5.mp4###IMAGE=###https://i.ibb.co/6Nzpwpk/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 6###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-6.mp4###IMAGE=###https://i.ibb.co/8Xcj5P0/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 7###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-7.mp4###IMAGE=###https://i.ibb.co/JxrtPsx/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 8###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-8.mp4###IMAGE=###https://i.ibb.co/L8pJ91v/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 9###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-9.mp4###IMAGE=###https://i.ibb.co/8sbrtV4/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 10###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-10.mp4###IMAGE=###https://i.ibb.co/3CdWxbk/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 11###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-11.mp4###IMAGE=###https://i.ibb.co/9pMfN2d/folder.jpg###
+#ZEROS#NAME=###Heroes Of The Zer00s - Episode 12###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-12.mp4###IMAGE=###https://i.ibb.co/hyHLsWw/folder.jpg###
 
-#NINETIES#NAME=###Back to the 90s - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/58/btt901.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/thumbnails/thumbnails/Philizz_-_Back_To_The_90s_Episode_1.jpg###
-#NINETIES#NAME=###Back to the 90s - Episode 2###URL=###https://www.philizz.nl/chesutsu/1614/58/btt902.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/thumbnails/thumbnails/thumbnails/Philizz_-_Back_To_The_90s_Episode_2.jpg###
-#NINETIES#NAME=###Back to the 90s - Episode 3###URL=###https://www.philizz.nl/chesutsu/1614/58/btt903.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/thumbnails/thumbnails/thumbnails/thumbnails/Philizz_-_Back_To_The_90s_Episode_3.jpg###
-#NINETIES#NAME=###Back to the 90s - Episode 4###URL=###https://www.philizz.nl/chesutsu/1614/58/btt904.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/thumbnails/Philizz_-_Back_To_The_90s_Episode_4.jpg###
-#NINETIES#NAME=###Back to the 90s - Episode 5###URL=###https://www.philizz.nl/chesutsu/1614/58/btt905.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/Philizz_-_Back_To_The_90s_Episode_5.jpg###
-#NINETIES#NAME=###Back to the 90s - Episode 6###URL=###https://www.philizz.nl/chesutsu/1614/58/btt906.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/thumbnails/Philizz_-_Back_To_The_90s_Episode_6.jpg###
-#NINETIES#NAME=###Back to the 90s - Episode 7###URL=###https://www.philizz.nl/chesutsu/1614/58/btt907.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/thumbnails/thumbnails/Philizz_-_Back_To_The_90s_Episode_7.jpg###
+#NINETIES#NAME=###Back to the 90s - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/58/btt901.mp4###IMAGE=###https://i.ibb.co/hsW31gr/folder.jpg###
+#NINETIES#NAME=###Back to the 90s - Episode 2###URL=###https://www.philizz.nl/chesutsu/1614/58/btt902.mp4###IMAGE=###https://i.ibb.co/HHTpTmb/folder.jpg###
+#NINETIES#NAME=###Back to the 90s - Episode 3###URL=###https://www.philizz.nl/chesutsu/1614/58/btt903.mp4###IMAGE=###https://i.ibb.co/Z8BM5ry/folder.jpg###
+#NINETIES#NAME=###Back to the 90s - Episode 4###URL=###https://www.philizz.nl/chesutsu/1614/58/btt904.mp4###IMAGE=###https://i.ibb.co/588KgZF/folder.jpg###
+#NINETIES#NAME=###Back to the 90s - Episode 5###URL=###https://www.philizz.nl/chesutsu/1614/58/btt905.mp4###IMAGE=###https://i.ibb.co/d280y7P/folder.jpg###
+#NINETIES#NAME=###Back to the 90s - Episode 6###URL=###https://www.philizz.nl/chesutsu/1614/58/btt906.mp4###IMAGE=###https://i.ibb.co/7p9f6NT/folder.jpg###
+#NINETIES#NAME=###Back to the 90s - Episode 7###URL=###https://www.philizz.nl/chesutsu/1614/58/btt907.mp4###IMAGE=###https://i.ibb.co/BzzZQ8W/folder.jpg###
 
-#EIGHTIES#NAME=###I covered the 80s - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e01_star.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/Philizz_-_I_Covered_The_80s_Disc_1.png###
-#EIGHTIES#NAME=###I covered the 80s - Episode 2###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e02_touch.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/Philizz_-_I_Covered_The_80s_Disc_1.png###
-#EIGHTIES#NAME=###I covered the 80s - Episode 3###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e03_ready.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/Philizz_-_I_Covered_The_80s_Disc_2.png###
-#EIGHTIES#NAME=###I covered the 80s - Episode 4###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e04_fun.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/Philizz_-_I_Covered_The_80s_Disc_2.png###
-#EIGHTIES#NAME=###I covered the 80s - Episode 5###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e05_heaven.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/Philizz_-_I_Covered_The_80s_Disc_2.png###
+#EIGHTIES#NAME=###I covered the 80s - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e01_star.mp4###IMAGE=###https://i.ibb.co/xfjQfjK/folder.jpg###
+#EIGHTIES#NAME=###I covered the 80s - Episode 2###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e02_touch.mp4###IMAGE=###https://i.ibb.co/xfjQfjK/folder.jpg###
+#EIGHTIES#NAME=###I covered the 80s - Episode 3###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e03_ready.mp4###IMAGE=###https://i.ibb.co/7K06QTh/folder.jpg###
+#EIGHTIES#NAME=###I covered the 80s - Episode 4###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e04_fun.mp4###IMAGE=###https://i.ibb.co/7K06QTh/folder.jpg###
+#EIGHTIES#NAME=###I covered the 80s - Episode 5###URL=###https://www.philizz.nl/chesutsu/1614/57/80s01e05_heaven.mp4###IMAGE=###https://i.ibb.co/7K06QTh/folder.jpg###
 
-#VIDEOMIXES2016#NAME=###Videomix 2016 - Tropical Summer###URL=###https://www.philizz.nl/chesutsu/1614/57/tropical.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/Philizz_-_Tropical_Summer_2016.jpg###
+#VIDEOMIXES2016#NAME=###Videomix 2016 - Tropical Summer###URL=###https://www.philizz.nl/chesutsu/1614/57/tropical.mp4###IMAGE=###https://i.ibb.co/f107qzP/folder.jpg###
 
-#VIDEOMIXES2013#NAME=###Videomix 2013 - Volume 1 - Diamond###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2013vol1.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/thumbnails/Philizz_Videomix_2013_Volume_1.jpg###
-#VIDEOMIXES2013#NAME=###Videomix 2013 - Volume 2 - Animal###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2013vol2.mp4###IMAGE=###https://philizz.nl/images/philizz/thumbnails/thumbnails/thumbnails/DVDCOVER-VOL2.jpg###
-#VIDEOMIXES2013#NAME=###Videomix 2013 - Volume 3 - Sunshine###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2013vol3.mp4###IMAGE=###https://philizz.nl/images/philizz/Philizz_Videomix_2013_Volume_3_-_Sunshine_1080HD.jpg###
-#VIDEOMIXES2013#NAME=###Videomix 2013 - Volume 4 - Beautiful Life###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2013vol4.mp4###IMAGE=###https://philizz.nl/images/philizz/Philizz_Videomix_2013_Volume_4_-_Beautiful_Life_1080HD.jpg###
+#VIDEOMIXES2013#NAME=###Videomix 2013 - Volume 1 - Diamond###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2013vol1.mp4###IMAGE=###https://i.ibb.co/23HXdnd/folder.jpg###
+#VIDEOMIXES2013#NAME=###Videomix 2013 - Volume 2 - Animal###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2013vol2.mp4###IMAGE=###https://i.ibb.co/7gYQxCk/folder.jpg###
+#VIDEOMIXES2013#NAME=###Videomix 2013 - Volume 3 - Sunshine###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2013vol3.mp4###IMAGE=###https://i.ibb.co/L1Hzvj2/folder.jpg###
+#VIDEOMIXES2013#NAME=###Videomix 2013 - Volume 4 - Beautiful Life###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2013vol4.mp4###IMAGE=###https://i.ibb.co/fnYHvJD/folder.jpg###
 
-#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 1 - Downpour###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol1.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER.jpg###
-#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 2 - One Thing###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol2.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER-VOL2.jpg###
-#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 3 - My Party###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol3.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER-VOL3-2012.jpg###
-#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 4 - Euphoria###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol4.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER-VOL4.jpg###
-#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 5 - Celebrate###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol5.mp4###IMAGE=###https://philizz.nl/images/philizz/DVDCOVER-VOL5.jpg###
+#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 1 - Downpour###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol1.mp4###IMAGE=###https://i.ibb.co/b6hfNQL/folder.jpg###
+#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 2 - One Thing###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol2.mp4###IMAGE=###https://i.ibb.co/vmQF9Wr/folder.jpg###
+#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 3 - My Party###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol3.mp4###IMAGE=###https://i.ibb.co/rxLLxHc/folder.jpg###
+#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 4 - Euphoria###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol4.mp4###IMAGE=###https://i.ibb.co/QKDTxm2/folder.jpg###
+#VIDEOMIXES2012#NAME=###Videomix 2012 - Volume 5 - Celebrate###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2012vol5.mp4###IMAGE=###https://i.ibb.co/GHKMBzr/folder.jpg###
 
-#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 1 - Hello###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol1.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER-VOL1.jpg###
-#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 2 - More###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol2.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER-VOLUME2.jpg###
-#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 3 - Live Tonight###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol3.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER-VOLUME3.jpg###
-#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 4 - Rising###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol4.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER-VOLUME4.jpg###
-#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 5 - Cheers###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol5.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER-VOL5.jpg###
+#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 1 - Hello###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol1.mp4###IMAGE=###https://i.ibb.co/1TSsTtD/folder.jpg###
+#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 2 - More###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol2.mp4###IMAGE=###https://i.ibb.co/Yfy0PgB/folder.jpg###
+#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 3 - Live Tonight###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol3.mp4###IMAGE=###https://i.ibb.co/n7zpqkm/folder.jpg###
+#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 4 - Rising###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol4.mp4###IMAGE=###https://i.ibb.co/jWPZxTd/folder.jpg###
+#VIDEOMIXES2011#NAME=###Videomix 2011 - Volume 5 - Cheers###URL=###https://www.philizz.nl/chesutsu/1614/57/vm_2011vol5.mp4###IMAGE=###https://i.ibb.co/0VnXqQX/folder.jpg###
 
-#SPECIALS#NAME=###I love the 80's - Part 1###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_80s1.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/thumbnails/philizz_cover_flat_fix2.png###
-#SPECIALS#NAME=###I love the 80's - Part 2###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_80s2.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/thumbnails/thumbnails/80s_part2_dvdcover.jpg###
-#SPECIALS#NAME=###I love the 90's - Part 1###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_90s1.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/DVDCOVER_90s.jpg###
-#SPECIALS#NAME=###I love the 90's - Part 2###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_90s2.mp4###IMAGE=###https://philizz.nl/images/philizz/DVDCOVER_90s2.jpg###
-#SPECIALS#NAME=###I love Happy Hardcore###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_hh.mp4###IMAGE=###https://philizz.nl/images/philizz/siteimg/Philizz_-_I__Happy_Hardcore_DVDCOVER.jpg###
-#SPECIALS#NAME=###I love Hands Up###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_hu.mp4###IMAGE=###https://philizz.nl/images/philizz/DVDCOVER_handsup.jpg###
-#SPECIALS#NAME=###Millennium Videomix - Part 1###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F74448281###IMAGE=###https://philizz.nl/images/philizz/Philizz_-_Millennium_Videomix_Part_1.jpg###
-#SPECIALS#NAME=###Millennium Videomix - Part 2###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F151388840###IMAGE=###https://philizz.nl/images/philizz/thumbnails/Philizz_-_Millennium_Videomix_Part_2.jpg###
-#SPECIALS#NAME=###Minimix Adventures Worldwide (Tokyo Edition) feat. DJ IC###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F281005411###IMAGE=###https://philizz.nl/images/philizz/10949841_10204960401306216_815624418_n.jpg###
+#SPECIALS#NAME=###I love the 80's - Part 1###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_80s1.mp4###IMAGE=###https://i.ibb.co/4pKzgwb/folder.jpg###
+#SPECIALS#NAME=###I love the 80's - Part 2###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_80s2.mp4###IMAGE=###https://i.ibb.co/qN7tyDX/folder.jpg###
+#SPECIALS#NAME=###I love the 90's - Part 1###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_90s1.mp4###IMAGE=###https://i.ibb.co/PFhgkmD/folder.jpg###
+#SPECIALS#NAME=###I love the 90's - Part 2###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_90s2.mp4###IMAGE=###https://i.ibb.co/WnKQPGH/folder.jpg###
+#SPECIALS#NAME=###I love Happy Hardcore###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_hh.mp4###IMAGE=###https://i.ibb.co/jgnt2RH/folder.jpg###
+#SPECIALS#NAME=###I love Hands Up###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_hu.mp4###IMAGE=###https://i.ibb.co/DkxxHrG/folder.jpg###
+#SPECIALS#NAME=###Millennium Videomix - Part 1###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F74448281###IMAGE=###https://i.ibb.co/9W20dbj/folder.jpg###
+#SPECIALS#NAME=###Millennium Videomix - Part 2###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F151388840###IMAGE=###https://i.ibb.co/FH5QL0f/folder.jpg###
+#SPECIALS#NAME=###Minimix Adventures Worldwide (Tokyo Edition) feat. DJ IC###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F281005411###IMAGE=###https://i.ibb.co/hD5RbjT/folder.jpg###
 #SPECIALS#NAME=###Mashup Yearmix feat. MM2###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_mashup.mp4###IMAGE=###https://s1.imagebanana.com/file/201124/35G90GNe.png###
 #SPECIALS#NAME=###Mexilum feat. MM2###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_mex.mp4###IMAGE=###https://s2.imagebanana.com/file/201124/9FX2DioD.png###
 
