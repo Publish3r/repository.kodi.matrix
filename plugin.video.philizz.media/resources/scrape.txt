@@ -11,7 +11,7 @@
 #YEARMIXES#NAME=###Yearmix 2010###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2010.mp4###IMAGE=###https://i.ibb.co/2KSyxh4/folder.jpg###
 #YEARMIXES#NAME=###Yearmix 2009###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2009.mp4###IMAGE=###https://i.ibb.co/G2tBGHQ/folder.jpg###
 #YEARMIXES#NAME=###Yearmix 2008###URL=###https://www.philizz.nl/chesutsu/1614/32/ym_2008.mp4###IMAGE=###https://i.ibb.co/9G8vwxg/folder.jpg###
-#YEARMIXES#NAME=###Yearmix 2002###URL=###https://ia803205.us.archive.org/0/items/PhilizzVideoYearmix2002/Philizz - Video Yearmix 2002.mp4###IMAGE=###https://i.ibb.co/ft31dZW/folder.jpg###
+#YEARMIXES#NAME=###Yearmix 2002###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F523191583###IMAGE=###https://i.ibb.co/ft31dZW/folder.jpg###
 
 #DECADEMIXES#NAME=###Decademix - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/57/decade01.mp4###IMAGE=###https://i.ibb.co/HhnPHSG/folder.jpg###
 
