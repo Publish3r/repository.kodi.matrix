@@ -69,7 +69,7 @@
 #SPECIALS#NAME=###I love Hands Up###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_hu.mp4###IMAGE=###https://i.ibb.co/DkxxHrG/folder.jpg###
 #SPECIALS#NAME=###Millennium Videomix - Part 1###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F74448281###IMAGE=###https://i.ibb.co/9W20dbj/folder.jpg###
 #SPECIALS#NAME=###Millennium Videomix - Part 2###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F151388840###IMAGE=###https://i.ibb.co/FH5QL0f/folder.jpg###
-#SPECIALS#NAME=###Minimix Adventures Worldwide (Tokyo Edition) feat. DJ IC###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F281005411###IMAGE=###https://i.ibb.co/hD5RbjT/folder.jpg###
+#SPECIALS#NAME=###Minimix Adventures Worldwide (Tokyo Edition) feat. DJ IC###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F281005411###IMAGE=###https://i.ibb.co/f1tdCBv/folder.jpg###
 #SPECIALS#NAME=###Mashup Yearmix feat. MM2###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_mashup.mp4###IMAGE=###https://s1.imagebanana.com/file/201124/35G90GNe.png###
 #SPECIALS#NAME=###Mexilum feat. MM2###URL=###https://www.philizz.nl/chesutsu/1614/58/sp_mex.mp4###IMAGE=###https://s2.imagebanana.com/file/201124/9FX2DioD.png###
 
