@@ -154,7 +154,7 @@ def isFromCache(address, cache=0):
 		fileLocation = os.path.join(cacheDir, hashlib.md5(address.encode()).hexdigest())
 		retval = isFileNew(fileLocation, cache*60)
 	else:
-		retval = isFileNew(address.decode('utf-8'), cache*60)
+		retval = isFileNew(address, cache*60)
 	return retval
 
 def GetList(address, cache=0):
@@ -238,7 +238,7 @@ def dictify(r,root=True):
 	
 def epg2dict(url, cache):
 	eDict={}
-	fn = os.path.join(cacheDir, hashlib.md5((url + '.ebk').encode()).hexdigest())
+	fn = os.path.join(cacheDir, hashlib.md5((url).encode()).hexdigest())
 	if isFromCache(url, cache):
 		eDict = ReadList(fn)
 		if not eDict: eDict = {} 
@@ -311,10 +311,10 @@ def epg2dict(url, cache):
 	
 def GetEncodeString(str):
 	try:
-		str = str.decode(chardet.detect(str)["encoding"])
+		str = str.decode('utf-8').replace("\r", "")
 	except:
 		try:
-			str = str
+			str = str.decode(chardet.detect(str)["encoding"]).replace("\r", "")
 		except:
 			pass
 	return str

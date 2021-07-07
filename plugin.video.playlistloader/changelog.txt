@@ -1,8 +1,19 @@
+1.1.2
+- Fixed some code snippets.
+- Edited README.md
+
 1.1.1
 - Added german and english language support for EPG.
 
 1.1.0
-- Added EPG and russian language support.
+- Added russian language support.
+- Added EPG support.
+  - unstable.
+  - extracted .xml files only.
+  - local EPG files:
+    - select EPG folder in addon settings.
+    - close Kodi. 
+    - edit "userdata\addon_data\plugin.video.playlistloader\playLists.txt".
 
 1.0.3
 - More Scraping Speed.

@@ -112,7 +112,7 @@ version 0.2.0
   </extension>
 </addon>
 
-<addon id="plugin.video.playlistloader" name="Playlist Loader" version="1.1.1" provider-name="Nux007, Publish3r, Silhouette2022">
+<addon id="plugin.video.playlistloader" name="Playlist Loader" version="1.1.2" provider-name="Nux007, Publish3r, Silhouette2022">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" version="2.22.0"/>
