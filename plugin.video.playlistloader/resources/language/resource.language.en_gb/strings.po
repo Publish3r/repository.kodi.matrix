@@ -192,6 +192,22 @@ msgctxt "#30044"
 msgid "Delete directory and move contents to root"
 msgstr ""
 
+msgctxt "#30045"
+msgid "Change channels EPG source"
+msgstr ""
+
+msgctxt "#30046"
+msgid "Select channels EPG source"
+msgstr ""
+
+msgctxt "#30047"
+msgid "Channels EPG URL"
+msgstr ""
+
+msgctxt "#30048"
+msgid "Local EPG"
+msgstr ""
+
 msgctxt "#30101"
 msgid "Delete Playlists file"
 msgstr ""

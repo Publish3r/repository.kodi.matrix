@@ -1,5 +1,8 @@
+1.1.1
+- Added german and english language support for EPG.
+
 1.1.0
-- Added EPG and russian language support
+- Added EPG and russian language support.
 
 1.0.3
 - More Scraping Speed.
