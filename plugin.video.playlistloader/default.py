@@ -292,11 +292,11 @@ def m3uCategory(url, logos, epg, cache, mode, gListIndex=-1):
                                         title2nd = title2nd.replace('&quot;','`').replace('&amp;',' & ')
                                         if not t2len: t2len = len(name)
                                         if not next:
-                                            plot += '[B][COLOR FF0084FF]%s-%s[/COLOR] [COLOR FFFFFFFF] %s[/COLOR][/B]' % (ebgn, eend, title)
+                                            plot += '[B][COLOR FF0084FF]%s-%s[/COLOR]\n[COLOR FFFFFFFF]%s[/COLOR][/B]' % (ebgn, eend, title)
                                             name = '[B]%s[/B]\n%s' % (name.ljust(int(t2len * 1.65)), title2nd)
                                             next = True
                                         else: 
-                                            plot += '[COLOR FF999999]\n\n%s-%s %s[/COLOR]\n' % (ebgn, eend, title) 
+                                            plot += '\n\n[B][COLOR FF0084FF]%s-%s[/COLOR]\n%s[/B]' % (ebgn, eend, title)
                                             next = False
                                             break
                                     elif dnow < stime and not next: 
@@ -332,7 +332,7 @@ def AddDir(name, url, mode, iconimage='', logos='', epg='', index=-1, move=0, uu
     
     liz = xbmcgui.ListItem(name, iconimage, iconimage)
     liz.setArt({'icon': iconimage, 'thumb' : iconimage})
-    liz.setInfo(type="Video", infoLabels={ "Title": name, "plot": plot, "plotoutline": plot, "tagline": plot})
+    liz.setInfo(type="Video", infoLabels={ "Title": name, "plot": plot, "plotoutline": '', "tagline": ''})
     liz.setProperty("fanart_image", fanart)
     items = []
     
