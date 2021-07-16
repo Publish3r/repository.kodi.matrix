@@ -123,7 +123,7 @@ def AddNewList():
     logosUrl = '' if listUrl.endswith('.plx') else GetChoice(30018, 30019, 30020, 30019, 30020, 30021, fileType=0)
     if logosUrl.startswith('http') and not logosUrl.endswith('/'):
         logosUrl += '/'
-    epgUrl = '' if listUrl.endswith('.plx') else GetChoice(30046, 30047, 30048, 30047, 30048, 30021, fileType=0)
+    epgUrl = '' if listUrl.endswith('.plx') else GetChoice(30046, 30047, 30048, 30047, 30048, 30021, fileType=1, fileMask='.xml')
 #    if epgUrl.startswith('http') and not epgUrl.endswith('/'):
 #        epgUrl += '/'
     cacheInMinutes = GetNumFromUser(getLocaleString(30034), '0') if listUrl.startswith('http') else 0
@@ -299,7 +299,7 @@ def m3uCategory(url, logos, epg, cache, mode, gListIndex=-1):
                                             plot += '\n\n[B][COLOR FF0084FF]%s-%s[/COLOR]\n%s[/B]' % (ebgn, eend, title)
                                             next = False
                                             break
-                                    elif dnow < stime and not next: 
+                                    elif dnow < stime and not next:
                                         break
                                     
 

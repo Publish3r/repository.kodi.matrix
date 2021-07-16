@@ -193,15 +193,15 @@ msgid "Delete directory and move contents to root"
 msgstr ""
 
 msgctxt "#30045"
-msgid "Change channels EPG source (unstable)"
+msgid "Change / Remove EPG source"
 msgstr ""
 
 msgctxt "#30046"
-msgid "Select channels EPG source (unstable)"
+msgid "Select EPG source"
 msgstr ""
 
 msgctxt "#30047"
-msgid "Channels EPG URL"
+msgid "EPG URL"
 msgstr ""
 
 msgctxt "#30048"

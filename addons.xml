@@ -112,7 +112,7 @@ version 0.2.0
   </extension>
 </addon>
 
-<addon id="plugin.video.playlistloader" name="Playlist Loader" version="1.1.3" provider-name="Nux007, Publish3r, Silhouette2022">
+<addon id="plugin.video.playlistloader" name="Playlist Loader" version="1.1.4" provider-name="Nux007, Publish3r, Silhouette2022">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" version="2.22.0"/>
@@ -124,12 +124,13 @@ version 0.2.0
   <extension point="xbmc.addon.metadata">
     <summary lang="en_GB">Playlist Loader</summary>
     <summary lang="de_DE">Playlist Loader</summary>
-    <description lang="en_GB">Manage your various playlists in a simple way.[CR][CR]Note:[CR]This addon does not contain any illegal content. Should you add any illegal content, you are fully responsible for any consequences.</description>
-    <description lang="de_DE">Verwalte auf einfache Art und Weise deine verschiedenen Playlisten.[CR][CR]Hinweis:[CR]Dieses Addon enthält keine illegalen Inhalte. Solltest du irgendwelche illegalen Inhalte hinzufügen, bist du im vollen Umfang für eventuelle Folgen verantwortlich.</description>
+    <description lang="en_GB">Manage your various playlists in a simple way.[CR]EPG support for xmltv.[CR][CR]Note:[CR]This addon does not contain any illegal content. Should you add any illegal content, you are fully responsible for any consequences.</description>
+    <description lang="de_DE">Verwalte auf einfache Art und Weise deine verschiedenen Playlisten.[CR]Unterstützt EPG für XMLTV.[CR][CR]Hinweis:[CR]Dieses Addon enthält keine illegalen Inhalte. Solltest du irgendwelche illegalen Inhalte hinzufügen, bist du im vollen Umfang für eventuelle Folgen verantwortlich.</description>
     <description lang="ru_RU">Дополнение для управления плейлистами.[CR][CR]Замечание:[CR]Это дополнение не содержит нелегального контента. Вы несете полную ответственность, если используете любой нелегальный контент.</description>
     <language>en de</language>
     <platform>all</platform>
-      <assets>
+    <source>https://github.com/Publish3r/repository.kodi.matrix/tree/main/plugin.video.playlistloader</source>
+    <assets>
         <icon>icon.png</icon>
     </assets>
   </extension>
