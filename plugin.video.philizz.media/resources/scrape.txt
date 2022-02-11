@@ -17,6 +17,7 @@
 #YEARMIXES#NAME=###Yearmix 2002###URL=###https://alltubedownload.net/download?url=https%3A%2F%2Fvimeo.com%2F523191583###IMAGE=###https://i.ibb.co/ft31dZW/folder.jpg###
 
 #DECADEMIXES#NAME=###Decademix - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/57/decade01.mp4###IMAGE=###https://i.ibb.co/HhnPHSG/folder.jpg###
+#DECADEMIXES#NAME=###Decademix - Episode 2###URL=###https://ok.ru/video/3497838774868###IMAGE=###https://i.postimg.cc/QM7vHXMm/folder.jpg###
 
 #ZEROS#NAME=###Heroes Of The Zer00s - Episode 1###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-1.mp4###IMAGE=###https://i.ibb.co/RphVxwX/folder.jpg###
 #ZEROS#NAME=###Heroes Of The Zer00s - Episode 2###URL=###https://www.philizz.nl/chesutsu/1614/57/Philizz-Heroes-Of-The-Zer00s-Episode-2.mp4###IMAGE=###https://i.ibb.co/CJFLj7W/folder.jpg###
