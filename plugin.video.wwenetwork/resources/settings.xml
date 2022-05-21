@@ -7,5 +7,6 @@
         <setting id="refresh_token" type="text" visible="false" default="" />
         <setting id="last_login" type="text" visible="false" default="" />
         <setting label="Set Proxy" type="bool" id="proxymodus" default="false" />
+        <setting label="Proxy" type="text" id="proxy" default="name:pass@ip:port"/>
     </category>
 </settings>

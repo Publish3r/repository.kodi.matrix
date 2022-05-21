@@ -136,7 +136,7 @@ version 0.2.0
   </extension>
 </addon>
 
-<addon id="plugin.video.wwenetwork" name="WWE Network" version="2020.11.22" provider-name="lunartic + freyta + Publish3r">
+<addon id="plugin.video.wwenetwork" name="WWE Network" version="2022.05.21" provider-name="lunartic + freyta + Publish3r">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.12.4"/>
