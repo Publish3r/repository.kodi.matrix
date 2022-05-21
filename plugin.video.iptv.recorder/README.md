@@ -1,3 +1,9 @@
+# Information
+This Addon is a fork and a translation to Python 3 / Kodi Matrix.
+It's unstable and contains some bugs.
+
+Source: https://github.com/primaeval/plugin.video.iptv.recorder
+
 # IPTV Recorder
 ## plugin.video.iptv.recorder
 
@@ -17,13 +23,8 @@ On Android this addon will copy ffmpeg to the /data/data folder so it can run.
 
 ### Quick Start
 
-* Install this addon via my repo. 
-https://github.com/primaeval/repository.primaeval/raw/master/zips/repository.primaeval/repository.primaeval-0.0.2.zip
+* Install this addon
 * Download ffmpeg for your device
 * Point to the ffmpeg exe in Settings.
 * Make sure IPTV Simple Client is enabled and works or point to your xmltv/m3u in Settings\Data.
 * Go into the addon \ Channel Groups and find a program to Record.
-
-### TODO
-
-* cron jobs on Linux.
