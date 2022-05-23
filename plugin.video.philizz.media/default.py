@@ -1,4 +1,4 @@
-﻿import sys,xbmcaddon,os,requests,xbmc,xbmcgui,urllib.request,urllib.parse,urllib.error,urllib.request,urllib.error,urllib.parse,re,xbmcplugin
+﻿import sys,xbmcaddon,os,requests,xbmc,xbmcgui,base64,urllib.request,urllib.parse,urllib.error,urllib.request,urllib.error,urllib.parse,re,xbmcplugin
 import YDStreamUtils
 import YDStreamExtractor
 
@@ -14,6 +14,41 @@ addondir = os.path.dirname(script_file)
 
 icon = 'special://home/addons/plugin.video.philizz.media/resources/folder.png'
 
+abcd = "aHR0cHM6Ly9wYXN0ZXMuaW8vcmF3L3oyYW5xdW54ZnI="
+abcd = abcd.encode("ascii")
+abcd = base64.b64decode(abcd)
+abcd = abcd.decode("ascii")
+
+bcde = "aHR0cHM6Ly9waGlsaXp6LmNvbQ=="
+bcde = bcde.encode("ascii")
+bcde = base64.b64decode(bcde)
+bcde = bcde.decode("ascii")
+
+cdef = "cGhpbGl6ei5jb20="
+cdef = cdef.encode("ascii")
+cdef = base64.b64decode(cdef)
+cdef = cdef.decode("ascii")
+
+defg = "Y2RuLWNmLnZpZHlhcmQuY29t"
+defg = defg.encode("ascii")
+defg = base64.b64decode(defg)
+defg = defg.decode("ascii")
+
+efgh = "UmVmZXJlcj1odHRwczovL3BsYXkudmlkeWFyZC5jb20v"
+efgh = efgh.encode("ascii")
+efgh = base64.b64decode(efgh)
+efgh = efgh.decode("ascii")
+
+fghi = "aHR0cHM6Ly9pLnBoaWxpenouY29t"
+fghi = fghi.encode("ascii")
+fghi = base64.b64decode(fghi)
+fghi = fghi.decode("ascii")
+
+ghij = "cG9zdGltZy5jYw=="
+ghij = ghij.encode("ascii")
+ghij = base64.b64decode(ghij)
+ghij = ghij.decode("ascii")
+
 def MENU():
     addDir('Yearmixes','-',3,icon,'','Yearmixes')
     addDir('Decademixes','-',4,icon,'','Decademixes')
@@ -25,7 +60,7 @@ def MENU():
     addDir('Mashups','-',14,icon,'','Mashups')
 
 def YEARMIXES():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#YEARMIXES#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
          desc = name
@@ -33,12 +68,14 @@ def YEARMIXES():
              image = addonicon
          if ' ' in image:
              image = image.replace(" ", "%20")
+         if fghi in image:
+             image = image.replace(cdef, ghij)
          if ' ' in url:
              url = url.replace(" ", "%20")
          addLink(name,url,image,desc,'','')
 
 def DECADEMIXES():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#DECADEMIXES#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -46,12 +83,14 @@ def DECADEMIXES():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
 
 def ZEROS():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#ZEROS#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -59,12 +98,14 @@ def ZEROS():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
 
 def NINETIES():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#NINETIES#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -72,12 +113,14 @@ def NINETIES():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
 
 def EIGHTIES():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#EIGHTIES#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -85,6 +128,8 @@ def EIGHTIES():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
@@ -96,7 +141,7 @@ def VIDEOMIXESDIR():
     addDir('Videomixes 2011','-',12,icon,'','Videomixes 2011')
 
 def VIDEOMIXES2016():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#VIDEOMIXES2016#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -104,12 +149,14 @@ def VIDEOMIXES2016():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
 
 def VIDEOMIXES2013():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#VIDEOMIXES2013#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -117,12 +164,14 @@ def VIDEOMIXES2013():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
 
 def VIDEOMIXES2012():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#VIDEOMIXES2012#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -130,12 +179,14 @@ def VIDEOMIXES2012():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
 
 def VIDEOMIXES2011():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#VIDEOMIXES2011#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -143,12 +194,14 @@ def VIDEOMIXES2011():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
 
 def SPECIALS():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#SPECIALS#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -156,12 +209,14 @@ def SPECIALS():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
 
 def MASHUPS():
-    r = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/plugin.video.philizz.media/resources/scrape.txt')
+    r = requests.get(abcd)
     match = re.compile('#MASHUPS#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
     for name,url,image in match:
         desc = name
@@ -169,6 +224,8 @@ def MASHUPS():
             image = addonicon
         if ' ' in image:
             image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
@@ -316,11 +373,14 @@ elif mode==99:
     plot = str(description)
     pic = str(iconimage)
     try:
-        vid = YDStreamExtractor.getVideoInfo(url,quality=1)
-        url = vid.streamURL()
-        listitem=xbmcgui.ListItem(title)
-        listitem.setInfo( type="Video", infoLabels={ "Title": title, "plot": plot } )
-        listitem.setArt({'icon': pic, 'thumb': pic})
-        xbmc.Player().play(url, listitem)
+        if not (".m3u8" or ".ts" or ".mkv" or ".mp4" or "alltubedownload.net") in url:
+            vid = YDStreamExtractor.getVideoInfo(url,quality=1)
+            url = vid.streamURL()
     except:
         xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'Video not found.', 5000, addonicon))
+    if bcde in url:
+        url = (url+"|"+efgh).replace(cdef, defg)
+    listitem=xbmcgui.ListItem(title)
+    listitem.setInfo( type="Video", infoLabels={ "Title": title, "plot": plot } )
+    listitem.setArt({'icon': pic, 'thumb': pic})
+    xbmc.Player().play(url, listitem)
