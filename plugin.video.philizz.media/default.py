@@ -233,7 +233,10 @@ def MASHUPS():
 def addLink(name,url,image,desc,urlType,fanart):
     ok=True
     liz=xbmcgui.ListItem(name)
-    if not 'mp4' in url:
+    if not "mp4" in url:
+        url = sys.argv[0]+"?url="+urllib.parse.quote_plus(url)+"&mode=99&name="+name+"&description="+desc+"&iconimage="+image
+        liz.setProperty('IsPlayable','false')
+    elif "mp4.urlset" in url:
         url = sys.argv[0]+"?url="+urllib.parse.quote_plus(url)+"&mode=99&name="+name+"&description="+desc+"&iconimage="+image
         liz.setProperty('IsPlayable','false')
     else:
