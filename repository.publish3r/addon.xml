@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.publish3r" name="Publish3r Repository" version="2021.1" provider-name="Publish3r">
+<addon id="repository.publish3r" name="Publish3r Repository" version="2023.2" provider-name="Publish3r">
 	<extension point="xbmc.addon.repository" name="Publish3r">
-		<info compressed="true">https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/addons.xml</info>
-		<checksum>https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/addons.xml.md5</checksum>
-		<datadir zip="true">https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/</datadir>
+                <dir>
+		        <info compressed="true">https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/addons.xml</info>
+		        <checksum>https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/addons.xml.md5</checksum>
+		        <datadir zip="true">https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/master/</datadir>
+                </dir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">Publish3r's Official Matrix Repository</summary>
