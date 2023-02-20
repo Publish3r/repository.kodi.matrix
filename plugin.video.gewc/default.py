@@ -142,8 +142,12 @@ def bandcampalbumresolver(bandcampurl):
     match = re.compile('&quot;artist&quot;:null,&quot;title&quot;:&quot;(.+?)&quot;,&quot;').findall(r.content.decode('utf-8'))
     for name in match:
         track = str(t)
-        name = "[COLOR yellow]" + track + "[/COLOR]" + " - " + "[COLOR blue]" + artist + " - " + name + "[/COLOR]" + " [COLOR green](Bandcamp)[/COLOR]"
-        url = re.findall('mp3-128&quot;:&quot;(.*?)&quot;',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[i]
+        try:
+            url = re.findall('mp3-128&quot;:&quot;(.*?)&quot;',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[i]
+            name = "[COLOR yellow]" + track + "[/COLOR]" + " - " + "[COLOR blue]" + artist + " - " + name + "[/COLOR]" + " [COLOR green](Bandcamp)[/COLOR]"
+        except:
+            url = build_url({'mode': 'error-song', 'foldername': name})
+            name = "[COLOR yellow]" + track + "[/COLOR]" + " - " + "[COLOR blue]" + artist + " - " + name + "[/COLOR]" + " [COLOR red](not available)[/COLOR]"
         li = xbmcgui.ListItem(name)
         li.setProperty('IsPlayable','true')
         li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
@@ -219,7 +223,7 @@ elif mode[0] == 'warteliste':
 elif mode[0] == 'wartelistealben':
     r = requests.get(baseurl+'maybe-soon/',headers=headers,timeout=5)
     match = re.findall('<span>Top 15 Albums</span>(.*?)</div></div></aside></div></div></div></div></div>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    songs(match)
+    albums(match)
     
 elif 'bandcamp-album' in mode[0]:
     bandcampurl = mode[0].replace("bandcamp-album", "")
