@@ -1,3 +1,4 @@
+2023.02.20.2 - Fixed html entities
 2023.02.20.1 - Fixed Bandcamp Resolver
 2023.02.20   - Albums added.
 2023.02.16   - Release.

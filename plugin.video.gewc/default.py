@@ -141,6 +141,16 @@ def bandcampalbumresolver(bandcampurl):
     artist = re.findall(', by (.*?)"',artist,re.DOTALL|re.MULTILINE)[0]
     match = re.compile('&quot;artist&quot;:null,&quot;title&quot;:&quot;(.+?)&quot;,&quot;').findall(r.content.decode('utf-8'))
     for name in match:
+        try:
+            import html
+            name = html.unescape(name)
+        except:
+            pass
+        try:
+            import html.parser
+            name = html.parser.HTMLParser().unescape(name)
+        except:
+            pass
         track = str(t)
         try:
             url = re.findall('mp3-128&quot;:&quot;(.*?)&quot;',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[i]
