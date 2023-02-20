@@ -137,7 +137,8 @@ def bandcampalbumresolver(bandcampurl):
     t = 1
     r = requests.get(bandcampurl,headers=headers,timeout=5)
     image = re.findall('<link rel="image_src" href="(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    artist = re.findall('<meta property="og:site_name" content="(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    artist = re.findall('<meta name="title" content="(.*?)>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    artist = re.findall(', by (.*?)"',artist,re.DOTALL|re.MULTILINE)[0]
     match = re.compile('&quot;artist&quot;:null,&quot;title&quot;:&quot;(.+?)&quot;,&quot;').findall(r.content.decode('utf-8'))
     for name in match:
         track = str(t)
