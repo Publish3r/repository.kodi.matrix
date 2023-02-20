@@ -28,7 +28,14 @@ mode = args.get('mode', None)
 
 baseurl = "https://www.gewc.de/"
 
-def playlist(match):
+def datum():
+    r = requests.get(baseurl,headers=headers,timeout=5)
+    kw = re.findall('<div class="td-block-title-wrap"><h4 class="td-block-title"><span>(.*?)</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    date = re.findall('</span><div class="td-block-subtitle">(.*?)</div></h4>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    info = "[COLOR blue]" + kw + "[/COLOR]" + " - " + "[COLOR yellow]" + date + "[/COLOR]"
+    return info
+
+def songs(match):
     soup = BeautifulSoup(match, 'html.parser')
     platz = soup.find_all(class_="current-rank")
     bild = soup.find_all(class_="cover-art")
@@ -44,59 +51,140 @@ def playlist(match):
         title = title.lstrip()
         title = title.rstrip()
         if rank == "0":
-            name = title
+            name = "[COLOR blue]" + title + "[/COLOR]"
         else:
-            name = rank + " - " + title
+            name = "[COLOR yellow]" + rank + "[/COLOR]" + " - " + "[COLOR blue]" + title + "[/COLOR]"
         image = str(image)
         image = re.compile('src="(.+?)"').findall(image)[0]
         links = str(links)
         if "options-list-youtube" in links:
+            name = name + " [COLOR green](YouTube)[/COLOR]"
             links = re.compile('<li class="options-list-youtube"><a href="https://www.youtube.com/watch(.+?)"').findall(links)[0]
             links = links[3:]
             url = "plugin://plugin.video.youtube/play/?video_id=" + links
             li = xbmcgui.ListItem(name)
             li.setProperty('IsPlayable','true')
-            li.setInfo( type="video", infoLabels={ "title": name } )
             li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
             xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
         elif "bandcamp.com/album" in links:
+            name = name + " [COLOR green](Bandcamp)[/COLOR]"
             links = re.compile('<li class="options-list-amazon"><a href="(.+?)"').findall(links)[0]
             r = requests.get(links,headers=headers,timeout=5)
             url = re.findall('mp3-128&quot;:&quot;(.*?)&quot;',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
             li = xbmcgui.ListItem(name)
             li.setProperty('IsPlayable','true')
-            li.setInfo( type="music", infoLabels={ "title": name, 'mediatype': 'song' } )
             li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
             xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
         elif "bandcamp.com/track" in links:
+            name = name + " [COLOR green](Bandcamp)[/COLOR]"
             links = re.compile('<li class="options-list-amazon"><a href="(.+?)"').findall(links)[0]
             r = requests.get(links,headers=headers,timeout=5)
             url = re.findall('mp3-128&quot;:&quot;(.*?)&quot;',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
             li = xbmcgui.ListItem(name)
             li.setProperty('IsPlayable','true')
-            li.setInfo( type="music", infoLabels={ "title": name, 'mediatype': 'song' } )
             li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
             xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
         else:
-            url = build_url({'mode': 'error', 'foldername': name})
+            name = name + " [COLOR red](not available)[/COLOR]"
+            url = build_url({'mode': 'error-song', 'foldername': name})
             li = xbmcgui.ListItem(name)
             li.setProperty('IsPlayable','false')
-            li.setInfo( type="video", infoLabels={ "title": name } )
             li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
             xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+    xbmcplugin.endOfDirectory(addon_handle)
+    
+def albums(match):
+    soup = BeautifulSoup(match, 'html.parser')
+    platz = soup.find_all(class_="current-rank")
+    bild = soup.find_all(class_="cover-art")
+    lied = soup.find_all(class_="song-title")
+    adressen = soup.find_all(class_="song-links")
+    for rank,image,title,links in zip(platz, bild, lied, adressen):
+        rank = rank.get_text()
+        rank = str(rank)
+        rank = rank.lstrip()
+        rank = rank.rstrip()
+        title = title.get_text()
+        title = str(title)
+        title = title.lstrip()
+        title = title.rstrip()
+        if rank == "0":
+            name = "[COLOR blue]" + title + "[/COLOR]"
+        else:
+            name = "[COLOR yellow]" + rank + "[/COLOR]" + " - " + "[COLOR blue]" + title + "[/COLOR]"
+        image = str(image)
+        image = re.compile('src="(.+?)"').findall(image)[0]
+        links = str(links)
+        if "bandcamp.com/album" in links:
+            name = name + " [COLOR green](Bandcamp)[/COLOR]"
+            links = re.compile('<li class="options-list-amazon"><a href="(.+?)"').findall(links)[0]
+            url = build_url({'mode': 'bandcamp-album'+links, 'foldername': name })
+            li = xbmcgui.ListItem(name)
+            li.setProperty('IsPlayable','false')
+            li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
+            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+        else:
+            name = name + " [COLOR red](not available)[/COLOR]"
+            url = build_url({'mode': 'error-album', 'foldername': name})
+            li = xbmcgui.ListItem(name)
+            li.setProperty('IsPlayable','false')
+            li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
+            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+    xbmcplugin.endOfDirectory(addon_handle)
+    
+def bandcampalbumresolver(bandcampurl):
+    i = 0
+    t = 1
+    r = requests.get(bandcampurl,headers=headers,timeout=5)
+    image = re.findall('<link rel="image_src" href="(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    artist = re.findall('<meta property="og:site_name" content="(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    match = re.compile('&quot;artist&quot;:null,&quot;title&quot;:&quot;(.+?)&quot;,&quot;').findall(r.content.decode('utf-8'))
+    for name in match:
+        track = str(t)
+        name = "[COLOR yellow]" + track + "[/COLOR]" + " - " + "[COLOR blue]" + artist + " - " + name + "[/COLOR]" + " [COLOR green](Bandcamp)[/COLOR]"
+        url = re.findall('mp3-128&quot;:&quot;(.*?)&quot;',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[i]
+        li = xbmcgui.ListItem(name)
+        li.setProperty('IsPlayable','true')
+        li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
+        xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+        i = i + 1
+        t = t + 1
     xbmcplugin.endOfDirectory(addon_handle)
 
 if mode is None:
 
-    url = build_url({'mode': 'top15', 'foldername': 'GEWC - Top 15 Tracks'})
-    li = xbmcgui.ListItem('GEWC - Top 15 Tracks')
-    li.setInfo(type='video',infoLabels={'title': 'GEWC - Top 15 Tracks'})
+    url = build_url({'mode': 'reload', 'foldername': datum()})
+    li = xbmcgui.ListItem(datum())
     li.setArt({'fanart': gewc.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-    url = build_url({'mode': 'neuvorstellungen', 'foldername': 'GEWC - Neuvorstellungen'})
-    li = xbmcgui.ListItem('GEWC - Neuvorstellungen')
-    li.setInfo(type='video',infoLabels={'title': 'GEWC - Neuvorstellungen'})
+    url = build_url({'mode': 'top15', 'foldername': 'GEWC - Top 15 - Tracks'})
+    li = xbmcgui.ListItem('GEWC - Top 15 - Tracks')
+    li.setArt({'fanart': gewc.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+
+    url = build_url({'mode': 'neuvorstellungen', 'foldername': 'GEWC - Neuvorstellungen - Tracks'})
+    li = xbmcgui.ListItem('GEWC - Neuvorstellungen - Tracks')
+    li.setArt({'fanart': gewc.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon})
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+    
+    url = build_url({'mode': 'top15alben', 'foldername': 'GEWC - Top 15 - Alben'})
+    li = xbmcgui.ListItem('GEWC - Top 15 - Alben')
+    li.setArt({'fanart': gewc.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+    
+    url = build_url({'mode': 'neuvorstellungenalben', 'foldername': 'GEWC - Neuvorstellungen - Alben'})
+    li = xbmcgui.ListItem('GEWC - Neuvorstellungen - Alben')
+    li.setArt({'fanart': gewc.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+    
+    url = build_url({'mode': 'warteliste', 'foldername': 'GEWC - Warteliste - Tracks'})
+    li = xbmcgui.ListItem('GEWC - Warteliste - Tracks')
+    li.setArt({'fanart': gewc.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon})
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+    
+    url = build_url({'mode': 'wartelistealben', 'foldername': 'GEWC - Warteliste - Alben'})
+    li = xbmcgui.ListItem('GEWC - Warteliste - Alben')
     li.setArt({'fanart': gewc.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon})
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
@@ -105,12 +193,42 @@ if mode is None:
 elif mode[0] == 'top15':
     r = requests.get(baseurl,headers=headers,timeout=5)
     match = re.findall('<span>Top 15 Tracks</span>(.*?)<span>Top 15 Alben</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    playlist(match)
+    songs(match)
 
 elif mode[0] == 'neuvorstellungen':
     r = requests.get(baseurl,headers=headers,timeout=5)
     match = re.findall('<span>Neuvorstellungen Tracks</span>(.*?)<span>Neuvorstellungen Alben</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    playlist(match)
+    songs(match)
     
-elif mode[0] == 'error':
+elif mode[0] == 'top15alben':
+    r = requests.get(baseurl,headers=headers,timeout=5)
+    match = re.findall('<span>Top 15 Alben</span>(.*?)<span>Neuvorstellungen Tracks</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    albums(match)
+    
+elif mode[0] == 'neuvorstellungenalben':
+    r = requests.get(baseurl,headers=headers,timeout=5)
+    match = re.findall('<span>Neuvorstellungen Alben</span>(.*?)<div class="acym_form">',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    albums(match)
+    
+elif mode[0] == 'warteliste':
+    r = requests.get(baseurl+'maybe-soon/',headers=headers,timeout=5)
+    match = re.findall('<div id="chart_container">(.*?)<div id="chart_container">',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    songs(match)
+    
+elif mode[0] == 'wartelistealben':
+    r = requests.get(baseurl+'maybe-soon/',headers=headers,timeout=5)
+    match = re.findall('<span>Top 15 Albums</span>(.*?)</div></div></aside></div></div></div></div></div>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    songs(match)
+    
+elif 'bandcamp-album' in mode[0]:
+    bandcampurl = mode[0].replace("bandcamp-album", "")
+    bandcampalbumresolver(bandcampurl)
+    
+elif mode[0] == 'error-song':
     xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'Song not available.', 5000, addon_icon))
+    
+elif mode[0] == 'error-album':
+    xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'Album not available.', 5000, addon_icon))
+    
+elif mode[0] == 'reload':
+    xbmc.executebuiltin('Container.Refresh')
