@@ -71,7 +71,7 @@ def stations(channel, epg_tile):
         broadcast_string = datetime.datetime(*(time.strptime(epg_tile["start"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' - ' + datetime.datetime(*(time.strptime(epg_tile["stop"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' Uhr'
         li = xbmcgui.ListItem(f'[B]{epg_tile["tileChannel"]["title"]}[/B] | {broadcast_string} | {epg_tile["title"]}' if epg_tile.get("title") is not None else name)
         li.setInfo('video', {"title": epg_tile.get("title", name), "plot": epg_tile.get("description", "")})
-        li.setArt({'fanart': epg_tile["images"][0]["url"] if len(epg_tile["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': logomapper(name), 'thumb' : logomapper(name)})
+        li.setArt({'fanart': epg_tile["images"][0]["url"] if len(epg_tile["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': epg_tile["tileChannel"]["logoUrlOnDark"], 'thumb' : epg_tile["tileChannel"]["logoUrlOnDark"]})
     else:
         li = xbmcgui.ListItem(name)
         li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(name), 'thumb' : logomapper(name)})
