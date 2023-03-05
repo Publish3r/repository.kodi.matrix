@@ -1,0 +1,1 @@
+# Addon for https://streaming.simplitv.at
