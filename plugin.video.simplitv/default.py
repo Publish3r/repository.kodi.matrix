@@ -33,6 +33,7 @@ api_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0
 data_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0', 'Accept': 'application/json'}
 
 mode = args.get('mode', None)
+start = args.get('start', None)
 
 local_timezone = tzlocal.get_localzone()
 
@@ -66,23 +67,33 @@ def epg_details(epg_resp):
 
 def stations(channel, epg_tile):
     name = channelname(channel)
-    url = build_url({'mode': 'play-'+channel, 'foldername': name})
+    url = build_url({'mode': 'play', 'channel': channel, 'recording': 'false'})
     if epg_tile is not None:
         broadcast_string = datetime.datetime(*(time.strptime(epg_tile["start"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' - ' + datetime.datetime(*(time.strptime(epg_tile["stop"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' Uhr'
         li = xbmcgui.ListItem(f'[B]{epg_tile["tileChannel"]["title"]}[/B] | {broadcast_string} | {epg_tile["title"]}' if epg_tile.get("title") is not None else name)
         li.setInfo('video', {"title": epg_tile.get("title", name), "plot": epg_tile.get("description", "")})
         li.setArt({'fanart': epg_tile["images"][0]["url"] if len(epg_tile["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': epg_tile["tileChannel"]["logoUrlOnDark"], 'thumb' : epg_tile["tileChannel"]["logoUrlOnDark"]})
+        restart_url = build_url({'mode': 'play', 'channel': channel, 'start': str(int(datetime.datetime(*(time.strptime(epg_tile["start"], '%Y-%m-%dT%H:%M:%S%z')[0:6])).timestamp()))})
+        li.addContextMenuItems([("Von Beginn ansehen", f"RunPlugin({restart_url})")])
     else:
         li = xbmcgui.ListItem(name)
         li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(name), 'thumb' : logomapper(name)})
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
     
-def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, channelname):
+def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start=None):
+    if start is not None:
+        timeshift = 10800 - (int(datetime.datetime.utcnow().timestamp() - int(start[0]))) - 35
+    else:
+        timeshift = 0
     url = stream_url
     play_item = xbmcgui.ListItem(path=url)
     play_item.setContentLookup(False)
-    play_item.setInfo('Video', infoLabels={'title': channelname})
-    play_item.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(channelname), 'thumb' : logomapper(channelname)})
+    try:
+        play_item.setInfo("video", {"title": xbmc.getInfoLabel("ListItem.Title"), 'plot': xbmc.getInfoLabel("ListItem.Plot")})
+        play_item.setArt({'fanart': xbmc.getInfoLabel("ListItem.Fanart"), 'thumb': xbmc.getInfoLabel("ListItem.Thumb"), 'icon': xbmc.getInfoLabel("ListItem.Icon")})
+    except:
+        play_item.setInfo('Video', infoLabels={'title': channelname(codename)})
+        play_item.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(channelname(codename)), 'thumb' : logomapper(channelname(codename))})
     play_item.setProperty('inputstream', 'inputstream.adaptive')
     play_item.setMimeType('application/xml+dash')
     play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
@@ -90,21 +101,17 @@ def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, chann
     play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
     play_item.setProperty('IsPlayable', 'true')
     xbmcplugin.setResolvedUrl(addon_handle, True, listitem=play_item)
-    try:
-        play_item.setInfo("video", {"title": xbmc.getInfoLabel("ListItem.Title"), 'plot': xbmc.getInfoLabel("ListItem.Plot")})
-        play_item.setArt({'thumb': xbmc.getInfoLabel("ListItem.Thumb")})
-    except:
-        pass
     xbmc.Player().play(item=url, listitem=play_item)
-    
-def channelname(channel):
-    name = channel.replace("-", " ")
-    name = name.upper()
-    if name.endswith(' HD'):
-        name = name[:-3]
-    if name.endswith('HD'):
-        name = name[:-2]
-    return name
+    p = xbmc.Player()
+    p.play(item=url, listitem=play_item)
+    if timeshift > 0:
+        xbmc.executebuiltin( "ActivateWindow(busydialognocancel)" )
+        while not p.isPlaying():
+            time.sleep(1)
+        while p.getTime() == 0:
+            time.sleep(1)
+        p.seekTime(timeshift)
+        xbmc.executebuiltin( "Dialog.Close(busydialognocancel)" )
     
 def token():
     try:
@@ -138,9 +145,69 @@ def devicekey():
             xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'DeviceKey error.', 5000, addon_icon))
             
 def generate_key():
-    source = string.ascii_letters.lower() + string.digits
-    result_str = ''.join((random.choice(source) for i in range(32)))
-    return result_str
+    generate = string.ascii_letters.lower() + string.digits
+    devicekey = ''.join((random.choice(generate) for i in range(32)))
+    return devicekey
+    
+def get_recordings(page):
+    i = 0
+    recordings_url = f"https://api.app.simplitv.at/v2/Pvr/GetRecordings?platformCodename=www&tokenValue={token()}&page={page}&limit=99999&recordingType=NPvr&recordingFlags=Programs,ProgramImages,ProgramCategories"
+    recordings_page = requests.get(recordings_url, timeout=5, headers=api_headers, allow_redirects=False)
+    recordings_resp = recordings_page.json()
+    page = recordings_resp["pagination"]["page"]
+    pages = recordings_resp["pagination"]["totalPages"]
+    for x in recordings_page.json()["recordings"]:       
+        title = recordings_resp["recordings"][i]["program"]["title"] 
+        status = recordings_resp["recordings"][i]["status"]        
+        start = recordings_resp["recordings"][i]["program"]["start"] 
+        start = datetime.datetime(*(time.strptime(start.split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%d.%m.%Y %H:%M')
+        if status == "Recorded":
+            start = "[COLOR green]"+start+"[/COLOR]"
+        elif status == "Scheduled":
+            start = "[COLOR red]"+start+"[/COLOR]"
+        title = start + " | " + title        
+        try:
+            subtitle = recordings_resp["recordings"][i]["program"]["subTitle"]
+            title = title + " | " + subtitle
+        except:
+            pass
+        try:
+            description = recordings_resp["recordings"][i]["program"]["description"]
+        except:
+            description = ""
+        try:
+            image = recordings_resp["recordings"][i]["program"]["images"][0]["url"] 
+        except:
+            image = addon_icon
+        codename = recordings_resp["recordings"][i]["program"]["codename"]
+        recordingid = recordings_resp["recordings"][i]["recordingId"]
+        i = i + 1
+        recordings(title, description, image, codename, recordingid)
+    if page < pages:
+        url = build_url({'mode': 'aufnahmen', 'seite': page})
+        li = xbmcgui.ListItem('Nächste Seite >>>')
+        li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
+        xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)    
+    xbmcplugin.endOfDirectory(addon_handle)
+    
+def recordings(title, description, image, codename, recordingid):
+    url = build_url({'mode': 'play', 'recording': codename, 'channel': 'false'}) 
+    contextMenuItems = []
+    contextMenuItems.append(('Aufnahme löschen', f'RunPlugin(plugin://plugin.video.simplitv/?mode=delete&id={recordingid})'))    
+    li = xbmcgui.ListItem(title)
+    li.setInfo('video', {"title": title, "plot": description})
+    li.setArt({'fanart': image, 'icon': image, 'thumb' : image})
+    li.addContextMenuItems(contextMenuItems, replaceItems=True)
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+
+def channelname(channel):
+    name = channel.replace("-", " ")
+    name = name.upper()
+    if name.endswith(' HD'):
+        name = name[:-3]
+    if name.endswith('HD'):
+        name = name[:-2]
+    return name
     
 def logomapper(name):
     if name == "ORF1":
@@ -350,8 +417,21 @@ def logomapper(name):
     else:
         logo = 'special://home/addons/plugin.video.simplitv/icon.png'
     return logo
+   
+if mode is None:     
+    url = build_url({'mode': 'livetv'})
+    li = xbmcgui.ListItem('Live TV')
+    li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
     
-if mode is None:
+    url = build_url({'mode': 'aufnahmen'})
+    li = xbmcgui.ListItem('Aufnahmen')
+    li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+    
+    xbmcplugin.endOfDirectory(addon_handle)
+    
+elif mode[0] == "livetv":
     channels_url = 'https://api.app.simplitv.at/v1/EpgTile/FilterChannelTiles' 
     channels_post = json.dumps({'isParentalControlEnabled': 'false', 'platformCodename': 'www', 'token': token()})
     channels_page = requests.post(channels_url, timeout=5, headers=api_headers, data=channels_post, allow_redirects=False)
@@ -363,14 +443,30 @@ if mode is None:
         stations(channel, epg_data.get(channel))        
     xbmcplugin.endOfDirectory(addon_handle)
     
-elif "play-" in mode[0]:
-    stream_data = mode[0].replace("play-", "")
-    channelname = channelname(stream_data)
-    stream_data = f"https://api.app.simplitv.at/v1/Player/AcquireContent?platformCodename=www&deviceKey={devicekey()}&token={token()}&codename={stream_data}"
+elif mode[0] == "play":
+    if args['channel'][0] != "false":
+        codename = args['channel'][0]
+    elif args['recording'][0] != "false":
+        codename = args['recording'][0]
+    stream_data = f"https://api.app.simplitv.at/v1/Player/AcquireContent?platformCodename=www&deviceKey={devicekey()}&token={token()}&codename={codename}"
     stream_data = requests.get(stream_data, timeout=5, headers=data_headers, allow_redirects=False)
     stream_resp = stream_data.json()
     stream_url = stream_resp['MediaFiles'][0]['Formats'][0]['Url']
     stream_drm_license_server = stream_resp['DrmInfo'][1]['LicenseServerUrl']
     stream_drm_challenge_data = stream_resp['DrmInfo'][1]['DrmChallengeCustomData']
     stream_url = stream_url.replace(".m3u8", ".mpd")
-    play(stream_url, stream_drm_license_server, stream_drm_challenge_data, channelname)
+    play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start)
+    
+elif mode[0] == "aufnahmen":
+    try:
+        page = args['page'][0]
+    except:
+        page = 0
+    get_recordings(page)
+    
+elif mode[0] == "delete":
+    id = args['id'][0]
+    delete_url = 'https://api.app.simplitv.at/v1/Pvr/DeleteRecording' 
+    delete_post = json.dumps({'platformCodename': 'www', 'token': token(), "recordingId": id})
+    delete_page = requests.post(delete_url, timeout=5, headers=api_headers, data=delete_post, allow_redirects=False)
+    xbmc.executebuiltin('Container.Refresh')
