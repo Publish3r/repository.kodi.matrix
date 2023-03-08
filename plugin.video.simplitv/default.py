@@ -182,7 +182,7 @@ def get_recordings(page):
         codename = recordings_resp["recordings"][i]["program"]["codename"]
         recordingid = recordings_resp["recordings"][i]["recordingId"]
         i = i + 1
-        recordings(title, description, image, codename, recordingid)
+        recordings(title, description, image, codename, recordingid, status)
     if page < pages:
         url = build_url({'mode': 'aufnahmen', 'seite': page})
         li = xbmcgui.ListItem('Nächste Seite >>>')
@@ -190,8 +190,11 @@ def get_recordings(page):
         xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)    
     xbmcplugin.endOfDirectory(addon_handle)
     
-def recordings(title, description, image, codename, recordingid):
-    url = build_url({'mode': 'play', 'recording': codename, 'channel': 'false'}) 
+def recordings(title, description, image, codename, recordingid, status):
+    if status == "Recorded":
+        url = build_url({'mode': 'play', 'recording': codename, 'channel': 'false'})
+    elif status == "Scheduled":
+        url = build_url({'mode': 'notready'})
     contextMenuItems = []
     contextMenuItems.append(('Aufnahme löschen', f'RunPlugin(plugin://plugin.video.simplitv/?mode=delete&id={recordingid})'))    
     li = xbmcgui.ListItem(title)
@@ -469,4 +472,13 @@ elif mode[0] == "delete":
     delete_url = 'https://api.app.simplitv.at/v1/Pvr/DeleteRecording' 
     delete_post = json.dumps({'platformCodename': 'www', 'token': token(), "recordingId": id})
     delete_page = requests.post(delete_url, timeout=5, headers=api_headers, data=delete_post, allow_redirects=False)
+    delete_resp = delete_page.json()
+    result = str(delete_resp["result"]["success"])
+    if result == "True":
+        xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Info[/B]', 'Recording successfully deleted.', 5000, addon_icon))
+    elif result == "False":
+        xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'Recording not deleted.', 5000, addon_icon))
     xbmc.executebuiltin('Container.Refresh')
+    
+elif mode[0] == "notready":
+    xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'Recording not finished.', 5000, addon_icon))
