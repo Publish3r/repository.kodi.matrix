@@ -8,7 +8,6 @@ import xbmcaddon
 import datetime
 import requests
 import json
-import re
 import random
 import string
 import time
@@ -37,9 +36,16 @@ start = args.get('start', None)
 
 local_timezone = tzlocal.get_localzone()
 
-def epg_tiles():
-    time_start = str(datetime.datetime.now().replace(tzinfo=local_timezone).astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z"))
-    time_end = str(((datetime.datetime.now().replace(tzinfo=local_timezone).astimezone(datetime.timezone.utc)) + datetime.timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%S.000Z"))
+def epg_tiles(date=None, ch_overview=False):
+    if date and ch_overview:
+        time_start = str(datetime.datetime(*(time.strptime(f'{date[0]}T06:00', '%Y-%m-%dT%H:%M')[0:6]), tzinfo=local_timezone).astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:00.000Z"))
+        time_end = str((datetime.datetime(*(time.strptime(f'{date[0]}T05:59', '%Y-%m-%dT%H:%M')[0:6]), tzinfo=local_timezone) + datetime.timedelta(days=1)).astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:00.000Z"))
+    elif date and not ch_overview:
+        time_start = str(datetime.datetime(*(time.strptime(f'{date[0]}T20:16', '%Y-%m-%dT%H:%M')[0:6]), tzinfo=local_timezone).astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:00.000Z"))
+        time_end = str((datetime.datetime(*(time.strptime(f'{date[0]}T20:16', '%Y-%m-%dT%H:%M')[0:6]), tzinfo=local_timezone) + datetime.timedelta(minutes=1)).astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:00.000Z"))
+    else:
+        time_start = str(datetime.datetime.now().replace(tzinfo=local_timezone).astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z"))
+        time_end = str(((datetime.datetime.now().replace(tzinfo=local_timezone).astimezone(datetime.timezone.utc)) + datetime.timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%S.000Z"))
     epg_url = "https://api.app.simplitv.at/v1/EpgTile/FilterProgramTiles?$headers=%7B%22Content-Type%22:%22application%2Fjson%3Bcharset%3Dutf-8%22,%22X-Api-Date-Format%22:%22iso%22,%22X-Api-Camel-Case%22:true%7D"
     epg_post = json.dumps({"platformCodename": "www", "from": time_start, "to": time_end})
     try:
@@ -50,12 +56,18 @@ def epg_tiles():
         xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'EPG tiles error.', 5000, addon_icon))
         return {}
     
-def epg_details(epg_resp):
+def epg_details(epg_resp, ch=None):
     prg_url = "https://api.app.simplitv.at/v2/Tile/GetTiles?$headers=%7B%22Content-Type%22:%22application%2Fjson%3Bcharset%3Dutf-8%22,%22X-Api-Date-Format%22:%22iso%22,%22X-Api-Camel-Case%22:true%7D"
-    prg_post = json.dumps({"platformCodename": "www", "requestedTiles": [{"id": epg_resp[i][0]["id"]} for i in epg_resp.keys()]})
+    if ch is not None:
+        prg_post = json.dumps({"platformCodename": "www", "requestedTiles": [{"id": a["id"]} for i in epg_resp.keys() for a in epg_resp[i] if i == ch]})
+    else:
+        prg_post = json.dumps({"platformCodename": "www", "requestedTiles": [{"id": epg_resp[i][0]["id"]} for i in epg_resp.keys()]})
+    xbmc.log("PRG_POST:"+str(ch))
     try:
         prg_page = requests.post(prg_url, timeout=5, headers=api_headers, data=prg_post, allow_redirects=False)
         prg_resp = prg_page.json()["tiles"]
+        if ch:
+            return prg_resp
         for i in epg_resp.keys():
             epg_resp[i] = None
         for i in prg_resp:
@@ -65,20 +77,45 @@ def epg_details(epg_resp):
         xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'EPG details error.', 5000, addon_icon))
         return {}
 
-def stations(channel, epg_tile):
+def programmes(program, recordings):
+    url = build_url({'mode': 'play', 'channel': program["codename"], 'recording': 'false'})
+    pvr_enabled = "[COLOR yellow][B]●REC[/B][/COLOR] " if program["codename"] in recordings else "★" if program["isNpvrEnabled"] else "☆"
+    vod_enabled = "►" if program["isCatchupEnabled"] else " □ "
+    desc = program.get("description", "").replace("\n\n", "")
+    broadcast_string = datetime.datetime(*(time.strptime(program["start"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%d.%m. %H:%M') + ' - ' + datetime.datetime(*(time.strptime(program["stop"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' Uhr'
+    li = xbmcgui.ListItem(pvr_enabled + vod_enabled + "[B]" + broadcast_string + "[/B]" + f' | {program["title"]}')
+    li.setInfo('video', {"title": program["title"], "plot": desc})
+    li.setArt({'fanart': program["images"][0]["url"] if len(program["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': program["tileChannel"]["logoUrlOnDark"], 'thumb' : program["tileChannel"]["logoUrlOnDark"]})
+    if program["isNpvrEnabled"] and not program["codename"] in recordings:
+        add_url = build_url({'mode': 'add', 'id': program["codename"]})
+        li.addContextMenuItems([("Sendung aufnehmen", f"RunPlugin({add_url})")])
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+
+def stations(channel, epg_tile, overview=False, date=None, recordings=[]):
     name = channelname(channel)
-    url = build_url({'mode': 'play', 'channel': channel, 'recording': 'false'})
+    if date is not None:
+        url = build_url({"mode": "epg_channel", "channel": channel, "date": date[0]})
+    else:
+        url = build_url({'mode': 'play', 'channel': channel, 'recording': 'false'})
     if epg_tile is not None:
+        pvr_enabled = "[COLOR yellow][B]●REC[/B][/COLOR] " if epg_tile["codename"] in recordings else "★" if epg_tile["isNpvrEnabled"] else "☆"
+        vod_enabled = "►" if epg_tile["isCatchupEnabled"] else " □"
+        desc = epg_tile.get("description", "").replace("\n\n", "")
+        desc = "[B][COLOR yellow]Primetime-Highlight am " + datetime.datetime(*(time.strptime(epg_tile["start"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).strftime("%d.%m.%Y") + " auf " + epg_tile["tileChannel"]["title"] + ": [/COLOR]" + epg_tile.get("title", name) + "[/B]\n\n" + desc if overview else "[B][COLOR yellow]Jetzt live auf " + epg_tile["tileChannel"]["title"] + ": [/COLOR]" + epg_tile.get("title", name) + "[/B]\n\n" + desc if not overview else desc
         broadcast_string = datetime.datetime(*(time.strptime(epg_tile["start"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' - ' + datetime.datetime(*(time.strptime(epg_tile["stop"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' Uhr'
-        li = xbmcgui.ListItem(f'[B]{epg_tile["tileChannel"]["title"]}[/B] | {broadcast_string} | {epg_tile["title"]}' if epg_tile.get("title") is not None else name)
-        li.setInfo('video', {"title": epg_tile.get("title", name), "plot": epg_tile.get("description", "")})
+        li = xbmcgui.ListItem(pvr_enabled + vod_enabled + f' [B]{epg_tile["tileChannel"]["title"]}[/B] | {broadcast_string} | {epg_tile["title"]}' if epg_tile.get("title") is not None else name)
+        li.setInfo('video', {"title": epg_tile.get("title", name), "plot": desc})
         li.setArt({'fanart': epg_tile["images"][0]["url"] if len(epg_tile["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': epg_tile["tileChannel"]["logoUrlOnDark"], 'thumb' : epg_tile["tileChannel"]["logoUrlOnDark"]})
         restart_url = build_url({'mode': 'play', 'channel': channel, 'start': str(int(datetime.datetime(*(time.strptime(epg_tile["start"], '%Y-%m-%dT%H:%M:%S%z')[0:6])).timestamp()))})
-        li.addContextMenuItems([("Von Beginn ansehen", f"RunPlugin({restart_url})")])
+        if epg_tile["isNpvrEnabled"] and not epg_tile["codename"] in recordings:
+            add_url = build_url({'mode': 'add', 'id': epg_tile["codename"]})
+            li.addContextMenuItems([("Von Beginn ansehen", f"RunPlugin({restart_url})"), ("Sendung aufnehmen", f"RunPlugin({add_url})")])
+        else:
+            li.addContextMenuItems([("Von Beginn ansehen", f"RunPlugin({restart_url})")])
     else:
         li = xbmcgui.ListItem(name)
         li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(name), 'thumb' : logomapper(name)})
-    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=overview)
     
 def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start=None):
     if start is not None:
@@ -148,7 +185,26 @@ def generate_key():
     generate = string.ascii_letters.lower() + string.digits
     devicekey = ''.join((random.choice(generate) for i in range(32)))
     return devicekey
-    
+
+def get_all_recordings():
+    page = 0
+    recordings = []
+    while True:
+        try:
+            recordings_url = f"https://api.app.simplitv.at/v2/Pvr/GetRecordings?platformCodename=www&tokenValue={token()}&page={page}&limit=99999&recordingType=NPvr&recordingFlags=Programs,ProgramImages,ProgramCategories"    
+            recordings_page = requests.get(recordings_url, timeout=5, headers=api_headers, allow_redirects=False)
+            recordings_resp = recordings_page.json()
+            page = recordings_resp["pagination"]["page"]
+            pages = recordings_resp["pagination"]["totalPages"]
+            for x in recordings_page.json()["recordings"]:
+                recordings.append(x["program"]["codename"])
+            if page == pages:
+                return recordings
+            else:
+                page = page + 1
+        except:
+            return []
+
 def get_recordings(page):
     i = 0
     recordings_url = f"https://api.app.simplitv.at/v2/Pvr/GetRecordings?platformCodename=www&tokenValue={token()}&page={page}&limit=99999&recordingType=NPvr&recordingFlags=Programs,ProgramImages,ProgramCategories"
@@ -420,6 +476,13 @@ def logomapper(name):
     else:
         logo = 'special://home/addons/plugin.video.simplitv/icon.png'
     return logo
+
+def get_channels():
+    channels_url = 'https://api.app.simplitv.at/v1/EpgTile/FilterChannelTiles' 
+    channels_post = json.dumps({'isParentalControlEnabled': 'false', 'platformCodename': 'www', 'token': token()})
+    channels_page = requests.post(channels_url, timeout=5, headers=api_headers, data=channels_post, allow_redirects=False)
+    channels_resp = channels_page.json()
+    return [i["codename"] for i in channels_resp["channels"][0]["tiles"]]
    
 if mode is None:     
     url = build_url({'mode': 'livetv'})
@@ -431,19 +494,20 @@ if mode is None:
     li = xbmcgui.ListItem('Aufnahmen')
     li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+
+    url = build_url({'mode': 'epg'})
+    li = xbmcgui.ListItem('TV-Guide')
+    li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
+    xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
     
     xbmcplugin.endOfDirectory(addon_handle)
     
 elif mode[0] == "livetv":
-    channels_url = 'https://api.app.simplitv.at/v1/EpgTile/FilterChannelTiles' 
-    channels_post = json.dumps({'isParentalControlEnabled': 'false', 'platformCodename': 'www', 'token': token()})
-    channels_page = requests.post(channels_url, timeout=5, headers=api_headers, data=channels_post, allow_redirects=False)
-    channels_resp = channels_page.json()
-    channels_resp = str(channels_resp)
-    channels_find = re.compile("'codename': '(.+?)'").findall(channels_resp)
+    rec = get_all_recordings()
+    channels_find = get_channels()
     epg_data = epg_details(epg_tiles())
     for channel in channels_find:     
-        stations(channel, epg_data.get(channel))        
+        stations(channel, epg_data.get(channel), False, None, rec)
     xbmcplugin.endOfDirectory(addon_handle)
     
 elif mode[0] == "play":
@@ -454,11 +518,43 @@ elif mode[0] == "play":
     stream_data = f"https://api.app.simplitv.at/v1/Player/AcquireContent?platformCodename=www&deviceKey={devicekey()}&token={token()}&codename={codename}"
     stream_data = requests.get(stream_data, timeout=5, headers=data_headers, allow_redirects=False)
     stream_resp = stream_data.json()
-    stream_url = stream_resp['MediaFiles'][0]['Formats'][0]['Url']
-    stream_drm_license_server = stream_resp['DrmInfo'][1]['LicenseServerUrl']
-    stream_drm_challenge_data = stream_resp['DrmInfo'][1]['DrmChallengeCustomData']
-    stream_url = stream_url.replace(".m3u8", ".mpd")
-    play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start)
+    try:
+        stream_url = stream_resp['MediaFiles'][0]['Formats'][0]['Url']
+        stream_drm_license_server = stream_resp['DrmInfo'][1]['LicenseServerUrl']
+        stream_drm_challenge_data = stream_resp['DrmInfo'][1]['DrmChallengeCustomData']
+        stream_url = stream_url.replace(".m3u8", ".mpd")
+        play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start)
+    except:
+        xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Info[/B]', 'Content unavailable', 5000, addon_icon))
+
+elif mode[0] == "epg_channel":
+    epg_data = epg_details(epg_tiles(args["date"], True), args["channel"][0])
+    rec = get_all_recordings()
+    for i in epg_data:
+        programmes(i, rec)
+    xbmcplugin.endOfDirectory(addon_handle)
+
+elif mode[0] == "epg":
+    if args.get("day"):
+        channels_find = get_channels()
+        epg_data = epg_details(epg_tiles(args["day"]))
+        for channel in channels_find:     
+            stations(channel, epg_data.get(channel), True, args["day"])
+        xbmcplugin.endOfDirectory(addon_handle)
+    else:
+        ger_weekdays = {"Mon": "Montag", "Tue": "Dienstag", "Wed": "Mittwoch", "Thu": "Donnerstag", "Fri": "Freitag", "Sat": "Samstag", "Sun": "Sonntag"}
+        for x in range(-7, 8):
+            t_value = datetime.datetime.now() + datetime.timedelta(days=x)
+            t_day = ger_weekdays[t_value.strftime("%a")]
+            t_string = t_value.strftime(f"[B]{t_day}, %d.%m.%Y[/B]") if x == 0 else t_value.strftime(f"{t_day}, %d.%m.%Y")
+            t_query = t_value.strftime("%Y-%m-%d")
+            li = xbmcgui.ListItem(t_string)
+            if x == 0:
+                li.select(True)
+            url = build_url({'mode': 'epg', 'day': t_query})
+            li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': addon_icon, 'thumb' : addon_icon}) 
+            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+        xbmcplugin.endOfDirectory(addon_handle)
     
 elif mode[0] == "aufnahmen":
     try:
@@ -466,6 +562,20 @@ elif mode[0] == "aufnahmen":
     except:
         page = 0
     get_recordings(page)
+
+elif mode[0] == "add":
+    id = args['id'][0]
+    add_url = 'https://api.app.simplitv.at/v1/Pvr/ScheduleRecording'
+    add_post = json.dumps({'platformCodename': 'www', 'token': token(), "EpgId": {"Codename": id}})
+    add_page = requests.post(add_url, timeout=5, headers=api_headers, data=add_post, allow_redirects=False)
+    add_resp = add_page.json()
+    xbmc.log("TRY:"+str(add_resp))
+    result = str(add_resp["result"]["success"])
+    if result == "True":
+        xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Info[/B]', 'Recording successfully added.', 5000, addon_icon))
+    elif result == "False":
+        xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'Recording not added.', 5000, addon_icon))
+    xbmc.executebuiltin('Container.Refresh')
     
 elif mode[0] == "delete":
     id = args['id'][0]
