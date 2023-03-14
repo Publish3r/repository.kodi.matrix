@@ -196,6 +196,8 @@ def get_all_recordings():
             recordings_resp = recordings_page.json()
             page = recordings_resp["pagination"]["page"]
             pages = recordings_resp["pagination"]["totalPages"]
+            if pages == 0:
+                return []
             for x in recordings_page.json()["recordings"]:
                 recordings.append(x["program"]["codename"])
             if page == pages:
