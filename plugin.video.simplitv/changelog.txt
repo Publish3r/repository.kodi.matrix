@@ -1,5 +1,6 @@
+2023.03.15 - TV-Guide Sendungsbeschreibung erweitert und Contextmenü Option zum Entfernen der Aufnahmen direkt aus dem TV-Guide hinzugefügt.
 2023.03.14 - Live-TV Bug behoben.
 2023.03.13 - TV-Guide hinzugefügt.
 2023.03.08 - Fehlermeldungen hinzugefügt.
-2023.03.07 - Live TV - Sendung von Beginn ansehen und Aufnahmen hinzugefügt.
+2023.03.07 - Live-TV - Sendung von Beginn ansehen und Aufnahmen hinzugefügt.
 2023.03.05 - Release.
