@@ -12,6 +12,7 @@ import random
 import string
 import time
 import tzlocal
+from base64 import b64encode, b64decode
 
 base_url = sys.argv[0]
 addon_handle = int(sys.argv[1])
@@ -62,7 +63,6 @@ def epg_details(epg_resp, ch=None):
         prg_post = json.dumps({"platformCodename": "www", "requestedTiles": [{"id": a["id"]} for i in epg_resp.keys() for a in epg_resp[i] if i == ch]})
     else:
         prg_post = json.dumps({"platformCodename": "www", "requestedTiles": [{"id": epg_resp[i][0]["id"]} for i in epg_resp.keys()]})
-    xbmc.log("PRG_POST:"+str(ch))
     try:
         prg_page = requests.post(prg_url, timeout=5, headers=api_headers, data=prg_post, allow_redirects=False)
         prg_resp = prg_page.json()["tiles"]
@@ -79,19 +79,20 @@ def epg_details(epg_resp, ch=None):
 
 def programmes(program, recordings):
     url = build_url({'mode': 'play', 'channel': program["codename"], 'recording': 'false'})
-    pvr_enabled = "[COLOR yellow][B]●REC[/B][/COLOR] " if recordings.get(program["codename"], False) else "★" if program["isNpvrEnabled"] else "☆"
+    pvr_enabled = "[COLOR yellow][B]●REC[/B][/COLOR] " if recordings.get(program["codename"], False) else "[COLOR yellowgreen]★[/COLOR]" if program["isSeriesRecordingEnabled"] else "★" if program["isNpvrEnabled"] else "☆"
     vod_enabled = "►" if program["isCatchupEnabled"] else " □ "
     desc = get_epg_details(program) + program.get("description", "").replace("\n\n", "")
     broadcast_string = datetime.datetime(*(time.strptime(program["start"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%d.%m. %H:%M') + ' - ' + datetime.datetime(*(time.strptime(program["stop"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' Uhr'
     li = xbmcgui.ListItem(pvr_enabled + vod_enabled + "[B]" + broadcast_string + "[/B]" + f' | {program["title"]}')
     li.setInfo('video', {"title": program["title"], "plot": desc})
     li.setArt({'fanart': program["images"][0]["url"] if len(program["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': program["tileChannel"]["logoUrlOnDark"], 'thumb' : program["tileChannel"]["logoUrlOnDark"]})
+    desc_url = build_url({'mode': 'desc', 'desc': b64encode(desc.encode())})
     if program["isNpvrEnabled"] and not recordings.get(program["codename"], False):
         add_url = build_url({'mode': 'add', 'id': program["codename"]})
-        li.addContextMenuItems([("Sendung aufnehmen", f"RunPlugin({add_url})")])
+        li.addContextMenuItems([("Handlung anzeigen", f"RunPlugin({desc_url})"), ("Sendung aufnehmen", f"RunPlugin({add_url})")])
     if recordings.get(program["codename"], False):
         delete_url = build_url({'mode': 'delete', 'id': recordings[program["codename"]]})
-        li.addContextMenuItems([("Aufnahme löschen", f"RunPlugin({delete_url})")])
+        li.addContextMenuItems([("Handlung anzeigen", f"RunPlugin({desc_url})"), ("Aufnahme löschen", f"RunPlugin({delete_url})")])
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
 
 def stations(channel, epg_tile, overview=False, date=None, recordings={}):
@@ -102,7 +103,7 @@ def stations(channel, epg_tile, overview=False, date=None, recordings={}):
     else:
         url = build_url({'mode': 'play', 'channel': channel, 'recording': 'false'})
     if epg_tile is not None:
-        pvr_enabled = "[COLOR yellow][B]●REC[/B][/COLOR] " if recordings.get(epg_tile["codename"], False) else "★" if epg_tile["isNpvrEnabled"] else "☆"
+        pvr_enabled = "[COLOR yellow][B]●REC[/B][/COLOR] " if recordings.get(epg_tile["codename"], False) else "[COLOR yellowgreen]★[/COLOR]" if epg_tile["isSeriesRecordingEnabled"] else "★" if epg_tile["isNpvrEnabled"] else "☆"
         vod_enabled = "►" if epg_tile["isCatchupEnabled"] else " □"
         desc = get_epg_details(epg_tile) + epg_tile.get("description", "").replace("\n\n", "")
         desc = "[B][COLOR yellow]Primetime-Highlight am " + datetime.datetime(*(time.strptime(epg_tile["start"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).strftime("%d.%m.%Y") + " auf " + epg_tile["tileChannel"]["title"] + ": [/COLOR]" + epg_tile.get("title", name) + "[/B]\n\n" + desc if overview else "[B][COLOR yellow]Jetzt live auf " + epg_tile["tileChannel"]["title"] + ": [/COLOR]" + epg_tile.get("title", name) + "[/B]\n\n" + desc if not overview else desc
@@ -111,6 +112,8 @@ def stations(channel, epg_tile, overview=False, date=None, recordings={}):
         li.setInfo('video', {"title": epg_tile.get("title", name), "plot": desc})
         li.setArt({'fanart': epg_tile["images"][0]["url"] if len(epg_tile["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': epg_tile["tileChannel"]["logoUrlOnDark"], 'thumb' : epg_tile["tileChannel"]["logoUrlOnDark"]})
         restart_url = build_url({'mode': 'play', 'channel': channel, 'start': str(int(datetime.datetime(*(time.strptime(epg_tile["start"], '%Y-%m-%dT%H:%M:%S%z')[0:6])).timestamp()))})
+        desc_url = build_url({'mode': 'desc', 'desc': b64encode(desc.encode())})
+        context_list.append(("Handlung anzeigen", f"RunPlugin({desc_url})"))
         if epg_tile["isNpvrEnabled"] and not recordings.get(epg_tile["codename"], False):
             add_url = build_url({'mode': 'add', 'id': epg_tile["codename"]})
             context_list.append(("Sendung aufnehmen", f"RunPlugin({add_url})"))
@@ -266,7 +269,9 @@ def recordings(title, description, image, codename, recordingid, status):
         url = build_url({'mode': 'notready'})
     elif status == "Failed":
         url = build_url({'mode': 'failed'})
+    desc_url = build_url({'mode': 'desc', 'desc': b64encode(description.encode())})
     contextMenuItems = []
+    contextMenuItems.append(('Handlung anzeigen', f'RunPlugin({desc_url})'))
     contextMenuItems.append(('Aufnahme löschen', f'RunPlugin(plugin://plugin.video.simplitv/?mode=delete&id={recordingid})'))    
     li = xbmcgui.ListItem(title)
     li.setInfo('video', {"title": title, "plot": description})
@@ -609,7 +614,6 @@ elif mode[0] == "add":
     add_post = json.dumps({'platformCodename': 'www', 'token': token(), "EpgId": {"Codename": id}})
     add_page = requests.post(add_url, timeout=5, headers=api_headers, data=add_post, allow_redirects=False)
     add_resp = add_page.json()
-    xbmc.log("TRY:"+str(add_resp))
     result = str(add_resp["result"]["success"])
     if result == "True":
         xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Info[/B]', 'Recording successfully added.', 5000, addon_icon))
@@ -635,3 +639,6 @@ elif mode[0] == "notready":
 
 elif mode[0] == "failed":
     xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Error[/B]', 'Recording failed.', 5000, addon_icon))
+
+elif mode[0] == "desc":
+    xbmcgui.Dialog().textviewer("Handlung", b64decode(args["desc"][0]).decode())
