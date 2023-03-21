@@ -552,7 +552,7 @@ elif mode[0] == "livetv":
     epg_data = epg_details(epg_tiles())
     for channel in channels_find:     
         stations(channel, epg_data.get(channel), False, None, rec)
-    xbmcplugin.endOfDirectory(addon_handle)
+    xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=False)
     
 elif mode[0] == "play":
     if args['channel'][0] != "false":
