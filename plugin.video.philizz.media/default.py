@@ -85,6 +85,7 @@ def MENU():
     addDir('Heroes of the 00s','-',5,icon,'','Heroes of the 00s')
     addDir('Back to the 90s','-',6,icon,'','Back to the 90s')
     addDir('I covered the 80s','-',7,icon,'','I covered the 80s')
+    addDir('Holland in de Mix','-',15,icon,'','Holland in de Mix')
     addDir('Videomixes','-',8,icon,'','Videomixes')
     addDir('Specials','-',13,icon,'','Specials')
     addDir('Mashups','-',14,icon,'','Mashups')
@@ -259,6 +260,21 @@ def MASHUPS():
         if ' ' in url:
             url = url.replace(" ", "%20")
         addLink(name,url,image,desc,'','')
+        
+def HOLLAND():
+    r = requests.get(abcd)
+    match = re.compile('#HOLLAND#NAME=###(.+?)###URL=###(.+?)###IMAGE=###(.+?)###').findall(str(r.content))
+    for name,url,image in match:
+        desc = name
+        if image == "none":
+            image = addonicon
+        if ' ' in image:
+            image = image.replace(" ", "%20")
+        if fghi in image:
+            image = image.replace(cdef, ghij)
+        if ' ' in url:
+            url = url.replace(" ", "%20")
+        addLink(name,url,image,desc,'','')
 
 def addLink(name,url,image,desc,urlType,fanart):
     ok=True
@@ -399,6 +415,10 @@ elif mode==13:
 elif mode==14:
     print("")
     MASHUPS()
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+elif mode==15:
+    print("")
+    HOLLAND()
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 elif mode==99:
     url = str(url)
