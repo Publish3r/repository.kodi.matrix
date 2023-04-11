@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="Settings">
+        <setting label="RSS FEED READER" type="lsep"/>
+        <setting label="URL" type="text" id="feedurl" default=""/>
+    </category>
+</settings>
