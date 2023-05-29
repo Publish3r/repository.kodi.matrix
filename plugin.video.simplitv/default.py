@@ -85,7 +85,11 @@ def programmes(program, recordings):
     broadcast_string = datetime.datetime(*(time.strptime(program["start"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%d.%m. %H:%M') + ' - ' + datetime.datetime(*(time.strptime(program["stop"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' Uhr'
     li = xbmcgui.ListItem(pvr_enabled + vod_enabled + "[B]" + broadcast_string + "[/B]" + f' | {program["title"]}')
     li.setInfo('video', {"title": program["title"], "plot": desc})
-    li.setArt({'fanart': program["images"][0]["url"] if len(program["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': program["tileChannel"]["logoUrlOnDark"], 'thumb' : program["tileChannel"]["logoUrlOnDark"]})
+    try:
+        picon = epg_tile["tileChannel"]["logoUrlOnDark"]
+    except:
+        picon = epg_tile["tileChannel"]["logoUrl"]
+    li.setArt({'fanart': program["images"][0]["url"] if len(program["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': picon, 'thumb' : picon})
     desc_url = build_url({'mode': 'desc', 'desc': b64encode(desc.encode())})
     if program["isNpvrEnabled"] and not recordings.get(program["codename"], False):
         add_url = build_url({'mode': 'add', 'id': program["codename"]})
@@ -110,7 +114,11 @@ def stations(channel, epg_tile, overview=False, date=None, recordings={}):
         broadcast_string = datetime.datetime(*(time.strptime(epg_tile["start"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' - ' + datetime.datetime(*(time.strptime(epg_tile["stop"].split('+')[0], '%Y-%m-%dT%H:%M:%S')[0:6])).replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone).strftime('%H:%M') + ' Uhr'
         li = xbmcgui.ListItem(pvr_enabled + vod_enabled + f' [B]{epg_tile["tileChannel"]["title"]}[/B] | {broadcast_string} | {epg_tile["title"]}' if epg_tile.get("title") is not None else name)
         li.setInfo('video', {"title": epg_tile.get("title", name), "plot": desc})
-        li.setArt({'fanart': epg_tile["images"][0]["url"] if len(epg_tile["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': epg_tile["tileChannel"]["logoUrlOnDark"], 'thumb' : epg_tile["tileChannel"]["logoUrlOnDark"]})
+        try:
+            picon = epg_tile["tileChannel"]["logoUrlOnDark"]
+        except:
+            picon = epg_tile["tileChannel"]["logoUrl"]
+        li.setArt({'fanart': epg_tile["images"][0]["url"] if len(epg_tile["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': picon, 'thumb' : picon})
         restart_url = build_url({'mode': 'play', 'channel': channel, 'start': str(int(datetime.datetime(*(time.strptime(epg_tile["start"], '%Y-%m-%dT%H:%M:%S%z')[0:6])).timestamp()))})
         desc_url = build_url({'mode': 'desc', 'desc': b64encode(desc.encode())})
         context_list.append(("Handlung anzeigen", f"RunPlugin({desc_url})"))

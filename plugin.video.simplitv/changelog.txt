@@ -1,3 +1,4 @@
+2023.05.29 - Eurosport 4k Logo fixed
 2023.03.21 - EPG Update fixed
 2023.03.16 - Contextmenü Handlung anzeigen hinzugefügt. Grüne Sterne für Serienaufnahme, coming soon.
 2023.03.15 - TV-Guide Sendungsbeschreibung erweitert und Contextmenü Option zum Entfernen der Aufnahmen direkt aus dem TV-Guide hinzugefügt.
