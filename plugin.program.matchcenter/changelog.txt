@@ -1,0 +1,2 @@
+2.0 - Führende 0 bei einstelligen Tabellenwerten.
+1.0 - Release.

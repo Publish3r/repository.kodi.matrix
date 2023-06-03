@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="Settings">
+        <setting label="Custom Spielplan Settings" type="lsep"/>
+        <setting label="URL" type="text" id="url" default="http://www.bulibox.de/bundesliga/spielplan.php?mA=110"/>
+        <setting label="Wappen" type="text" id="wappen" default="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/FC_Schalke_04_Logo.svg/512px-FC_Schalke_04_Logo.svg.png"/>
+    </category>
+</settings>

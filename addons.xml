@@ -244,7 +244,7 @@ version 0.2.0
   </extension>
 </addon>
 
-<addon id="plugin.feed.reader" name="RSS Feed Reader" version="1.0" provider-name="Publish3r">
+<addon id="plugin.feed.reader" name="RSS Feed Reader" version="2.0" provider-name="Publish3r">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" version="2.12.4" />
@@ -252,11 +252,32 @@ version 0.2.0
     <import addon="script.module.beautifulsoup4" />
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
-    <provides>video</provides>
+    <provides>executable</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
     <summary lang="de">RSS Feed Reader</summary>
     <description lang="de">RSS Feed Reader</description>
+    <disclaimer lang="de"></disclaimer>
+    <language>de</language>
+    <platform>all</platform>
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>
+
+<addon id="plugin.program.matchcenter" name="Match Center" version="2.0" provider-name="Publish3r">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+    <import addon="script.module.requests" />
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="de">Match Center</summary>
+    <description lang="de">Tabelle, Liveticker und Spielplan der 1. und 2. Fußball Bundesliga</description>
     <disclaimer lang="de"></disclaimer>
     <language>de</language>
     <platform>all</platform>
