@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="Settings">
+        <setting label="Settings" type="lsep"/>
+        <setting label="IP" type="text" id="ip" default="192.168.178.20"/>
+        <setting label="Name" type="text" id="name" default="admin"/>
+        <setting label="Password" type="text" id="password" option="hidden"  enable="!eq(-1,)" default="admin"/>
+    </category>
+</settings>

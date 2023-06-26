@@ -1,0 +1,1 @@
+# Deye Wechselrichter - Auslesen von Current power, Yield today und Total yield.

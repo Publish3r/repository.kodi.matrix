@@ -288,4 +288,25 @@ version 0.2.0
   </extension>
 </addon>
 
+<addon id="plugin.program.deye.wechselrichter" name="Deye Wechselrichter" version="1.0" provider-name="Publish3r">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+    <import addon="script.module.requests" />
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="de">Deye Wechselrichter</summary>
+    <description lang="de">Auslesen von Current power, Yield today und Total yield.</description>
+    <disclaimer lang="de"></disclaimer>
+    <language>de</language>
+    <platform>all</platform>
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>
+
 </addons>
