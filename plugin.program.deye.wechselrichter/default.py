@@ -11,6 +11,8 @@ script_file = os.path.realpath(__file__)
 addondir = os.path.dirname(script_file)
 
 path = 'special://home/addons/plugin.program.deye.wechselrichter/resources/'
+watt_image = f"{path}watt.png"
+kwh_image = f"{path}kwh.png"
 info_image = f"{path}info.png"
 
 deye_ip = addon.getSetting("ip")
@@ -25,19 +27,20 @@ def MENU():
         now = re.findall('var webdata_now_p = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
         today = re.findall('var webdata_today_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
         total = re.findall('var webdata_total_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-        now = "[B][COLOR green]" + now + " W[/COLOR][/B] (current)"
-        today = "[B][COLOR green]" + today + " kWh[/COLOR][/B] (today)"
-        total = "[B][COLOR green]" + total + " kWh[/COLOR][/B] (total)"
-        addLink(now,now,info_image,'','')
-        addLink(today,today,info_image,'','')
-        addLink(total,total,info_image,'','')
+        now = "[B][COLOR green]" + now + " W[/COLOR][/B] (jetzt)"
+        today = "[B][COLOR green]" + today + " kWh[/COLOR][/B] (heute)"
+        total = "[B][COLOR green]" + total + " kWh[/COLOR][/B] (gesamt)"
+        addLink(now,now,watt_image,'','')
+        addLink(today,today,kwh_image,'','')
+        addLink(total,total,kwh_image,'','')
     except:
-        pass
+        info = "[COLOR red]Keine Verbindung zum Wechselrichter.[/COLOR]"
+        addLink(info,info,info_image,'','')
     
 def addLink(name,desc,image,urlType,fanart):
     ok=True
     liz=xbmcgui.ListItem(name)
-    u=sys.argv[0]+"?url="+image+"&mode=1"
+    u=sys.argv[0]+"?url=None&mode=1"
     liz.setProperty('IsPlayable','false')
     liz.setInfo( type="Video", infoLabels={ "Title": name, "plot": desc } )
     liz.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': deye.getAddonInfo('fanart')})
@@ -98,17 +101,11 @@ try:
     description=urllib.parse.unquote_plus(params["description"])
 except:
     pass
-   
-print("Mode: "+str(mode))
-print("URL: "+str(url))
-print("Name: "+str(name))
 
 if mode==None or url==None or len(url)<1:
-    print("")
     MENU()
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 elif mode==1:
-    print("")
     xbmc.executebuiltin("Container.Refresh")
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
