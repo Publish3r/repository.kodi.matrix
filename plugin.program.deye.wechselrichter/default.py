@@ -1,4 +1,4 @@
-﻿import xbmcaddon,os,requests,xbmc,xbmcgui,urllib.request,urllib.parse,urllib.error,urllib.request,urllib.error,urllib.parse,re,xbmcplugin,xbmcvfs
+﻿import xbmcaddon,os,requests,xbmc,xbmcgui,urllib.request,urllib.parse,urllib.error,urllib.request,urllib.error,urllib.parse,re,xbmcplugin,xbmcvfs,time
 
 deye = xbmcaddon.Addon('plugin.program.deye.wechselrichter')
 
@@ -18,12 +18,13 @@ info_image = f"{path}info.png"
 deye_ip = addon.getSetting("ip")
 deye_name = addon.getSetting("name")
 deye_password = addon.getSetting("password")
+deye_reload = addon.getSetting("reload")
 
 deye_url = f"http://{deye_ip}/status.html"
 
 def MENU():
     try:
-        r = requests.post(deye_url, auth=(deye_name, deye_password), timeout=5)
+        r = requests.post(deye_url, auth=(deye_name, deye_password), timeout=10)
         now = re.findall('var webdata_now_p = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
         today = re.findall('var webdata_today_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
         total = re.findall('var webdata_total_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
@@ -36,6 +37,12 @@ def MENU():
     except:
         info = "[COLOR red]Keine Verbindung zum Wechselrichter.[/COLOR]"
         addLink(info,info,info_image,'','')
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+    if deye_reload == "true":
+        time.sleep(30)
+        xbmc.executebuiltin("Container.Refresh")
+    else:
+        pass
     
 def addLink(name,desc,image,urlType,fanart):
     ok=True
@@ -104,7 +111,6 @@ except:
 
 if mode==None or url==None or len(url)<1:
     MENU()
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 elif mode==1:
     xbmc.executebuiltin("Container.Refresh")

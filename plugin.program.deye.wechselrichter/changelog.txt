@@ -1,1 +1,3 @@
+1.2 - Setting für Auto Reload (alle 30 Sekunden) hinzugefügt.
+1.1 - Offlinemeldung, Watt- und kWh Icon hinzugefügt.
 1.0 - Release.
