@@ -18,31 +18,50 @@ info_image = f"{path}info.png"
 deye_ip = addon.getSetting("ip")
 deye_name = addon.getSetting("name")
 deye_password = addon.getSetting("password")
+deye_view = addon.getSetting("view")
 deye_reload = addon.getSetting("reload")
 
 deye_url = f"http://{deye_ip}/status.html"
 
 def MENU():
-    try:
-        r = requests.post(deye_url, auth=(deye_name, deye_password), timeout=10)
-        now = re.findall('var webdata_now_p = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-        today = re.findall('var webdata_today_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-        total = re.findall('var webdata_total_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-        now = "[B][COLOR green]" + now + " W[/COLOR][/B] (jetzt)"
-        today = "[B][COLOR green]" + today + " kWh[/COLOR][/B] (heute)"
-        total = "[B][COLOR green]" + total + " kWh[/COLOR][/B] (gesamt)"
-        addLink(now,now,watt_image,'','')
-        addLink(today,today,kwh_image,'','')
-        addLink(total,total,kwh_image,'','')
-    except:
-        info = "[COLOR red]Keine Verbindung zum Wechselrichter.[/COLOR]"
-        addLink(info,info,info_image,'','')
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
-    if deye_reload == "true":
-        time.sleep(30)
-        xbmc.executebuiltin("Container.Refresh")
+    if deye_view == "false":
+        try:
+            r = requests.post(deye_url, auth=(deye_name, deye_password), timeout=10)
+            now = re.findall('var webdata_now_p = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+            today = re.findall('var webdata_today_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+            total = re.findall('var webdata_total_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+            now = "[B][COLOR green]" + now + " W[/COLOR][/B] (jetzt)"
+            today = "[B][COLOR green]" + today + " kWh[/COLOR][/B] (heute)"
+            total = "[B][COLOR green]" + total + " kWh[/COLOR][/B] (gesamt)"
+            addLink(now,now,watt_image,'','')
+            addLink(today,today,kwh_image,'','')
+            addLink(total,total,kwh_image,'','')
+        except:
+            info = "[COLOR red]Keine Verbindung zum Wechselrichter.[/COLOR]"
+            addLink(info,info,info_image,'','')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+        if deye_reload == "true":
+            time.sleep(30)
+            xbmc.executebuiltin("Container.Refresh")
+        else:
+            pass
     else:
-        pass
+        try:
+            r = requests.post(deye_url, auth=(deye_name, deye_password), timeout=10)
+            now = re.findall('var webdata_now_p = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+            today = re.findall('var webdata_today_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+            total = re.findall('var webdata_total_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+            now = "[B]Jetzt: [COLOR green]" + now + " W[/COLOR][/B]"
+            today = "[B]Heute: [COLOR green]" + today + " kWh[/COLOR][/B]"
+            total = "[B]Gesamt: [COLOR green]" + total + " kWh[/COLOR][/B]"
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer('Deye Wechselrichter', now+'[CR]'+today+'[CR]'+total)
+        except:
+            info = "[COLOR red]Keine Verbindung zum Wechselrichter.[/COLOR]"
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer('Deye Wechselrichter', info)
+        xbmc.executebuiltin('activatewindow(home)')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
     
 def addLink(name,desc,image,urlType,fanart):
     ok=True
