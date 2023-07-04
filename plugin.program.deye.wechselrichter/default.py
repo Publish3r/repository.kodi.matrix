@@ -20,13 +20,14 @@ deye_name = addon.getSetting("name")
 deye_password = addon.getSetting("password")
 deye_view = addon.getSetting("view")
 deye_reload = addon.getSetting("reload")
+deye_timeout = int(addon.getSetting("timeout"))
 
 deye_url = f"http://{deye_ip}/status.html"
 
 def MENU():
     if deye_view == "false":
         try:
-            r = requests.post(deye_url, auth=(deye_name, deye_password), timeout=10)
+            r = requests.post(deye_url, auth=(deye_name, deye_password), timeout=deye_timeout)
             now = re.findall('var webdata_now_p = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
             today = re.findall('var webdata_today_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
             total = re.findall('var webdata_total_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
@@ -47,7 +48,7 @@ def MENU():
             pass
     else:
         try:
-            r = requests.post(deye_url, auth=(deye_name, deye_password), timeout=10)
+            r = requests.post(deye_url, auth=(deye_name, deye_password), timeout=deye_timeout)
             now = re.findall('var webdata_now_p = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
             today = re.findall('var webdata_today_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
             total = re.findall('var webdata_total_e = "(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
@@ -55,11 +56,11 @@ def MENU():
             today = "[B]Heute: [COLOR green]" + today + " kWh[/COLOR][/B]"
             total = "[B]Gesamt: [COLOR green]" + total + " kWh[/COLOR][/B]"
             dialog = xbmcgui.Dialog()
-            dialog.textviewer('Deye Wechselrichter', now+'[CR]'+today+'[CR]'+total)
+            ok = dialog.ok('Deye Wechselrichter', now+'[CR]'+today+'[CR]'+total)
         except:
             info = "[COLOR red]Keine Verbindung zum Wechselrichter.[/COLOR]"
             dialog = xbmcgui.Dialog()
-            dialog.textviewer('Deye Wechselrichter', info)
+            ok = dialog.ok('Deye Wechselrichter', info)
         xbmc.executebuiltin('activatewindow(home)')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
     
