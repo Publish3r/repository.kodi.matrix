@@ -5,8 +5,10 @@
         <setting label="IP" type="text" id="ip" default="192.168.178.20"/>
         <setting label="Benutzername" type="text" id="name" default="admin"/>
         <setting label="Passwort" type="text" id="password" option="hidden" enable="!eq(-1,)" default="admin"/>
-        <setting label="Request Timeout" type="text" id="timeout" default="5"/>
+        <setting label="Request Timeout (Sekunden)" type="text" id="timeout" default="5"/>
         <setting label="PopUp anstatt Liste" type="bool" id="view" default="false"/>
+        <setting label="Zurück zum Homescreen (PopUp schließen)" type="bool" id="homescreen" default="false"/>
         <setting label="Auto Reload (Liste)" type="bool" id="reload" default="false"/>
+        <setting label="Auto Reload Intervall (Sekunden)" type="text" id="interval" default="60"/>
     </category>
 </settings>

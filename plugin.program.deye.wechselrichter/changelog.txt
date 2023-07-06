@@ -1,3 +1,4 @@
+1.5 - Setting für Reload Intervall und Zurück zum Homescreen hinzugefügt.
 1.4 - Setting für Request Timeout hinzugefügt.
 1.3 - PopUp-Ansicht hinzugefügt.
 1.2 - Setting für Auto Reload (alle 30 Sekunden) hinzugefügt.
