@@ -1,4 +1,5 @@
 ﻿import xbmcaddon,os,requests,xbmc,xbmcgui,urllib.request,urllib.parse,urllib.error,urllib.request,urllib.error,urllib.parse,re,xbmcplugin,xbmcvfs,time
+from datetime import datetime
 
 deye = xbmcaddon.Addon('plugin.program.deye.wechselrichter')
 
@@ -25,6 +26,9 @@ deye_interval = int(addon.getSetting("interval"))
 deye_timeout = int(addon.getSetting("timeout"))
 
 deye_url = f"http://{deye_ip}/status.html"
+
+def get_timestamp():
+    return datetime.now().strftime("%d.%m.%Y - %H:%M:%S Uhr")
 
 def MENU():
     if deye_view == "false":
@@ -58,7 +62,7 @@ def MENU():
             today = "[B]Heute: [COLOR green]" + today + " kWh[/COLOR][/B]"
             total = "[B]Gesamt: [COLOR green]" + total + " kWh[/COLOR][/B]"
             dialog = xbmcgui.Dialog()
-            ok = dialog.ok('Deye Wechselrichter', now+'[CR]'+today+'[CR]'+total)
+            ok = dialog.ok('Deye Wechselrichter: ' + get_timestamp(), now+'[CR]'+today+'[CR]'+total)
         except:
             info = "[COLOR red]Keine Verbindung zum Wechselrichter.[/COLOR]"
             dialog = xbmcgui.Dialog()
