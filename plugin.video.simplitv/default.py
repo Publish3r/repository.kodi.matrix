@@ -86,9 +86,9 @@ def programmes(program, recordings):
     li = xbmcgui.ListItem(pvr_enabled + vod_enabled + "[B]" + broadcast_string + "[/B]" + f' | {program["title"]}')
     li.setInfo('video', {"title": program["title"], "plot": desc})
     try:
-        picon = epg_tile["tileChannel"]["logoUrlOnDark"]
+        picon = xbmc.getInfoLabel("ListItem.Icon")
     except:
-        picon = epg_tile["tileChannel"]["logoUrl"]
+        picon = program["images"][0]["url"]
     li.setArt({'fanart': program["images"][0]["url"] if len(program["images"]) > 0 else simplitv.getAddonInfo('fanart'), 'icon': picon, 'thumb' : picon})
     desc_url = build_url({'mode': 'desc', 'desc': b64encode(desc.encode())})
     if program["isNpvrEnabled"] and not recordings.get(program["codename"], False):

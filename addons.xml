@@ -222,7 +222,7 @@ version 0.2.0
   </extension>
 </addon>
 
-<addon id="plugin.video.simplitv" name="simpliTV" version="2023.05.29" provider-name="Publish3r, sunsettrack4">
+<addon id="plugin.video.simplitv" name="simpliTV" version="2023.07.07" provider-name="Publish3r, sunsettrack4">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" />
