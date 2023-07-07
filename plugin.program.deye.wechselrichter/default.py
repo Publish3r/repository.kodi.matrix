@@ -66,7 +66,7 @@ def MENU():
         except:
             info = "[COLOR red]Keine Verbindung zum Wechselrichter.[/COLOR]"
             dialog = xbmcgui.Dialog()
-            ok = dialog.ok('Deye Wechselrichter', info)
+            ok = dialog.ok('Deye Wechselrichter: ' + get_timestamp(), info)
         if deye_home == "false":
             pass
         else:

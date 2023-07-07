@@ -1,3 +1,4 @@
+1.7 - Vergessenen Code hinzugefügt.
 1.6 - Timestamp im PopUp hinzugefügt.
 1.5 - Setting für Reload Intervall und Zurück zum Homescreen hinzugefügt.
 1.4 - Setting für Request Timeout hinzugefügt.
