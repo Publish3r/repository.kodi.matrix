@@ -14,10 +14,12 @@ import time
 import tzlocal
 from base64 import b64encode, b64decode
 
-base_url = sys.argv[0]
-addon_handle = int(sys.argv[1])
-args = urllib.parse.parse_qs(sys.argv[2][1:])
-addon = xbmcaddon.Addon()
+base_url             = sys.argv[0]
+addon_handle   = int(sys.argv[1])
+args                    = urllib.parse.parse_qs(sys.argv[2][1:])
+addon                 = xbmcaddon.Addon()
+KODI_ov20        = int(xbmc.getInfoLabel('System.BuildVersion')[0:2]) >= 20
+KODI_un21        = int(xbmc.getInfoLabel('System.BuildVersion')[0:2]) <= 20
 
 def build_url(query):
     return base_url + '?' + urllib.parse.urlencode(query)
@@ -29,8 +31,10 @@ addon_icon = 'special://home/addons/plugin.video.simplitv/icon.png'
 username = addon.getSetting("username")
 password = addon.getSetting("password")
 
-api_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0', 'Content-type': 'application/json;charset=utf-8', 'X-Api-Date-Format': 'iso', 'X-Api-Camel-Case': 'true', 'referer': 'https://streaming.simplitv.at/'}
+api_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0', 'Content-type': 'application/json;charset=utf-8', 'X-Api-Date-Format': 'iso', 'X-Api-Camel-Case': 'true', 'Referer': 'https://streaming.simplitv.at/'}
 data_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0', 'Accept': 'application/json'}
+stream_headers = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0'
+license_headers = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0&Referer=https://streaming.simplitv.at/'
 
 mode = args.get('mode', None)
 start = args.get('start', None)
@@ -151,15 +155,18 @@ def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, coden
         play_item.setInfo('Video', infoLabels={'title': channelname(codename)})
         play_item.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(channelname(codename)), 'thumb' : logomapper(channelname(codename))})
     play_item.setProperty('inputstream', 'inputstream.adaptive')
-    play_item.setMimeType('application/xml+dash')
+    play_item.setMimeType('application/dash+xml')
+    if KODI_un21: # DEPRECATED ON Kodi v21, because the manifest type is now auto-detected.
+        play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
+    if KODI_ov20:
+        play_item.setProperty('inputstream.adaptive.manifest_headers', f"User-Agent={stream_headers}")
+    else: # DEPRECATED ON Kodi v20, please use 'inputstream.adaptive.manifest_headers' instead.
+        play_item.setProperty('inputstream.adaptive.stream_headers', f"User-Agent={stream_headers}")
+    play_item.setProperty('inputstream.adaptive.license_key', f"{stream_drm_license_server}|User-Agent={license_headers}&drmchallengecustomdata={urllib.parse.quote(stream_drm_challenge_data)}&Content-Type=application/octet-stream|R{{SSM}}|")
     play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
-    play_item.setProperty('inputstream.adaptive.license_key', f"{stream_drm_license_server}|drmchallengecustomdata={urllib.parse.quote(stream_drm_challenge_data)}|" + "R{SSM}|")
-    play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
     play_item.setProperty('IsPlayable', 'true')
-    xbmcplugin.setResolvedUrl(addon_handle, True, listitem=play_item)
+    xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
     xbmc.Player().play(item=url, listitem=play_item)
-    p = xbmc.Player()
-    p.play(item=url, listitem=play_item)
     if timeshift > 0:
         xbmc.executebuiltin( "ActivateWindow(busydialognocancel)" )
         while not p.isPlaying():
