@@ -59,8 +59,11 @@ def songs(match):
         links = str(links)
         if "options-list-youtube" in links:
             name = name + " [COLOR green](YouTube)[/COLOR]"
-            links = re.compile('<li class="options-list-youtube"><a href="https://www.youtube.com/watch(.+?)"').findall(links)[0]
-            links = links[3:]
+            try:
+                links = re.compile('<li class="options-list-youtube"><a href="https://www.youtube.com/watch(.+?)"').findall(links)[0]
+                links = links[3:]
+            except:
+                links = re.compile('<li class="options-list-youtube"><a href="https://youtu.be/(.+?)"').findall(links)[0]
             url = "plugin://plugin.video.youtube/play/?video_id=" + links
             li = xbmcgui.ListItem(name)
             li.setProperty('IsPlayable','true')
