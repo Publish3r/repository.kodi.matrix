@@ -316,6 +316,9 @@ def PlayUrl(name, url, iconimage=None):
     url = common.getFinalUrl(url)
     xbmc.log('--- Playing "{0}". {1}'.format(name, url), 2)
     listitem = xbmcgui.ListItem(path=url)
+    if ".mpd" in url:
+        listitem.setProperty('inputstream', 'inputstream.adaptive')
+        listitem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
     listitem.setInfo(type="Video", infoLabels={"mediatype": "movie", "Title": name })
         
     if iconimage is not None:
