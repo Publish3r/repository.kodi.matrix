@@ -87,7 +87,7 @@ version 0.2.0
 </extension>
 </addon>
 
-<addon id="plugin.video.philizz.media" name="Philizz Media" version="2.9" provider-name="Publish3r">
+<addon id="plugin.video.philizz.media" name="Philizz Media" version="3.0" provider-name="Publish3r">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" version="2.12.4" />
@@ -223,7 +223,7 @@ version 0.2.0
   </extension>
 </addon>
 
-<addon id="plugin.video.simplitv" name="simpliTV" version="2023.08.11" provider-name="Publish3r, sunsettrack4">
+<addon id="plugin.video.simplitv" name="simpliTV" version="2023.12.31" provider-name="Publish3r, sunsettrack4">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" />

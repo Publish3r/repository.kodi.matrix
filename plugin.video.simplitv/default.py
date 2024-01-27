@@ -14,12 +14,12 @@ import time
 import tzlocal
 from base64 import b64encode, b64decode
 
-base_url             = sys.argv[0]
-addon_handle   = int(sys.argv[1])
-args                    = urllib.parse.parse_qs(sys.argv[2][1:])
-addon                 = xbmcaddon.Addon()
-KODI_ov20        = int(xbmc.getInfoLabel('System.BuildVersion')[0:2]) >= 20
-KODI_un21        = int(xbmc.getInfoLabel('System.BuildVersion')[0:2]) <= 20
+base_url = sys.argv[0]
+addon_handle = int(sys.argv[1])
+args = urllib.parse.parse_qs(sys.argv[2][1:])
+addon = xbmcaddon.Addon()
+KODI_ov20 = int(xbmc.getInfoLabel('System.BuildVersion')[0:2]) >= 20
+KODI_un21 = int(xbmc.getInfoLabel('System.BuildVersion')[0:2]) <= 20
 
 def build_url(query):
     return base_url + '?' + urllib.parse.urlencode(query)
@@ -30,6 +30,8 @@ addon_icon = 'special://home/addons/plugin.video.simplitv/icon.png'
 
 username = addon.getSetting("username")
 password = addon.getSetting("password")
+
+pready = addon.getSetting("pready")
 
 api_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0', 'Content-type': 'application/json;charset=utf-8', 'X-Api-Date-Format': 'iso', 'X-Api-Camel-Case': 'true', 'Referer': 'https://streaming.simplitv.at/'}
 data_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0', 'Accept': 'application/json'}
@@ -140,7 +142,7 @@ def stations(channel, epg_tile, overview=False, date=None, recordings={}):
         li.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(name), 'thumb' : logomapper(name)})
     xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=overview)
     
-def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start=None):
+def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start=None):    
     if start is not None:
         timeshift = 10800 - (int(datetime.datetime.utcnow().timestamp() - int(start[0]))) - 35
     else:
@@ -153,17 +155,39 @@ def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, coden
         play_item.setArt({'fanart': xbmc.getInfoLabel("ListItem.Fanart"), 'thumb': xbmc.getInfoLabel("ListItem.Thumb"), 'icon': xbmc.getInfoLabel("ListItem.Icon")})
     except:
         play_item.setInfo('Video', infoLabels={'title': channelname(codename)})
-        play_item.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(channelname(codename)), 'thumb' : logomapper(channelname(codename))})
-    play_item.setProperty('inputstream', 'inputstream.adaptive')
-    play_item.setMimeType('application/dash+xml')
-    if KODI_un21: # DEPRECATED ON Kodi v21, because the manifest type is now auto-detected.
-        play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
-    if KODI_ov20:
-        play_item.setProperty('inputstream.adaptive.manifest_headers', f"User-Agent={stream_headers}")
-    else: # DEPRECATED ON Kodi v20, please use 'inputstream.adaptive.manifest_headers' instead.
-        play_item.setProperty('inputstream.adaptive.stream_headers', f"User-Agent={stream_headers}")
-    play_item.setProperty('inputstream.adaptive.license_key', f"{stream_drm_license_server}|User-Agent={license_headers}&drmchallengecustomdata={urllib.parse.quote(stream_drm_challenge_data)}&Content-Type=application/octet-stream|R{{SSM}}|")
-    play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
+        play_item.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(channelname(codename)), 'thumb' : logomapper(channelname(codename))})  
+    ### HLS CHANNELS WITHOUT DRM
+    if stream_drm_license_server == "false": 
+        try:
+            url = url.replace(".mpd", ".m3u8")
+        except:
+            pass
+        try:
+            url = url.replace("/dash/", "/hls/")
+        except:
+            pass
+        try:
+            url = url.replace("dash_live", "hls_live")
+        except:
+            pass
+        url = url + "|User-Agent=" + stream_headers
+        play_item.setProperty('inputstream', 'inputstream.ffmpegdirect')
+        play_item.setProperty('inputstream.ffmpegdirect.manifest_type', 'hls')
+    ###
+    else:
+        play_item.setProperty('inputstream', 'inputstream.adaptive')
+        play_item.setMimeType('application/dash+xml')
+        if KODI_un21: # DEPRECATED ON Kodi v21, because the manifest type is now auto-detected.
+            play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
+        if KODI_ov20:
+            play_item.setProperty('inputstream.adaptive.manifest_headers', f"User-Agent={stream_headers}")
+        else: # DEPRECATED ON Kodi v20, please use 'inputstream.adaptive.manifest_headers' instead.
+            play_item.setProperty('inputstream.adaptive.stream_headers', f"User-Agent={stream_headers}")
+        play_item.setProperty('inputstream.adaptive.license_key', f"{stream_drm_license_server}|User-Agent={license_headers}&drmchallengecustomdata={urllib.parse.quote(stream_drm_challenge_data)}&Content-Type=application/octet-stream|R{{SSM}}|")
+        if pready == "false":
+            play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
+        if pready == "true":
+            play_item.setProperty('inputstream.adaptive.license_type', 'com.microsoft.playready')
     play_item.setProperty('IsPlayable', 'true')
     xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
     xbmc.Player().play(item=url, listitem=play_item)
@@ -579,9 +603,32 @@ elif mode[0] == "play":
     stream_resp = stream_data.json()
     try:
         stream_url = stream_resp['MediaFiles'][0]['Formats'][0]['Url']
-        stream_drm_license_server = stream_resp['DrmInfo'][1]['LicenseServerUrl']
-        stream_drm_challenge_data = stream_resp['DrmInfo'][1]['DrmChallengeCustomData']
-        stream_url = stream_url.replace(".m3u8", ".mpd")
+        if pready == "false":
+            try:
+                stream_drm_license_server = stream_resp['DrmInfo'][1]['LicenseServerUrl']
+                stream_drm_challenge_data = stream_resp['DrmInfo'][1]['DrmChallengeCustomData']
+            except:
+                stream_drm_license_server = "false"
+                stream_drm_challenge_data = "false"
+        if pready == "true":
+            try:
+                stream_drm_license_server = stream_resp['DrmInfo'][0]['LicenseServerUrl']
+                stream_drm_challenge_data = stream_resp['DrmInfo'][0]['DrmChallengeCustomData']
+            except:
+                stream_drm_license_server = "false"
+                stream_drm_challenge_data = "false"
+        try:
+            stream_url = stream_url.replace(".m3u8", ".mpd")
+        except:
+            pass
+        try:
+            stream_url = stream_url.replace("/hls/", "/dash/")
+        except:
+            pass
+        try:
+            stream_url = stream_url.replace("hls_live", "dash_live")
+        except:
+            pass
         play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start)
     except:
         xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('[B]Info[/B]', 'Content unavailable', 5000, addon_icon))
