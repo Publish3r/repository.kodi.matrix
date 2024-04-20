@@ -319,7 +319,7 @@ def PlayUrl(name, url, iconimage=None):
     if ".mpd" in url:
         listitem.setProperty('inputstream', 'inputstream.adaptive')
         listitem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
-    listitem.setInfo(type="Video", infoLabels={"mediatype": "movie", "Title": name })
+    listitem.setInfo(type="Video", infoLabels={"mediatype": "movie"})
         
     if iconimage is not None:
         try:
