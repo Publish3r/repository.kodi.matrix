@@ -1,1 +1,0 @@
-# Addon for https://wedotv.com
