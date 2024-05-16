@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="Settings">
+        <setting label="Show EPG (Now / Next)" type="bool" id="epg" default="true"/>
+    </category>
+</settings>

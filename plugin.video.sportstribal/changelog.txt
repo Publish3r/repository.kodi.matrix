@@ -1,0 +1,2 @@
+2024.05.17 - Settings for EPG (Now / Next) added.
+2024.05.16 - Released.
