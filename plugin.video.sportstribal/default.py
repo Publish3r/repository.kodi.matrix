@@ -7,6 +7,7 @@ import xbmcplugin
 import xbmcaddon
 import requests
 import json
+from datetime import datetime
 
 base_url = sys.argv[0]
 addon_handle = int(sys.argv[1])
@@ -81,8 +82,22 @@ def get_channels():
         if epg == "true":
             try:
                 epg_now = json_data2[channelid][0]['title']
+                epg_now_start = json_data2[channelid][0]['start']
+                epg_now_stop = json_data2[channelid][0]['end']
+                epg_now_start = int(epg_now_start)
+                epg_now_stop = int(epg_now_stop)
+                epg_now_start = datetime.fromtimestamp(epg_now_start).strftime('%H:%M')
+                epg_now_stop = datetime.fromtimestamp(epg_now_stop).strftime('%H:%M')
+                time_now = f"{epg_now_start} - {epg_now_stop}"
                 epg_next = json_data2[channelid][1]['title']
-                desc = f"[COLOR green][B]Now:[/B][/COLOR][CR][COLOR yellow]{epg_now}[/COLOR][CR][COLOR green][B]Next:[/B][/COLOR][CR][COLOR yellow]{epg_next}[/COLOR]"            
+                epg_next_start = json_data2[channelid][1]['start']
+                epg_next_stop = json_data2[channelid][1]['end']
+                epg_next_start = int(epg_next_start)
+                epg_next_stop = int(epg_next_stop)
+                epg_next_start = datetime.fromtimestamp(epg_next_start).strftime('%H:%M')
+                epg_next_stop = datetime.fromtimestamp(epg_next_stop).strftime('%H:%M')
+                time_next = f"{epg_next_start} - {epg_next_stop}"
+                desc = f"[COLOR green][B]{time_now}[/B][/COLOR][CR][COLOR yellow]{epg_now}[/COLOR][CR][COLOR green][B]{time_next}[/B][/COLOR][CR][COLOR yellow]{epg_next}[/COLOR]"            
             except:
                 desc = i['summary']
         else:
