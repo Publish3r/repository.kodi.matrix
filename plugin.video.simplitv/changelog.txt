@@ -1,3 +1,4 @@
+2024.05.20 - Fixed wrong Stream URL.
 2023.12.31 - Code bereinigt.
 2023.12.30 - Fixed HLS Streams without DRM.
 2023.12.29 - Add Playready Support.
