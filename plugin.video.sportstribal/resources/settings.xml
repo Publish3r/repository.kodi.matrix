@@ -2,5 +2,6 @@
 <settings>
     <category label="Settings">
         <setting label="Show EPG (Now / Next)" type="bool" id="epg" default="true"/>
+        <setting label="Mark geoblocked channels" type="bool" id="geo" default="true"/>
     </category>
 </settings>

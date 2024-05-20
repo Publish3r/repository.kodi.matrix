@@ -19,6 +19,7 @@ mode = args.get('mode', None)
 
 sportstribal = xbmcaddon.Addon('plugin.video.sportstribal')
 epg = addon.getSetting("epg")
+geoblock = addon.getSetting("geo")
 
 addon_icon = 'special://home/addons/plugin.video.sportstribal/icon.png'
 addon_fanart = 'special://home/addons/plugin.video.sportstribal/fanart.jpg'
@@ -81,11 +82,15 @@ def get_channels():
         channelid = i['ID']
         name = i['name']
         desc = i['summary']
-        geo = ""
-        if "*Available" in i['summary']:
-            match = re.findall('Available(.*?)nly',str(desc),re.DOTALL|re.MULTILINE)[0]
-            geo = f"*Available{match}nly."
-            name = f"{name}[COLOR red]*[/COLOR]"
+        if geoblock == "true":
+            geo = ""
+            try:
+                if "*Available" in i['summary']:
+                    match = re.findall('Available(.*?)nly',str(desc),re.DOTALL|re.MULTILINE)[0]
+                    geo = f"*Available{match}nly."
+                    name = f"{name}[COLOR red]*[/COLOR]"
+            except:
+                pass
         if epg == "true":
             try:
                 epg_now = json_data2[channelid][0]['title']
@@ -105,18 +110,30 @@ def get_channels():
                 epg_next_stop = datetime.fromtimestamp(epg_next_stop).strftime('%H:%M')
                 time_next = f"{epg_next_start} - {epg_next_stop}"
                 desc = f"[COLOR green][B]{time_now}[/B][/COLOR][CR][COLOR yellow]{epg_now}[/COLOR][CR][COLOR green][B]{time_next}[/B][/COLOR][CR][COLOR yellow]{epg_next}[/COLOR]" 
-                if geo != "":
-                    geo = geo.replace("Only", "only") 
-                    geo = geo.replace(geo, f"[COLOR red]{geo}[/COLOR]")
-                    desc = f"{desc}[CR][CR]{geo}"                    
+                if geoblock == "true":
+                    try:
+                        if geo != "":
+                            geo = geo.replace("Only", "only") 
+                            geo = geo.replace(geo, f"[COLOR red]{geo}[/COLOR]")
+                            desc = f"{desc}[CR][CR]{geo}" 
+                    except:
+                        pass                    
             except:
                 desc = i['summary']
-                desc = desc.replace(geo, f"[COLOR red]{geo}[/COLOR]")
-                desc = desc.replace("Only", "only")
+                if geoblock == "true":
+                    try:
+                        desc = desc.replace(geo, f"[COLOR red]{geo}[/COLOR]")
+                        desc = desc.replace("Only", "only")
+                    except:
+                        pass
         else:
             desc = i['summary']
-            desc = desc.replace(geo, f"[COLOR red]{geo}[/COLOR]")
-            desc = desc.replace("Only", "only")
+            if geoblock == "true":
+                try:
+                    desc = desc.replace(geo, f"[COLOR red]{geo}[/COLOR]")
+                    desc = desc.replace("Only", "only")
+                except:
+                    pass
         logo = i['images']['logo']
         url = build_url({'mode': 'play', 'channelid': channelid, 'name': name, 'desc': desc, 'logo': logo})
         li = xbmcgui.ListItem(name)
@@ -140,8 +157,12 @@ if mode is None:
 elif mode[0] == "play":
     channelid = args['channelid'][0]
     name = args['name'][0]
-    if "*" in name:
-        name = name.replace("[COLOR red]*[/COLOR]", "")
+    if geoblock == "true":
+        try:
+            if "*" in name:
+                name = name.replace("[COLOR red]*[/COLOR]", "")
+        except:
+            pass
     desc = args['desc'][0]
     logo = args['logo'][0]
     stream = get_stream(channelid)
