@@ -1,3 +1,4 @@
+2024.05.20 - Geoblocked channels marked.
 2024.05.18 - EPG timestamps added.
 2024.05.17 - Settings for EPG (Now / Next) added.
 2024.05.16 - Released.

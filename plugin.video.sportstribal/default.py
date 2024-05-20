@@ -7,6 +7,7 @@ import xbmcplugin
 import xbmcaddon
 import requests
 import json
+import re
 from datetime import datetime
 
 base_url = sys.argv[0]
@@ -79,6 +80,12 @@ def get_channels():
     for i in json_data1:
         channelid = i['ID']
         name = i['name']
+        desc = i['summary']
+        geo = ""
+        if "*Available" in i['summary']:
+            match = re.findall('Available(.*?)nly',str(desc),re.DOTALL|re.MULTILINE)[0]
+            geo = f"*Available{match}nly."
+            name = f"{name}[COLOR red]*[/COLOR]"
         if epg == "true":
             try:
                 epg_now = json_data2[channelid][0]['title']
@@ -97,11 +104,19 @@ def get_channels():
                 epg_next_start = datetime.fromtimestamp(epg_next_start).strftime('%H:%M')
                 epg_next_stop = datetime.fromtimestamp(epg_next_stop).strftime('%H:%M')
                 time_next = f"{epg_next_start} - {epg_next_stop}"
-                desc = f"[COLOR green][B]{time_now}[/B][/COLOR][CR][COLOR yellow]{epg_now}[/COLOR][CR][COLOR green][B]{time_next}[/B][/COLOR][CR][COLOR yellow]{epg_next}[/COLOR]"            
+                desc = f"[COLOR green][B]{time_now}[/B][/COLOR][CR][COLOR yellow]{epg_now}[/COLOR][CR][COLOR green][B]{time_next}[/B][/COLOR][CR][COLOR yellow]{epg_next}[/COLOR]" 
+                if geo != "":
+                    geo = geo.replace("Only", "only") 
+                    geo = geo.replace(geo, f"[COLOR red]{geo}[/COLOR]")
+                    desc = f"{desc}[CR][CR]{geo}"                    
             except:
                 desc = i['summary']
+                desc = desc.replace(geo, f"[COLOR red]{geo}[/COLOR]")
+                desc = desc.replace("Only", "only")
         else:
             desc = i['summary']
+            desc = desc.replace(geo, f"[COLOR red]{geo}[/COLOR]")
+            desc = desc.replace("Only", "only")
         logo = i['images']['logo']
         url = build_url({'mode': 'play', 'channelid': channelid, 'name': name, 'desc': desc, 'logo': logo})
         li = xbmcgui.ListItem(name)
@@ -125,6 +140,8 @@ if mode is None:
 elif mode[0] == "play":
     channelid = args['channelid'][0]
     name = args['name'][0]
+    if "*" in name:
+        name = name.replace("[COLOR red]*[/COLOR]", "")
     desc = args['desc'][0]
     logo = args['logo'][0]
     stream = get_stream(channelid)
