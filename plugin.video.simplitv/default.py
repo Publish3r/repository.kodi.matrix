@@ -634,7 +634,7 @@ elif mode[0] == "play":
         except:
             pass
         try:
-            url = url.replace("/hls4h/", "/dash4h/")
+            stream_url = stream_url.replace("/hls4h/", "/dash4h/")
         except:
             pass
         play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start)
