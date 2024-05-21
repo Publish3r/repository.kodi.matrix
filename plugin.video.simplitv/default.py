@@ -148,6 +148,11 @@ def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, coden
     else:
         timeshift = 0
     url = stream_url
+    if "/hls4h/" in url:
+        try:
+            url = url.replace("/hls4h/", "/dash4h/")
+        except:
+            pass
     play_item = xbmcgui.ListItem(path=url)
     play_item.setContentLookup(False)
     try:
@@ -157,11 +162,6 @@ def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, coden
         play_item.setInfo('Video', infoLabels={'title': channelname(codename)})
         play_item.setArt({'fanart': simplitv.getAddonInfo('fanart'), 'icon': logomapper(channelname(codename)), 'thumb' : logomapper(channelname(codename))})  
     ### HLS CHANNELS WITHOUT DRM
-    if "/hls4h/" in url:
-        try:
-            url = url.replace("/hls4h/", "/dash/")
-        except:
-            pass
     if stream_drm_license_server == "false": 
         try:
             url = url.replace(".mpd", ".m3u8")
