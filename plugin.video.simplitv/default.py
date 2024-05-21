@@ -148,11 +148,6 @@ def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, coden
     else:
         timeshift = 0
     url = stream_url
-    if "/hls4h/" in url:
-        try:
-            url = url.replace("/hls4h/", "/dash4h/")
-        except:
-            pass
     play_item = xbmcgui.ListItem(path=url)
     play_item.setContentLookup(False)
     try:
@@ -173,6 +168,10 @@ def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, coden
             pass
         try:
             url = url.replace("dash_live", "hls_live")
+        except:
+            pass
+        try:
+            url = url.replace("/dash4h/", "/hls4h/")
         except:
             pass
         url = url + "|User-Agent=" + stream_headers
@@ -632,6 +631,10 @@ elif mode[0] == "play":
             pass
         try:
             stream_url = stream_url.replace("hls_live", "dash_live")
+        except:
+            pass
+        try:
+            url = url.replace("/hls4h/", "/dash4h/")
         except:
             pass
         play(stream_url, stream_drm_license_server, stream_drm_challenge_data, codename, start)
