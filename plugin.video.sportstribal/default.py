@@ -20,6 +20,7 @@ mode = args.get('mode', None)
 sportstribal = xbmcaddon.Addon('plugin.video.sportstribal')
 epg = addon.getSetting("epg")
 geoblock = addon.getSetting("geo")
+hide = addon.getSetting("hide")
 
 addon_icon = 'special://home/addons/plugin.video.sportstribal/icon.png'
 addon_fanart = 'special://home/addons/plugin.video.sportstribal/fanart.jpg'
@@ -136,10 +137,17 @@ def get_channels():
                     pass
         logo = i['images']['logo']
         url = build_url({'mode': 'play', 'channelid': channelid, 'name': name, 'desc': desc, 'logo': logo})
-        li = xbmcgui.ListItem(name)
-        li.setInfo('Video', {"title": name, "plot": desc})
-        li.setArt({'fanart': addon_fanart, 'icon': logo, 'thumb' : logo}) 
-        xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+        if hide == "true":
+            if not "*Available" in desc:
+                li = xbmcgui.ListItem(name)
+                li.setInfo('Video', {"title": name, "plot": desc})
+                li.setArt({'fanart': addon_fanart, 'icon': logo, 'thumb' : logo}) 
+                xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+        else:
+            li = xbmcgui.ListItem(name)
+            li.setInfo('Video', {"title": name, "plot": desc})
+            li.setArt({'fanart': addon_fanart, 'icon': logo, 'thumb' : logo}) 
+            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
     xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=False)
     
 def play(stream, name, desc, logo):
