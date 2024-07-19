@@ -31,7 +31,7 @@ REF = 'https://watch.sportstribal.tv/'
 s_headers = {
     'User-Agent': UA,
     'Referer': REF,
-    'authorization': 'Bearer Sydn2gA9pRhjSThFPdPSZgm7E|Sydn2gA9pRhjSThFPdPSZgm7E|Sydn2gA9pRhjSThFPdPSZgm7E|null|1718626574955|1721218574955|true|e78e0cdc-aac5-407a-bc71-c27ca5179fa8|WEB||||KjHCowRdT8akM7wV7AFKuV39ET3t7j/KxaBs5KF1Z+4=',
+    'authorization': 'Bearer GBbGKZErCWu0IfLyEWzc1ukBO|GBbGKZErCWu0IfLyEWzc1ukBO|GBbGKZErCWu0IfLyEWzc1ukBO|null|1721402882662|1723994882662|true|924badb6-2aef-49f0-a577-1b51ece84788|WEB||||B9dvK7lVmkebX4rRCiaBtNx/xdkF+cugRLqeB1LcQkw=',
 }
 
 s_params = {
