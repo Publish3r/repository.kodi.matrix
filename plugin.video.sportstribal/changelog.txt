@@ -1,3 +1,4 @@
+2024.07.31 - Read Bearer Token from Github.
 2024.07.19 - Fixed Token.
 2024.06.17 - Fixed Token.
 2024.05.22 - Settings to hide geoblocked channels added.

@@ -25,13 +25,16 @@ hide = addon.getSetting("hide")
 addon_icon = 'special://home/addons/plugin.video.sportstribal/icon.png'
 addon_fanart = 'special://home/addons/plugin.video.sportstribal/fanart.jpg'
 
+bearer = requests.get('https://raw.githubusercontent.com/Publish3r/repository.kodi.matrix/main/plugin.video.sportstribal/resources/bearer.txt', timeout=5).text
+bearer = str(bearer)
+
 UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0'
 REF = 'https://watch.sportstribal.tv/'
 
 s_headers = {
     'User-Agent': UA,
     'Referer': REF,
-    'authorization': 'Bearer GBbGKZErCWu0IfLyEWzc1ukBO|GBbGKZErCWu0IfLyEWzc1ukBO|GBbGKZErCWu0IfLyEWzc1ukBO|null|1721402882662|1723994882662|true|924badb6-2aef-49f0-a577-1b51ece84788|WEB||||B9dvK7lVmkebX4rRCiaBtNx/xdkF+cugRLqeB1LcQkw=',
+    f'authorization': bearer,
 }
 
 s_params = {
