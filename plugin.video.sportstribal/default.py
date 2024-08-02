@@ -34,7 +34,7 @@ REF = 'https://watch.sportstribal.tv/'
 s_headers = {
     'User-Agent': UA,
     'Referer': REF,
-    f'authorization': bearer,
+    'authorization': bearer,
 }
 
 s_params = {
