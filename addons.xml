@@ -201,7 +201,7 @@ version 0.2.0
   </extension>
 </addon>
 
-<addon id="plugin.video.gewc" name="German Electronic WebCharts" version="2023.08.28" provider-name="Publish3r">
+<addon id="plugin.video.gewc" name="German Electronic WebCharts" version="2024.09.17" provider-name="Publish3r">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" />

@@ -29,10 +29,11 @@ mode = args.get('mode', None)
 baseurl = "https://www.gewc.de/"
 
 def datum():
-    r = requests.get(baseurl,headers=headers,timeout=5)
-    kw = re.findall('<div class="td-block-title-wrap"><h4 class="td-block-title"><span>(.*?)</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    date = re.findall('</span><div class="td-block-subtitle">(.*?)</div></h4>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    info = "[COLOR blue]" + kw + "[/COLOR]" + " - " + "[COLOR yellow]" + date + "[/COLOR]"
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    kw = re.findall('<title>GEWC TOP 15 KW (.*?) ',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    date = re.findall('<title>(.*?)</title>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    date = re.findall('&#8211; (.*?) | GEWC',date,re.DOTALL|re.MULTILINE)[0]
+    info = "[COLOR blue]KW " + kw + "[/COLOR]" + " - " + "[COLOR yellow]" + date + "[/COLOR]"
     return info
 
 def songs(match):
@@ -209,23 +210,24 @@ if mode is None:
     xbmcplugin.endOfDirectory(addon_handle)
 
 elif mode[0] == 'top15':
-    r = requests.get(baseurl,headers=headers,timeout=5)
-    match = re.findall('<span>Top 15 Tracks</span>(.*?)<span>Top 15 Alben</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    match = re.findall('<h2 class="wp-block-heading">Top 15 Tracks</h2>(.*?)<h2 class="wp-block-heading">Top 15 Alben</h2>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     songs(match)
 
 elif mode[0] == 'neuvorstellungen':
-    r = requests.get(baseurl,headers=headers,timeout=5)
-    match = re.findall('<span>Neuvorstellungen Tracks</span>(.*?)<span>Neuvorstellungen Alben</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    match = re.findall('<h2 class="wp-block-heading">Neuvorstellungen</h2>(.*?)<h2 class="wp-block-heading">Neuvorstellungen</h2>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     songs(match)
     
 elif mode[0] == 'top15alben':
-    r = requests.get(baseurl,headers=headers,timeout=5)
-    match = re.findall('<span>Top 15 Alben</span>(.*?)<span>Neuvorstellungen Tracks</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    match = re.findall('<h2 class="wp-block-heading">Top 15 Alben</h2>(.*?)<h2 class="wp-block-heading">Neuvorstellungen</h2>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     albums(match)
     
 elif mode[0] == 'neuvorstellungenalben':
-    r = requests.get(baseurl,headers=headers,timeout=5)
-    match = re.findall('<span>Neuvorstellungen Alben</span>(.*?)<div class="acym_form">',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    match = re.findall('<h2 class="wp-block-heading">Neuvorstellungen</h2>(.*?)</div></div><div class="wpb_wrapper',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    match = re.findall('<h2 class="wp-block-heading">Neuvorstellungen</h2>(.*?)<div id="jquery_jplayer"></div>',match,re.DOTALL|re.MULTILINE)[0]
     albums(match)
     
 elif mode[0] == 'warteliste':
@@ -235,7 +237,7 @@ elif mode[0] == 'warteliste':
     
 elif mode[0] == 'wartelistealben':
     r = requests.get(baseurl+'maybe-soon/',headers=headers,timeout=5)
-    match = re.findall('<span>Top 15 Albums</span>(.*?)</div></div></aside></div></div></div></div></div>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    match = re.findall('<h2 class="wp-block-heading">Top 15 Alben</h2>(.*?)<div id="jquery_jplayer"></div>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     albums(match)
     
 elif 'bandcamp-album' in mode[0]:
