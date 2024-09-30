@@ -29,7 +29,7 @@ mode = args.get('mode', None)
 baseurl = "https://www.gewc.de/"
 
 def datum():
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
     kw = re.findall('<title>GEWC TOP 15 KW (.*?) ',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     date = re.findall('<title>(.*?)</title>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     date = re.findall('&#8211; (.*?) | GEWC',date,re.DOTALL|re.MULTILINE)[0]
@@ -73,7 +73,7 @@ def songs(match):
         elif "bandcamp.com/album" in links:
             name = name + " [COLOR green](Bandcamp)[/COLOR]"
             links = re.compile('<li class="options-list-amazon"><a href="(.+?)"').findall(links)[0]
-            r = requests.get(links,headers=headers,timeout=5)
+            r = requests.get(links,headers=headers,timeout=10)
             url = re.findall('mp3-128&quot;:&quot;(.*?)&quot;',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
             li = xbmcgui.ListItem(name)
             li.setProperty('IsPlayable','true')
@@ -82,7 +82,7 @@ def songs(match):
         elif "bandcamp.com/track" in links:
             name = name + " [COLOR green](Bandcamp)[/COLOR]"
             links = re.compile('<li class="options-list-amazon"><a href="(.+?)"').findall(links)[0]
-            r = requests.get(links,headers=headers,timeout=5)
+            r = requests.get(links,headers=headers,timeout=10)
             url = re.findall('mp3-128&quot;:&quot;(.*?)&quot;',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
             li = xbmcgui.ListItem(name)
             li.setProperty('IsPlayable','true')
@@ -139,7 +139,7 @@ def albums(match):
 def bandcampalbumresolver(bandcampurl):
     i = 0
     t = 1
-    r = requests.get(bandcampurl,headers=headers,timeout=5)
+    r = requests.get(bandcampurl,headers=headers,timeout=10)
     image = re.findall('<link rel="image_src" href="(.*?)"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     artist = re.findall('<meta name="title" content="(.*?)>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     artist = re.findall(', by (.*?)"',artist,re.DOTALL|re.MULTILINE)[0]
@@ -210,33 +210,33 @@ if mode is None:
     xbmcplugin.endOfDirectory(addon_handle)
 
 elif mode[0] == 'top15':
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
     match = re.findall('<h2 class="wp-block-heading">Top 15 Tracks</h2>(.*?)<h2 class="wp-block-heading">Top 15 Alben</h2>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     songs(match)
 
 elif mode[0] == 'neuvorstellungen':
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
     match = re.findall('<h2 class="wp-block-heading">Neuvorstellungen</h2>(.*?)<h2 class="wp-block-heading">Neuvorstellungen</h2>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     songs(match)
     
 elif mode[0] == 'top15alben':
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
     match = re.findall('<h2 class="wp-block-heading">Top 15 Alben</h2>(.*?)<h2 class="wp-block-heading">Neuvorstellungen</h2>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     albums(match)
     
 elif mode[0] == 'neuvorstellungenalben':
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=5)
+    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
     match = re.findall('<h2 class="wp-block-heading">Neuvorstellungen</h2>(.*?)</div></div><div class="wpb_wrapper',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     match = re.findall('<h2 class="wp-block-heading">Neuvorstellungen</h2>(.*?)<div id="jquery_jplayer"></div>',match,re.DOTALL|re.MULTILINE)[0]
     albums(match)
     
 elif mode[0] == 'warteliste':
-    r = requests.get(baseurl+'maybe-soon/',headers=headers,timeout=5)
+    r = requests.get(baseurl+'maybe-soon/',headers=headers,timeout=10)
     match = re.findall('<div id="chart_container">(.*?)<div id="chart_container">',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     songs(match)
     
 elif mode[0] == 'wartelistealben':
-    r = requests.get(baseurl+'maybe-soon/',headers=headers,timeout=5)
+    r = requests.get(baseurl+'maybe-soon/',headers=headers,timeout=10)
     match = re.findall('<h2 class="wp-block-heading">Top 15 Alben</h2>(.*?)<div id="jquery_jplayer"></div>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
     albums(match)
     

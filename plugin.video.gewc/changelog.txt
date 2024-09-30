@@ -1,3 +1,4 @@
+2024.09.30   - Increased Timeout from 5 to 10.
 2024.09.17   - Fixed HTML-Scraper
 2023.08.28   - Fixed Youtube URL in Waitlist
 2023.02.20.2 - Fixed html entities
