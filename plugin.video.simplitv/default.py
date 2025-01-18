@@ -167,6 +167,10 @@ def play(stream_url, stream_drm_license_server, stream_drm_challenge_data, coden
         except:
             pass
         try:
+            url = url.replace("/dash_nodrm/", "/hls_nodrm/")
+        except:
+            pass
+        try:
             url = url.replace("dash_live", "hls_live")
         except:
             pass
