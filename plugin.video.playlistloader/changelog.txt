@@ -1,3 +1,6 @@
+1.1.8
+- HLS Streams uses inputstream-adaptive
+
 1.1.7
 - Fixed radio stream title in osd.
 
