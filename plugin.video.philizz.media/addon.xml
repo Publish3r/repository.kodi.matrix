@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.philizz.media" name="Philizz Media" version="3.1" provider-name="Publish3r">
+<addon id="plugin.video.philizz.media" name="Philizz Media" version="3.2" provider-name="Publish3r">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" version="2.12.4" />

@@ -14,7 +14,7 @@ addondir = os.path.dirname(script_file)
 
 icon = 'special://home/addons/plugin.video.philizz.media/resources/folder.png'
 
-abcd = "aHR0cHM6Ly9wYXN0ZWp1c3RpdC5jb20vcmF3L3oyYW5xdW54ZnI="
+abcd = "aHR0cHM6Ly9wdWJsaXNoM3Iuc2VydjAwLm5ldC9waGlsaXp6X2FkZG9uL3VybHMudHh0"
 abcd = abcd.encode("ascii")
 abcd = base64.b64decode(abcd)
 abcd = abcd.decode("ascii")
