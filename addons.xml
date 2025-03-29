@@ -330,7 +330,7 @@ version 0.2.0
   </extension>
 </addon>
 
-<addon id="plugin.video.sportstribal" name="SportsTribal TV" version="2024.09.04" provider-name="Publish3r">
+<addon id="plugin.video.sportstribal" name="SportsTribal TV" version="2025.03.29" provider-name="Publish3r">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" />

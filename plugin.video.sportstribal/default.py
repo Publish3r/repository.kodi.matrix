@@ -56,6 +56,7 @@ def get_channels():
         li = xbmcgui.ListItem(name)
         li.setInfo('Video', {"title": name, "plot": desc})
         li.setArt({'fanart': addon_fanart, 'icon': logo, 'thumb' : logo}) 
+        xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_LABEL)
         xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
     xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=False)
     
