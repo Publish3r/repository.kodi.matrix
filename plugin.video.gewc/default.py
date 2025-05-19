@@ -29,12 +29,99 @@ mode = args.get('mode', None)
 baseurl = "https://www.gewc.de/"
 
 def datum():
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
-    kw = re.findall('<title>GEWC TOP 15 KW (.*?) ',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    date = re.findall('<title>(.*?)</title>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    date = re.findall('&#8211; (.*?) | GEWC',date,re.DOTALL|re.MULTILINE)[0]
+    r = requests.get(baseurl+"top-15-charts/", headers=headers,timeout=10)
+    kw = re.findall('<h4 class="td-block-title"><span class="td-pulldown-size">KW (.*?) ',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    date = re.findall('<h4 class="td-block-title"><span class="td-pulldown-size">KW (.*?)</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    date = date.rsplit(' ', 1)[1]
     info = "[COLOR blue]KW " + kw + "[/COLOR]" + " - " + "[COLOR yellow]" + date + "[/COLOR]"
     return info
+
+def liste_songs(match):
+    soup = BeautifulSoup(match, 'html.parser')
+    items = soup.find_all('div', class_="td-module-meta-info")
+    for item in items:
+        title_tag = item.find('h3', class_='entry-title')
+        name = title_tag.text.strip()
+        htmllink = title_tag.find('a')['href']
+        category_tag = item.find('a', class_='td-post-category')
+        try:
+            category_text = category_tag.text.strip()
+            rank = category_text[:2]
+            if rank == "00": 
+                name = "[COLOR blue]" + name + "[/COLOR]"
+            else:                
+                name = "[COLOR yellow]" + rank + "[/COLOR]" + " - " + "[COLOR blue]" + name + "[/COLOR]"
+        except:
+            name = "[COLOR blue]" + name + "[/COLOR]"
+        image_container = item.find_previous_sibling('div', class_='td-image-container')
+        image = image_container.find('span', class_='entry-thumb')['data-img-url']        
+        r = requests.get(htmllink, headers=headers,timeout=10)
+        html = re.findall('<h2 class="wp-block-heading"><strong>Stream / Video</strong></h2>(.*?)<p></p>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+        if "youtube.com" in html or "youtu.be" in html:
+            name = name + " [COLOR green](YouTube)[/COLOR]"
+            youtube = re.findall('<div class="youtube-embed"(.*?)</div>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+            link = re.search(r'/embed/([^?\s]+)', youtube).group(1)
+            url = "plugin://plugin.video.youtube/play/?video_id=" + link
+            li = xbmcgui.ListItem(name)
+            li.setProperty('IsPlayable','true')
+            li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
+            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+        elif "bandcamp.com" in html:
+            name = name + " [COLOR green](Bandcamp)[/COLOR]"
+            link = re.search(r'https://bandcamp\.com[^"]+', html)
+            link = link.group()            
+            bandcamp = requests.get(link, headers=headers,timeout=10)
+            url = re.findall('mp3-128&quot;:&quot;(.*?)&quot;',bandcamp.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+            li = xbmcgui.ListItem(name)
+            li.setProperty('IsPlayable','true')
+            li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
+            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)              
+        else:
+            name = name + " [COLOR red](not available)[/COLOR]"
+            url = build_url({'mode': 'error-song', 'foldername': name})
+            li = xbmcgui.ListItem(name)
+            li.setProperty('IsPlayable','false')
+            li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
+            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)                        
+    xbmcplugin.endOfDirectory(addon_handle)
+    
+def liste_albums(match):
+    soup = BeautifulSoup(match, 'html.parser')
+    items = soup.find_all('div', class_="td-module-meta-info")
+    for item in items:
+        title_tag = item.find('h3', class_='entry-title')
+        name = title_tag.text.strip()
+        htmllink = title_tag.find('a')['href']
+        category_tag = item.find('a', class_='td-post-category')
+        try:
+            category_text = category_tag.text.strip()
+            rank = category_text[:2]
+            if rank == "00": 
+                name = "[COLOR blue]" + name + "[/COLOR]"
+            else:                
+                name = "[COLOR yellow]" + rank + "[/COLOR]" + " - " + "[COLOR blue]" + name + "[/COLOR]"
+        except:
+            name = "[COLOR blue]" + name + "[/COLOR]"
+        image_container = item.find_previous_sibling('div', class_='td-image-container')
+        image = image_container.find('span', class_='entry-thumb')['data-img-url']        
+        r = requests.get(htmllink, headers=headers,timeout=10)
+        html = re.findall('<h2 class="wp-block-heading"><strong>Stream / Video</strong></h2>(.*?)<p></p>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+        if "bandcamp.com/album" in html:
+            name = name + " [COLOR green](Bandcamp)[/COLOR]"
+            links = re.findall('seamless><a href="(.*?)"',html,re.DOTALL|re.MULTILINE)[0]
+            url = build_url({'mode': 'bandcamp-album'+links, 'foldername': name })
+            li = xbmcgui.ListItem(name)
+            li.setProperty('IsPlayable','false')
+            li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
+            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+        else:
+            name = name + " [COLOR red](not available)[/COLOR]"
+            url = build_url({'mode': 'error-album', 'foldername': name})
+            li = xbmcgui.ListItem(name)
+            li.setProperty('IsPlayable','false')
+            li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
+            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
+    xbmcplugin.endOfDirectory(addon_handle)
 
 def songs(match):
     soup = BeautifulSoup(match, 'html.parser')
@@ -213,25 +300,24 @@ if mode is None:
     xbmcplugin.endOfDirectory(addon_handle)
 
 elif mode[0] == 'top15':
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
-    match = re.findall('<h2 class="wp-block-heading">Top 15 Tracks</h2>(.*?)<h2 class="wp-block-heading">Top 15 Alben</h2>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    songs(match)
+    r = requests.get(baseurl+"top-15-charts/",headers=headers,timeout=10)
+    match = re.findall('<span class="td-pulldown-size">Top 15 Tracks</span>(.*?)<span class="td-pulldown-size">Top 15 Alben</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    liste_songs(match)
 
 elif mode[0] == 'neuvorstellungen':
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
-    match = re.findall('<h2 class="wp-block-heading">Neuvorstellungen</h2>(.*?)<h2 class="wp-block-heading">Neuvorstellungen</h2>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    songs(match)
+    r = requests.get(baseurl+"top-15-charts/",headers=headers,timeout=10)
+    match = re.findall('<span class="td-pulldown-size">Top 15 Tracks -  Neuvorstellungen</span>(.*?)<span class="td-pulldown-size">Top 15 Alben -  Neuvorstellungen</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    liste_songs(match)
     
 elif mode[0] == 'top15alben':
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
-    match = re.findall('<h2 class="wp-block-heading">Top 15 Alben</h2>(.*?)<h2 class="wp-block-heading">Neuvorstellungen</h2>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    albums(match)
+    r = requests.get(baseurl+"top-15-charts/",headers=headers,timeout=10)
+    match = re.findall('<span class="td-pulldown-size">Top 15 Alben</span>(.*?)<span class="td-pulldown-size">Top 15 Tracks -  Neuvorstellungen</span>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    liste_albums(match)
     
 elif mode[0] == 'neuvorstellungenalben':
-    r = requests.get(baseurl+"gewc-top-15/",headers=headers,timeout=10)
-    match = re.findall('<h2 class="wp-block-heading">Neuvorstellungen</h2>(.*?)</div></div><div class="wpb_wrapper',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    match = re.findall('<h2 class="wp-block-heading">Neuvorstellungen</h2>(.*?)<div id="jquery_jplayer"></div>',match,re.DOTALL|re.MULTILINE)[0]
-    albums(match)
+    r = requests.get(baseurl+"top-15-charts/",headers=headers,timeout=10)
+    match = re.findall('<span class="td-pulldown-size">Top 15 Alben -  Neuvorstellungen</span>(.*?)<div class="td-footer-template-wrap"',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
+    liste_albums(match)
     
 elif mode[0] == 'warteliste':
     r = requests.get(baseurl+'maybe-soon/',headers=headers,timeout=10)

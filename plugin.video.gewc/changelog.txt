@@ -1,3 +1,4 @@
+2025.05.19   - Fix new Website Structure
 2025.03.26   - Fix wrong Youtube URL
 2024.09.30   - Increased Timeout from 5 to 10.
 2024.09.17   - Fixed HTML-Scraper
