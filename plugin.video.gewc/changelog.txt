@@ -1,9 +1,10 @@
+2025.05.20   - Improved Code
 2025.05.19   - Fix new Website Structure
 2025.03.26   - Fix wrong Youtube URL
-2024.09.30   - Increased Timeout from 5 to 10.
+2024.09.30   - Increased Timeout from 5 to 10
 2024.09.17   - Fixed HTML-Scraper
 2023.08.28   - Fixed Youtube URL in Waitlist
 2023.02.20.2 - Fixed html entities
 2023.02.20.1 - Fixed Bandcamp Resolver
-2023.02.20   - Albums added.
-2023.02.16   - Release.
+2023.02.20   - Albums added
+2023.02.16   - Release
