@@ -115,64 +115,6 @@ def liste_albums(match):
             xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
     xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=True)
     
-def songs(match):
-    soup = BeautifulSoup(match, 'html.parser')
-    items = zip(soup.find_all(class_="current-rank"), 
-                soup.find_all(class_="cover-art"), 
-                soup.find_all(class_="song-title"), 
-                soup.find_all(class_="song-links"))
-    for rank, image, title, links in items:
-        rank = rank.get_text().strip()
-        title = title.get_text().strip()
-        name = f"[COLOR blue]{title}[/COLOR]" if rank == "0" else f"[COLOR yellow]{rank}[/COLOR] - [COLOR blue]{title}[/COLOR]"
-        image = re.search(r'src="(.+?)"', str(image)).group(1)
-        if "options-list-youtube" in str(links):
-            name += " [COLOR green](YouTube)[/COLOR]"
-            try:
-                links = re.search(r'href="(https://www\.youtube\.com/watch\?v=|https://youtu\.be/)([^"]+)"', str(links)).group(2)
-                url = f"plugin://plugin.video.youtube/play/?video_id={links}"
-            except:
-                url = ""
-            li = xbmcgui.ListItem(name); li.setProperty('IsPlayable', 'true'); li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
-            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
-        elif "bandcamp.com/album" in str(links) or "bandcamp.com/track" in str(links):
-            name += " [COLOR green](Bandcamp)[/COLOR]"
-            links = re.search(r'<li class="options-list-amazon"><a href="(.+?)"', str(links)).group(1)
-            r = requests.get(links, headers=headers, timeout=10)
-            url = re.search(r'mp3-128&quot;:&quot;(.*?)&quot;', r.content.decode('utf-8')).group(1)
-            li = xbmcgui.ListItem(name); li.setProperty('IsPlayable', 'true'); li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
-            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
-        else:
-            name += " [COLOR red](not available)[/COLOR]"
-            url = build_url({'mode': 'error-song', 'foldername': name})
-            li = xbmcgui.ListItem(name); li.setProperty('IsPlayable', 'false'); li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
-            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
-    xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=True)
-    
-def albums(match):
-    soup = BeautifulSoup(match, 'html.parser')
-    items = zip(soup.find_all(class_="current-rank"), 
-                soup.find_all(class_="cover-art"), 
-                soup.find_all(class_="song-title"), 
-                soup.find_all(class_="song-links"))
-    for rank, image, title, links in items:
-        rank = rank.get_text().strip()
-        title = title.get_text().strip()
-        name = f"[COLOR blue]{title}[/COLOR]" if rank == "0" else f"[COLOR yellow]{rank}[/COLOR] - [COLOR blue]{title}[/COLOR]"
-        image = re.search(r'src="(.+?)"', str(image)).group(1)
-        if "bandcamp.com/album" in str(links):
-            name += " [COLOR green](Bandcamp)[/COLOR]"
-            links = re.search(r'<li class="options-list-amazon"><a href="(.+?)"', str(links)).group(1)
-            url = build_url({'mode': 'bandcamp-album' + links, 'foldername': name})
-            li = xbmcgui.ListItem(name); li.setProperty('IsPlayable', 'false'); li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
-            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
-        else:
-            name += " [COLOR red](not available)[/COLOR]"
-            url = build_url({'mode': 'error-album', 'foldername': name})
-            li = xbmcgui.ListItem(name); li.setProperty('IsPlayable', 'false'); li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
-            xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
-    xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=True)
-    
 def bandcampalbumresolver(bandcampurl):
     r = requests.get(bandcampurl, headers=headers, timeout=10)
     image = re.search(r'<link rel="image_src" href="(.*?)"', r.content.decode('utf-8')).group(1)
@@ -207,8 +149,8 @@ url_map = {
     'neuvorstellungen': (baseurl + "top-15-charts/", '<span class="td-pulldown-size">Top 15 Tracks -  Neuvorstellungen</span>(.*?)<span class="td-pulldown-size">Top 15 Alben -  Neuvorstellungen</span>', liste_songs),
     'top15alben': (baseurl + "top-15-charts/", '<span class="td-pulldown-size">Top 15 Alben</span>(.*?)<span class="td-pulldown-size">Top 15 Tracks -  Neuvorstellungen</span>', liste_albums),
     'neuvorstellungenalben': (baseurl + "top-15-charts/", '<span class="td-pulldown-size">Top 15 Alben -  Neuvorstellungen</span>(.*?)<div class="td-footer-template-wrap"', liste_albums),
-    'warteliste': (baseurl + 'maybe-soon/', '<div id="chart_container">(.*?)<div id="chart_container">', songs),
-    'wartelistealben': (baseurl + 'maybe-soon/', '<h2 class="wp-block-heading">Top 15 Alben</h2>(.*?)<div id="jquery_jplayer"></div>', albums)
+    'warteliste': (baseurl + 'warteliste/', '<span class="td-pulldown-size">Top 15 Tracks</span>(.*?)<span class="td-pulldown-size">Top 15 Alben</span>', liste_songs),
+    'wartelistealben': (baseurl + 'warteliste/', '<span class="td-pulldown-size">Top 15 Alben</span>(.*?)<div class="td-footer-template-wrap"', liste_albums)
 }
 
 def create_list_item(title, url, is_folder=True):

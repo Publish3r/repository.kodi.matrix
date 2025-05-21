@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.gewc" name="German Electronic WebCharts" version="2025.05.20" provider-name="Publish3r">
+<addon id="plugin.video.gewc" name="German Electronic WebCharts" version="2025.05.21" provider-name="Publish3r">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" />
