@@ -81,7 +81,7 @@ def format_show_info(current_show, next_show, local_tz):
             next_end_time = datetime.strptime(next_show['stop'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=timezone.utc).astimezone(tz=local_tz)
             title = html.unescape(current_show.get('title', 'Unknown'))
             next_title = html.unescape(next_show.get('title', 'Unknown'))
-            return f"Now: {start_time.strftime('%H:%M')} - {end_time.strftime('%H:%M')} {title}\nNext: {next_start_time.strftime('%H:%M')} - {next_end_time.strftime('%H:%M')} {next_title}"
+            return f"[COLOR green]Now:[/COLOR] [COLOR blue]({start_time.strftime('%H:%M')} - {end_time.strftime('%H:%M')})[/COLOR]\n{title}\n[COLOR yellow]Next:[/COLOR] [COLOR blue]({next_start_time.strftime('%H:%M')} - {next_end_time.strftime('%H:%M')})[/COLOR]\n{next_title}"
         else:
             return "No show information available"
     elif current_show:
@@ -89,7 +89,7 @@ def format_show_info(current_show, next_show, local_tz):
             start_time = datetime.strptime(current_show['start'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=timezone.utc).astimezone(tz=local_tz)
             end_time = datetime.strptime(current_show['stop'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=timezone.utc).astimezone(tz=local_tz)
             title = html.unescape(current_show.get('title', 'Unknown'))
-            return f"Now: {start_time.strftime('%H:%M')} - {end_time.strftime('%H:%M')} {title}"
+            return f"[COLOR green]Now:[/COLOR] [COLOR blue]({start_time.strftime('%H:%M')} - {end_time.strftime('%H:%M')})[/COLOR]\n{title}"
         else:
             return "No show information available"
     else:

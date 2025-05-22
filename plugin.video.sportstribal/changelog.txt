@@ -1,3 +1,4 @@
+2025.05.24 - Added Colors to EPG.
 2025.05.23 - Code improved.
 2025.05.22 - Added EPG (Now / Next).
 2025.03.29 - List / sort channels A-Z.
