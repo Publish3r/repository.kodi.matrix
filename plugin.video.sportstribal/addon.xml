@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.sportstribal" name="SportsTribal TV" version="2025.03.29" provider-name="Publish3r">
+<addon id="plugin.video.sportstribal" name="SportsTribal TV" version="2025.05.22" provider-name="Publish3r">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" />
+    <import addon="script.module.tzlocal"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
     <provides>video</provides>
