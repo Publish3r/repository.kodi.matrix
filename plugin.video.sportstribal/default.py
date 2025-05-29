@@ -95,6 +95,24 @@ def format_show_info(current_show, next_show, local_tz):
     else:
         return "No show information available"
 
+def format_full_epg(epg, local_tz):
+    """Formats the full EPG for display."""
+    epg_text = ""
+    for show in epg:
+        if 'start' in show and 'stop' in show:
+            try:
+                start_time = datetime.strptime(show['start'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=timezone.utc).astimezone(tz=local_tz)
+                end_time = datetime.strptime(show['stop'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=timezone.utc).astimezone(tz=local_tz)
+                title = html.unescape(show.get('title', 'Unknown'))
+                epg_text += f"[COLOR green]{start_time.strftime('%d.%m.%Y %H:%M')}[/COLOR] - [COLOR yellow]{end_time.strftime('%d.%m.%Y %H:%M')}[/COLOR] {title}\n"
+            except ValueError:
+                # Handle invalid date format
+                xbmc.log(f"Invalid date format for show: {show}", xbmc.LOGERROR)
+        else:
+            # Handle missing 'start' or 'stop' key
+            xbmc.log(f"Missing 'start' or 'stop' key for show: {show}", xbmc.LOGERROR)
+    return epg_text
+
 def get_channels():
     """Fetches and lists the channels."""
     current_time = datetime.utcnow()
@@ -113,6 +131,9 @@ def get_channels():
             li = xbmcgui.ListItem(name)
             li.setInfo('Video', {"title": name, "plot": desc})
             li.setArt({'fanart': addon_fanart, 'icon': logo, 'thumb': logo})
+            commands = []
+            commands.append(( "Full EPG", f"RunPlugin({build_url({'mode': 'full_epg', 'epg': json.dumps(epg_data), 'name': name})})", ))
+            li.addContextMenuItems(commands)
             xbmcplugin.addSortMethod(addon_handle, xbmcplugin.SORT_METHOD_LABEL)
             xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=False)
         xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=False)
@@ -129,6 +150,13 @@ def play(stream, name, desc, logo):
     xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
     xbmc.Player().play(item=stream, listitem=play_item)
 
+def show_full_epg(epg, name):
+    """Shows the full EPG for the selected channel."""
+    local_tz = tzlocal.get_localzone()
+    epg_text = format_full_epg(json.loads(epg), local_tz)
+    dialog = xbmcgui.Dialog()
+    dialog.textviewer(name, epg_text)
+
 # Main logic
 mode = args.get('mode', None)
 if mode is None:
@@ -139,3 +167,7 @@ elif mode[0] == "play":
     desc = args['desc'][0]
     logo = args['logo'][0]
     play(stream, name, desc, logo)
+elif mode[0] == "full_epg":
+    epg = args['epg'][0]
+    name = args['name'][0]
+    show_full_epg(epg, name)
