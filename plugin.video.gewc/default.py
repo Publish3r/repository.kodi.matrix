@@ -54,17 +54,17 @@ def liste_songs(match):
         html = r.content.decode('utf-8')
         if "youtube.com" in html or "youtu.be" in html:
             try:
-                try:
-                    name += " [COLOR green](YouTube)[/COLOR]"
+                try:                   
                     youtube = re.search(r'<div class="youtube-embed"(.*?)</div>', html, re.DOTALL|re.MULTILINE).group(1)
                     link = re.search(r'data-video_id="(.*?)"', youtube).group(1) if re.search(r'data-video_id="(.*?)"', youtube) else re.search(r'/embed/([^?\s]+)', youtube).group(1)
                     url = f"plugin://plugin.video.youtube/play/?video_id={link}"
+                    name += " [COLOR green](YouTube)[/COLOR]"
                     li = xbmcgui.ListItem(name); li.setProperty('IsPlayable', 'true'); li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
                 except:
-                    name += " [COLOR green](Bandcamp)[/COLOR]"
                     link = re.search(r'https://bandcamp\.com[^"]+', html).group()
                     bandcamp = requests.get(link, headers=headers, timeout=10)
                     url = re.search(r'mp3-128&quot;:&quot;(.*?)&quot;', bandcamp.content.decode('utf-8')).group(1)
+                    name += " [COLOR green](Bandcamp)[/COLOR]"
                     li = xbmcgui.ListItem(name); li.setProperty('IsPlayable', 'true'); li.setArt({'icon': image, 'thumb': image, 'poster': image, 'fanart': gewc.getAddonInfo('fanart')})
             except:
                 name += " [COLOR red](not available)[/COLOR]"
