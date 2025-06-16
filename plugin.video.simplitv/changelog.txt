@@ -1,3 +1,4 @@
+2025.06.16 - Fixed Timeout.
 2025.05.18 - Fixed DASH no DRM streams.
 2024.05.21 - Fixed wrong Stream URL again.
 2024.05.20 - Fixed wrong Stream URL.

@@ -56,7 +56,7 @@ def epg_tiles(date=None, ch_overview=False):
     epg_url = "https://api.app.simplitv.at/v1/EpgTile/FilterProgramTiles?$headers=%7B%22Content-Type%22:%22application%2Fjson%3Bcharset%3Dutf-8%22,%22X-Api-Date-Format%22:%22iso%22,%22X-Api-Camel-Case%22:true%7D"
     epg_post = json.dumps({"platformCodename": "www", "from": time_start, "to": time_end})
     try:
-        epg_page = requests.post(epg_url, timeout=5, headers=api_headers, data=epg_post, allow_redirects=False)
+        epg_page = requests.post(epg_url, timeout=15, headers=api_headers, data=epg_post, allow_redirects=False)
         epg_resp = epg_page.json()
         return epg_resp["programs"]
     except:
@@ -70,7 +70,7 @@ def epg_details(epg_resp, ch=None):
     else:
         prg_post = json.dumps({"platformCodename": "www", "requestedTiles": [{"id": epg_resp[i][0]["id"]} for i in epg_resp.keys()]})
     try:
-        prg_page = requests.post(prg_url, timeout=5, headers=api_headers, data=prg_post, allow_redirects=False)
+        prg_page = requests.post(prg_url, timeout=15, headers=api_headers, data=prg_post, allow_redirects=False)
         prg_resp = prg_page.json()["tiles"]
         if ch:
             return prg_resp
@@ -212,7 +212,7 @@ def token():
     try:
         login_url = 'https://api.app.simplitv.at/v1/OrsUser/Authenticate'
         login_post = json.dumps({'Login': username, 'LongExpiration': 'true', 'Password': password, 'platformCodename': 'www'})
-        login_page = requests.post(login_url, timeout=5, headers=api_headers, data=login_post, allow_redirects=False)
+        login_page = requests.post(login_url, timeout=15, headers=api_headers, data=login_post, allow_redirects=False)
         login_resp = login_page.json()
         token = login_resp['token']
         return token
@@ -222,7 +222,7 @@ def token():
 def devicekey():
     try:
         key_url = f"https://api.app.simplitv.at/v1/Devices/GetDevices?platformCodename=www&token={token()}"
-        key_page = requests.get(key_url, timeout=5, headers=api_headers, allow_redirects=False)
+        key_page = requests.get(key_url, timeout=15, headers=api_headers, allow_redirects=False)
         key_resp = key_page.json()
         key = key_resp['devices'][0]['key']
         return key
@@ -230,9 +230,9 @@ def devicekey():
         try:       
             keyreg_url = 'https://api.app.simplitv.at/v1/Devices/RegisterDevice'
             keyreg_post = json.dumps({'deviceKey': generate_key(), 'deviceName': 'Firefox', 'generalDeviceType': '2', 'operatingSystem': 'Windows', 'platformCodename': 'www', 'pushToken': '', 'userAgent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0', 'userToken': token(), 'versionOs': '10'})
-            keyreg_page = requests.post(keyreg_url, timeout=5, headers=api_headers, data=keyreg_post, allow_redirects=False)        
+            keyreg_page = requests.post(keyreg_url, timeout=15, headers=api_headers, data=keyreg_post, allow_redirects=False)        
             key_url = f"https://api.app.simplitv.at/v1/Devices/GetDevices?platformCodename=www&token={token()}"
-            key_page = requests.get(key_url, timeout=5, headers=api_headers, allow_redirects=False)
+            key_page = requests.get(key_url, timeout=15, headers=api_headers, allow_redirects=False)
             key_resp = key_page.json()
             key = key_resp['devices'][0]['key']
             return key
@@ -250,7 +250,7 @@ def get_all_recordings():
     while True:
         try:
             recordings_url = f"https://api.app.simplitv.at/v2/Pvr/GetRecordings?platformCodename=www&tokenValue={token()}&page={page}&limit=99999&recordingType=NPvr&recordingFlags=Programs,ProgramImages,ProgramCategories"    
-            recordings_page = requests.get(recordings_url, timeout=5, headers=api_headers, allow_redirects=False)
+            recordings_page = requests.get(recordings_url, timeout=15, headers=api_headers, allow_redirects=False)
             recordings_resp = recordings_page.json()
             page = recordings_resp["pagination"]["page"]
             pages = recordings_resp["pagination"]["totalPages"]
@@ -268,7 +268,7 @@ def get_all_recordings():
 def get_recordings(page):
     i = 0
     recordings_url = f"https://api.app.simplitv.at/v2/Pvr/GetRecordings?platformCodename=www&tokenValue={token()}&page={page}&limit=99999&recordingType=NPvr&recordingFlags=Programs,ProgramImages,ProgramCategories"
-    recordings_page = requests.get(recordings_url, timeout=5, headers=api_headers, allow_redirects=False)
+    recordings_page = requests.get(recordings_url, timeout=15, headers=api_headers, allow_redirects=False)
     recordings_resp = recordings_page.json()
     page = recordings_resp["pagination"]["page"]
     pages = recordings_resp["pagination"]["totalPages"]
@@ -571,7 +571,7 @@ def get_epg_details(tile):
 def get_channels():
     channels_url = 'https://api.app.simplitv.at/v1/EpgTile/FilterChannelTiles' 
     channels_post = json.dumps({'isParentalControlEnabled': 'false', 'platformCodename': 'www', 'token': token()})
-    channels_page = requests.post(channels_url, timeout=5, headers=api_headers, data=channels_post, allow_redirects=False)
+    channels_page = requests.post(channels_url, timeout=15, headers=api_headers, data=channels_post, allow_redirects=False)
     channels_resp = channels_page.json()
     return [i["codename"] for i in channels_resp["channels"][0]["tiles"]]
    
@@ -607,7 +607,7 @@ elif mode[0] == "play":
     elif args['recording'][0] != "false":
         codename = args['recording'][0]
     stream_data = f"https://api.app.simplitv.at/v1/Player/AcquireContent?platformCodename=www&deviceKey={devicekey()}&token={token()}&codename={codename}"
-    stream_data = requests.get(stream_data, timeout=5, headers=data_headers, allow_redirects=False)
+    stream_data = requests.get(stream_data, timeout=15, headers=data_headers, allow_redirects=False)
     stream_resp = stream_data.json()
     try:
         stream_url = stream_resp['MediaFiles'][0]['Formats'][0]['Url']
@@ -686,7 +686,7 @@ elif mode[0] == "add":
     id = args['id'][0]
     add_url = 'https://api.app.simplitv.at/v1/Pvr/ScheduleRecording'
     add_post = json.dumps({'platformCodename': 'www', 'token': token(), "EpgId": {"Codename": id}})
-    add_page = requests.post(add_url, timeout=5, headers=api_headers, data=add_post, allow_redirects=False)
+    add_page = requests.post(add_url, timeout=15, headers=api_headers, data=add_post, allow_redirects=False)
     add_resp = add_page.json()
     result = str(add_resp["result"]["success"])
     if result == "True":
@@ -699,7 +699,7 @@ elif mode[0] == "delete":
     id = args['id'][0]
     delete_url = 'https://api.app.simplitv.at/v1/Pvr/DeleteRecording' 
     delete_post = json.dumps({'platformCodename': 'www', 'token': token(), "recordingId": id})
-    delete_page = requests.post(delete_url, timeout=5, headers=api_headers, data=delete_post, allow_redirects=False)
+    delete_page = requests.post(delete_url, timeout=15, headers=api_headers, data=delete_post, allow_redirects=False)
     delete_resp = delete_page.json()
     result = str(delete_resp["result"]["success"])
     if result == "True":
