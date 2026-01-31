@@ -1,4 +1,20 @@
-﻿import xbmcaddon,os,requests,xbmc,xbmcgui,urllib.request,urllib.parse,urllib.error,urllib.request,urllib.error,urllib.parse,re,xbmcplugin,xbmcvfs
+﻿import os
+import re
+import sys
+import requests
+import urllib.parse
+import urllib3
+import xbmc
+import xbmcaddon
+import xbmcgui
+import xbmcplugin
+import xbmcvfs
+from dateutil import parser
+from urllib.parse import urljoin, urlparse
+from urllib.request import urlopen
+from urllib.error import URLError
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 matchcenter = xbmcaddon.Addon('plugin.program.matchcenter')
 
@@ -33,93 +49,100 @@ def MENU():
     addDir('Spielplan','-',6,custom_logo,'','')
     
 def TABELLE(name):
+    UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+    BASE_DOMAIN = "https://matchcenter.laola1.at"
+    CREST_BASE_URL = urljoin(BASE_DOMAIN, "crests/")
+    headers = {'User-Agent': UA, 'Referer': 'https://www.laola1.at', 'Accept': 'application/json'}
     if "1. BL" in name:
-        URL = "https://web.de/magazine/sport/fussball/bundesliga/liveticker/bl/tabelle/"
+        DATA_PATH = "data/Fussball/Deutschland/Bundesliga/standings.json"
         X = "1"
-    if "2. BL" in name:
-        URL = "https://web.de/magazine/sport/fussball/2-liga/liveticker/2bl/konferenz/tabelle"
+    elif "2. BL" in name:
+        DATA_PATH = "data/Fussball/Deutschland/2Bundesliga/standings.json"
         X = "2"
-    r = requests.get(URL, headers=headers, timeout=5)
-    table = re.findall('<th class="points">Punkte</th>(.*?)</table>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    rank = re.compile('<td class="rank">(.+?)</td>').findall(table)
-    image = re.compile('<img src="(.+?)"').findall(table)
-    team = re.compile('<span>(.+?)</span>').findall(table)
-    points = re.compile('<td class="points">(.+?)</td>').findall(table)
-    goals = re.compile('<td class="goals">(.+?)</td>').findall(table)
-    games = re.compile('<td class="games">(.+?)</td>').findall(table)
-    for platz, wappen, mannschaft, punkte, tore, spiele in zip(rank, image, team, points, goals, games):
-        try:
-            tore = tore.replace("&#58;", ":")
-        except:
-            tore = tore
-        try:
-            tore_a = tore.split(':')[0].zfill(2)
-            tore_b = tore.split(":",1)[1].zfill(2)
-            tore = tore_a + ":" + tore_b
-        except:
-            pass
-        platz = platz.zfill(2)
+    else: return
+    URL = urljoin(BASE_DOMAIN, DATA_PATH)
+    try:
+        r = requests.get(URL, headers=headers, timeout=10, verify=False)
+        data = r.json()
+        standings = data['standings']['team_results'][0]['team_standings']
+    except: return
+    for entry in standings:
+        rank_val = str(entry.get('rank', '0'))
+        platz = rank_val.zfill(2)
+        team_obj = entry.get('team', {})
+        mannschaft = team_obj.get('name', 'Unbekannt')
+        punkte = str(entry.get('points', '0')).zfill(2)
+        spiele = str(entry.get('played', '0')).zfill(2)
+        t_plus = str(entry.get('goals_for', '0')).zfill(2)
+        t_minus = str(entry.get('goals_against', '0')).zfill(2)
+        tore = f"{t_plus}:{t_minus}"
+        team_id = str(team_obj.get('id', '')).split(':')[-1]
+        image = urljoin(CREST_BASE_URL, f"{team_id}.png")
         if X == "1":
-            if platz == "01":
-                platz = "[COLOR green]"+platz+"[/COLOR]"
-            elif platz == "02":
-                platz = "[COLOR green]"+platz+"[/COLOR]"
-            elif platz == "03":
-                platz = "[COLOR green]"+platz+"[/COLOR]" 
-            elif platz == "04":
-                platz = "[COLOR green]"+platz+"[/COLOR]"  
-            elif platz == "05":
-                platz = "[COLOR deepskyblue]"+platz+"[/COLOR]" 
-            elif platz == "06":
-                platz = "[COLOR skyblue]"+platz+"[/COLOR]"
-            elif platz == "16":
-                platz = "[COLOR orange]"+platz+"[/COLOR]" 
-            elif platz == "17":
-                platz = "[COLOR red]"+platz+"[/COLOR]" 
-            elif platz == "18":
-                platz = "[COLOR red]"+platz+"[/COLOR]"  
-            else:
-                platz = "[COLOR silver]"+platz+"[/COLOR]"
+            if platz in ["01", "02", "03", "04"]: platz = "[COLOR green]"+platz+"[/COLOR]"
+            elif platz == "05": platz = "[COLOR deepskyblue]"+platz+"[/COLOR]"
+            elif platz == "06": platz = "[COLOR skyblue]"+platz+"[/COLOR]"
+            elif platz == "16": platz = "[COLOR orange]"+platz+"[/COLOR]"
+            elif platz in ["17", "18"]: platz = "[COLOR red]"+platz+"[/COLOR]"
+            else: platz = "[COLOR silver]"+platz+"[/COLOR]"
         if X == "2":
-            if platz == "01":
-                platz = "[COLOR green]"+platz+"[/COLOR]"
-            elif platz == "02":
-                platz = "[COLOR green]"+platz+"[/COLOR]"
-            elif platz == "03":
-                platz = "[COLOR yellow]"+platz+"[/COLOR]" 
-            elif platz == "16":
-                platz = "[COLOR orange]"+platz+"[/COLOR]" 
-            elif platz == "17":
-                platz = "[COLOR red]"+platz+"[/COLOR]" 
-            elif platz == "18":
-                platz = "[COLOR red]"+platz+"[/COLOR]"  
-            else:
-                platz = "[COLOR silver]"+platz+"[/COLOR]"                
-        name = (f"[B]{platz}[/B] [COLOR silver]- {punkte.zfill(2)} - {tore} - {spiele.zfill(2)} -[/COLOR] [B]{mannschaft}[/B]")
-        desc = name
-        image = wappen.replace("30x30", "500x500")
-        addLinkFussball(name,desc,image,'','')
-        
+            if platz in ["01", "02"]: platz = "[COLOR green]"+platz+"[/COLOR]"
+            elif platz == "03": platz = "[COLOR yellow]"+platz+"[/COLOR]"
+            elif platz == "16": platz = "[COLOR orange]"+platz+"[/COLOR]"
+            elif platz in ["17", "18"]: platz = "[COLOR red]"+platz+"[/COLOR]"
+            else: platz = "[COLOR silver]"+platz+"[/COLOR]"
+        name_str = f"[B]{platz}[/B] [COLOR silver]- {punkte} - {tore} - {spiele} -[/COLOR] [B]{mannschaft}[/B]"
+        addLinkFussball(name_str, name_str, image, '', '')
+       
 def ERGEBNISSE(name):
+    UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+    BASE_DOMAIN = "https://matchcenter.laola1.at"
+    headers = {'User-Agent': UA, 'Referer': 'https://www.laola1.at', 'Accept': 'application/json'}
     if "1. BL" in name:
-        URL = "https://web.de/magazine/sport/fussball/bundesliga/liveticker/bl/"
-        image = path+'bl1.png'
-    if "2. BL" in name:
-        URL = "https://web.de/magazine/sport/fussball/2-liga/liveticker/2bl/konferenz/spieltag"
-        image = path+'bl2.png'
-    r = requests.get(URL, headers=headers, timeout=5)
-    results = re.findall('<section class="results">(.*?)</section>',r.content.decode('utf-8'),re.DOTALL|re.MULTILINE)[0]
-    date = re.compile('(<div class="date">|<div class="live">)(.+?)</div>').findall(results)
-    score = re.compile('score">(.+?)</div>').findall(results)
-    home = re.compile('<div class="team1">(.+?)title="', re.DOTALL|re.MULTILINE).findall(results)
-    guest = re.compile('<div class="team2">(.+?)title="', re.DOTALL|re.MULTILINE).findall(results)
-    for datum, ergebnis, heim, gast in zip(date, score, home, guest):
-        datum = datum[1]
-        heim = re.compile('alt="(.+?)"', re.DOTALL|re.MULTILINE).findall(heim)[0]
-        gast = re.compile('alt="(.+?)"', re.DOTALL|re.MULTILINE).findall(gast)[0]
-        name = (f"{heim} : {gast} {ergebnis} ({datum})")
-        desc = name
-        addLinkFussball(name,desc,image,'','')
+        DATA_PATH = "data/Fussball/Deutschland/Bundesliga/schedule_by_round.json"
+        img = path+'bl1.png'
+    elif "2. BL" in name:
+        DATA_PATH = "data/Fussball/Deutschland/2Bundesliga/schedule_by_round.json"
+        img = path+'bl2.png'
+    else: return
+    URL = urljoin(BASE_DOMAIN, DATA_PATH)
+    try:
+        r = requests.get(URL, headers=headers, timeout=10, verify=False)
+        data = r.json()
+        current_round_name = data.get('tournament', {}).get('current_round', '')
+        all_rounds = data.get('rounds', [])
+    except: return
+    for round_entry in all_rounds:
+        if round_entry.get('round') == current_round_name:
+            matches = round_entry.get('matches', [])
+            try: matches.sort(key=lambda x: x.get('scheduled', ''))
+            except: pass
+            for match in matches:
+                sched = match.get('scheduled', '')
+                try:
+                    dt = parser.parse(sched)
+                    days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+                    datum = f"{days[dt.weekday()]}, {dt.strftime('%d.%m. %H:%M')}"
+                except: datum = sched
+                heim, gast = "Unbekannt", "Unbekannt"
+                for comp in match.get('competitors', []):
+                    if comp.get('qualifier') == 'home': heim = comp.get('name')
+                    elif comp.get('qualifier') == 'away': gast = comp.get('name')
+                res = match.get('result', {})
+                s_info = match.get('status_info', {})
+                match_status = match.get('status', '')
+                h_score = res.get('home_score') if res.get('home_score') is not None else s_info.get('home_score')
+                a_score = res.get('away_score') if res.get('away_score') is not None else s_info.get('away_score')
+                score = f"{h_score}:{a_score}" if h_score is not None else "0:0"
+                if match_status == 'closed':
+                    status_anzeige = f"- {score} - Endstand"
+                elif match_status == 'not_started':
+                    status_anzeige = f"({datum})"
+                else:
+                    status_anzeige = f"- {score} - Live"
+                final_name = f"{heim} : {gast} {status_anzeige}"
+                addLinkFussball(final_name, final_name, img, '', '')
+            break
         
 def SPIELPLAN_ALLE_AKTUELL(name):
     if "1. BL" in name:
