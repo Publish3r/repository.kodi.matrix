@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.simplitv" name="simpliTV" version="2026.11.17" provider-name="Publish3r, sunsettrack4">
+<addon id="plugin.video.simplitv" name="simpliTV" version="2026.11.18" provider-name="Publish3r, sunsettrack4">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests"/>

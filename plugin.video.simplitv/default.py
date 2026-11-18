@@ -10,6 +10,8 @@ import xbmcplugin
 import xbmcaddon
 import inputstreamhelper
 from datetime import datetime, timezone, timedelta
+import string
+import random
 
 addon = xbmcaddon.Addon()
 addon_url = sys.argv[0]
@@ -53,6 +55,64 @@ def get_auth_token():
         pass
     
     return None
+
+def devicekey():
+    token = get_auth_token()
+    if not token:
+        return None
+
+    headers = api_headers.copy()
+    headers["Authorization"] = f"Bearer {token}"
+
+    try:
+        key_url = f"{API_BASE}/v1/Devices/GetDevices?platformCodename=www&token={token}"
+        key_page = requests.get(key_url, timeout=15, headers=headers, allow_redirects=False)
+        if key_page.status_code == 200:
+            key_resp = key_page.json()
+            devices = key_resp.get('devices', [])
+            if devices and len(devices) > 0:
+                return devices[0]['key']
+    except Exception:
+        pass
+
+    try:
+        reg_url = f"{API_BASE}/v1/Devices/RegisterDevice"
+        
+        reg_headers = headers.copy()
+        reg_headers["Content-Type"] = "application/json;charset=utf-8"
+
+        new_device_key = generate_key()
+        payload = {
+            "platformCodename": "www",
+            "deviceKey": new_device_key,
+            "userToken": token,
+            "pushToken": "",
+            "generalDeviceType": "2",
+            "deviceName": "Firefox",
+            "browserVersion": "160.0",
+            "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:160.0) Gecko/20100101 Firefox/160.0",
+            "operatingSystem": "Windows",
+            "versionOs": "10"
+        }
+
+        resp = requests.post(reg_url, headers=reg_headers, json=payload, timeout=15)
+        if resp.status_code in [200, 201]:
+            key_url = f"{API_BASE}/v1/Devices/GetDevices?platformCodename=www&token={token}"
+            key_page = requests.get(key_url, timeout=15, headers=headers, allow_redirects=False)
+            if key_page.status_code == 200:
+                key_resp = key_page.json()
+                devices = key_resp.get('devices', [])
+                if devices and len(devices) > 0:
+                    return devices[0]['key']
+    except Exception:
+        pass
+
+    return None
+            
+def generate_key():
+    generate = string.ascii_letters.lower() + string.digits
+    devicekey = ''.join((random.choice(generate) for i in range(32)))
+    return devicekey
 
 def fetch_tile_chunk(chunk_ids, headers):
     prg_url = f"{API_BASE}/v2/Tile/GetTiles"
@@ -158,7 +218,9 @@ def play_channel(codename, token):
         headers = api_headers.copy()
         headers["Authorization"] = f"Bearer {token}"
 
-        acquire_url = f"{API_BASE}/v1/Player/AcquireContent?platformCodename=www&deviceKey=4195110827&token={token}&codename={codename}"
+        dev_key = devicekey()
+
+        acquire_url = f"{API_BASE}/v1/Player/AcquireContent?platformCodename=www&deviceKey={dev_key}&token={token}&codename={codename}"
         resp = requests.get(acquire_url, headers=headers, timeout=15)
         
         if resp.status_code == 200:
