@@ -1,3 +1,4 @@
+2026.11.17 - New API, dirty fix.
 2026.05.29 - Fixed ListItem Override.
 2025.06.16 - Fixed Timeout.
 2025.05.18 - Fixed DASH no DRM streams.
