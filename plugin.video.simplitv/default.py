@@ -1,10 +1,7 @@
 import sys
-import json
-import traceback
 import urllib.parse
 import concurrent.futures
 import requests
-import xbmc
 import xbmcgui
 import xbmcplugin
 import xbmcaddon
@@ -19,271 +16,368 @@ addon_handle = int(sys.argv[1])
 
 API_BASE = "https://api.app.austrostream.at"
 TENANT = "simplitv"
+PLATFORM = "www"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:160.0) Gecko/20100101 Firefox/160.0"
 
-api_headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:160.0) Gecko/20100101 Firefox/160.0',
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Language': 'de',
-    'Origin': 'https://streaming.simpli.at',
-    'Referer': 'https://streaming.simpli.at/',
-    'X-Api-Date-Format': 'iso',
-    'X-Api-Resource-Language-Context': 'de',
-    'X-Api-Camel-Case': 'true',
-    'X-Tenant-Codename': TENANT
+API_HEADERS = {
+    "User-Agent": USER_AGENT,
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "de",
+    "Origin": "https://streaming.simpli.at",
+    "Referer": "https://streaming.simpli.at/",
+    "X-Api-Date-Format": "iso",
+    "X-Api-Resource-Language-Context": "de",
+    "X-Api-Camel-Case": "true",
+    "X-Tenant-Codename": TENANT
 }
 
+LOGIN_PAYLOAD_TEMPLATE = {
+    "platformCodename": PLATFORM,
+    "login": "",
+    "password": ""
+}
+
+DEVICE_REG_PAYLOAD_TEMPLATE = {
+    "platformCodename": PLATFORM,
+    "deviceKey": "",
+    "userToken": "",
+    "pushToken": "",
+    "generalDeviceType": "2",
+    "deviceName": "Firefox",
+    "browserVersion": "160.0",
+    "userAgent": USER_AGENT,
+    "operatingSystem": "Windows",
+    "versionOs": "10"
+}
+
+EPG_PAYLOAD_TEMPLATE = {
+    "platformCodename": PLATFORM,
+    "from": "",
+    "to": ""
+}
+
+TILES_PAYLOAD_TEMPLATE = {
+    "platformCodename": PLATFORM,
+    "requestedTiles": []
+}
+
+
+def build_auth_headers(token, content_type=None):
+    headers = API_HEADERS.copy()
+    headers["Authorization"] = f"Bearer {token}"
+    if content_type:
+        headers["Content-Type"] = content_type
+    return headers
+
+
 def get_auth_token():
-    username = addon.getSetting('username')
-    password = addon.getSetting('password')
-    
+    username = addon.getSetting("username")
+    password = addon.getSetting("password")
+
     if not username or not password:
         xbmcgui.Dialog().ok("SimpliTV", "Bitte trage E-Mail und Passwort in den Addon-Einstellungen ein.")
         return None
 
     try:
         login_url = f"{API_BASE}/v1/OrsUser/Authenticate"
-        payload = {
-            "platformCodename": "www",
-            "login": username,
-            "password": password
-        }
-        resp = requests.post(login_url, json=payload, headers=api_headers, timeout=15)
+        payload = LOGIN_PAYLOAD_TEMPLATE.copy()
+        payload["login"] = username
+        payload["password"] = password
+
+        resp = requests.post(login_url, json=payload, headers=API_HEADERS, timeout=15)
         if resp.status_code == 200:
             data = resp.json()
-            return data.get('token') or data.get('accessToken')
+            return data.get("token") or data.get("accessToken")
     except Exception:
         pass
-    
+
     return None
 
-def devicekey():
-    token = get_auth_token()
-    if not token:
-        return None
 
-    headers = api_headers.copy()
-    headers["Authorization"] = f"Bearer {token}"
-
+def fetch_existing_device_key(token, headers):
     try:
-        key_url = f"{API_BASE}/v1/Devices/GetDevices?platformCodename=www&token={token}"
+        key_url = f"{API_BASE}/v1/Devices/GetDevices?platformCodename={PLATFORM}&token={token}"
         key_page = requests.get(key_url, timeout=15, headers=headers, allow_redirects=False)
         if key_page.status_code == 200:
-            key_resp = key_page.json()
-            devices = key_resp.get('devices', [])
-            if devices and len(devices) > 0:
-                return devices[0]['key']
+            devices = key_page.json().get("devices", [])
+            if devices:
+                return devices[0].get("key")
     except Exception:
         pass
+    return None
+
+
+def devicekey(token=None):
+    auth_token = token or get_auth_token()
+    if not auth_token:
+        return None
+
+    headers = build_auth_headers(auth_token)
+    existing_key = fetch_existing_device_key(auth_token, headers)
+    if existing_key:
+        return existing_key
 
     try:
         reg_url = f"{API_BASE}/v1/Devices/RegisterDevice"
-        
-        reg_headers = headers.copy()
-        reg_headers["Content-Type"] = "application/json;charset=utf-8"
+        reg_headers = build_auth_headers(auth_token, "application/json;charset=utf-8")
 
-        new_device_key = generate_key()
-        payload = {
-            "platformCodename": "www",
-            "deviceKey": new_device_key,
-            "userToken": token,
-            "pushToken": "",
-            "generalDeviceType": "2",
-            "deviceName": "Firefox",
-            "browserVersion": "160.0",
-            "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:160.0) Gecko/20100101 Firefox/160.0",
-            "operatingSystem": "Windows",
-            "versionOs": "10"
-        }
+        payload = DEVICE_REG_PAYLOAD_TEMPLATE.copy()
+        payload["deviceKey"] = generate_key()
+        payload["userToken"] = auth_token
 
         resp = requests.post(reg_url, headers=reg_headers, json=payload, timeout=15)
         if resp.status_code in [200, 201]:
-            key_url = f"{API_BASE}/v1/Devices/GetDevices?platformCodename=www&token={token}"
-            key_page = requests.get(key_url, timeout=15, headers=headers, allow_redirects=False)
-            if key_page.status_code == 200:
-                key_resp = key_page.json()
-                devices = key_resp.get('devices', [])
-                if devices and len(devices) > 0:
-                    return devices[0]['key']
+            return fetch_existing_device_key(auth_token, headers)
     except Exception:
         pass
 
     return None
-            
+
+
 def generate_key():
-    generate = string.ascii_letters.lower() + string.digits
-    devicekey = ''.join((random.choice(generate) for i in range(32)))
-    return devicekey
+    alphabet = string.ascii_letters.lower() + string.digits
+    return "".join(random.choice(alphabet) for _ in range(32))
+
 
 def fetch_tile_chunk(chunk_ids, headers):
     prg_url = f"{API_BASE}/v2/Tile/GetTiles"
-    requested_tiles = [{"id": tid} for tid in chunk_ids]
-    prg_post = {
-        "platformCodename": "www",
-        "requestedTiles": requested_tiles
-    }
+    payload = TILES_PAYLOAD_TEMPLATE.copy()
+    payload["requestedTiles"] = [{"id": tid} for tid in chunk_ids]
+
     try:
-        prg_resp = requests.post(prg_url, headers=headers, json=prg_post, timeout=15)
+        prg_resp = requests.post(prg_url, headers=headers, json=payload, timeout=15)
         if prg_resp.status_code == 200:
             return prg_resp.json().get("tiles", [])
     except Exception:
         pass
     return []
 
+
+def parse_iso_local(dt_str):
+    if not dt_str:
+        return None
+    try:
+        return datetime.fromisoformat(dt_str).astimezone()
+    except Exception:
+        return None
+
+
+def format_epg_plot(entries, now_local, max_items=4):
+    if not entries:
+        return ""
+
+    sorted_entries = sorted(
+        entries,
+        key=lambda x: x["start_dt"] or datetime.min.replace(tzinfo=now_local.tzinfo)
+    )
+
+    relevant = [
+        e for e in sorted_entries
+        if e["title"] and (not e["stop_dt"] or e["stop_dt"] > now_local)
+    ]
+    if not relevant:
+        relevant = [e for e in sorted_entries if e["title"]]
+
+    lines = []
+    for entry in relevant[:max_items]:
+        start_str = entry["start_dt"].strftime("%H:%M") if entry["start_dt"] else ""
+        stop_str = entry["stop_dt"].strftime("%H:%M") if entry["stop_dt"] else ""
+        time_range = f"{start_str} - {stop_str}" if start_str and stop_str else (start_str or stop_str)
+        if time_range:
+            lines.append(f"{time_range}\n{entry['title']}")
+        else:
+            lines.append(entry["title"])
+
+    return "\n\n".join(lines)
+
+
 def list_channels():
     try:
         token = get_auth_token()
         if not token:
-            xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=False)
+            xbmcplugin.endOfDirectory(addon_handle)
             return
 
-        headers = api_headers.copy()
-        headers["Authorization"] = f"Bearer {token}"
+        headers = build_auth_headers(token)
 
         now_utc = datetime.now(timezone.utc)
-        time_start = now_utc.strftime("%Y-%m-%dT%H:%M:%S.000Z")
-        time_end = (now_utc + timedelta(minutes=5)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
-        
+        now_local = now_utc.astimezone()
+
         epg_url = f"{API_BASE}/v1/EpgTile/FilterProgramTiles"
-        epg_post = {
-            "platformCodename": "www",
-            "from": time_start,
-            "to": time_end
-        }
-        
-        resp = requests.post(epg_url, headers=headers, json=epg_post, timeout=15)
+        epg_payload = EPG_PAYLOAD_TEMPLATE.copy()
+        epg_payload["from"] = (now_utc - timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+        epg_payload["to"] = (now_utc + timedelta(hours=4)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+
+        resp = requests.post(epg_url, headers=headers, json=epg_payload, timeout=15)
         if resp.status_code != 200:
-            xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=False)
+            xbmcplugin.endOfDirectory(addon_handle)
             return
-            
+
         epg_resp = resp.json().get("programs", {})
 
         tile_ids = []
+        id_to_codename = {}
         for ch_key, progs in epg_resp.items():
-            if isinstance(progs, list) and len(progs) > 0:
-                prog_id = progs[0].get("id")
-                if prog_id and prog_id not in tile_ids:
-                    tile_ids.append(prog_id)
+            if isinstance(progs, list):
+                for prog in progs[:5]:
+                    if not isinstance(prog, dict):
+                        continue
+                    prog_id = prog.get("id")
+                    if prog_id:
+                        if prog_id not in tile_ids:
+                            tile_ids.append(prog_id)
+                        id_to_codename[prog_id] = str(ch_key).lower()
 
         if not tile_ids:
-            xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=False)
+            xbmcplugin.endOfDirectory(addon_handle)
             return
 
         chunk_size = 25
         chunks = [tile_ids[i:i + chunk_size] for i in range(0, len(tile_ids), chunk_size)]
-        
-        channels = []
-        seen_codenames = set()
+
+        channel_meta = {}
+        epg_by_channel = {}
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             futures = [executor.submit(fetch_tile_chunk, chunk, headers) for chunk in chunks]
             for future in concurrent.futures.as_completed(futures):
-                tiles_data = future.result()
-                for tile in tiles_data:
-                    tile_channel = tile.get("tileChannel", {})
-                    codename = tile_channel.get("codename")
+                for tile in future.result():
+                    if not isinstance(tile, dict):
+                        continue
+                    tile_channel = tile.get("tileChannel") or {}
+                    codename = (tile_channel.get("codename") or id_to_codename.get(tile.get("id")) or "").lower()
                     title = tile_channel.get("title")
                     logo = tile_channel.get("logoUrlOnDark") or tile_channel.get("logoUrl", "")
-                    
-                    if codename and title and codename not in seen_codenames:
-                        seen_codenames.add(codename)
-                        channels.append({
-                            'title': title,
-                            'codename': codename,
-                            'logo': logo
+
+                    if codename and title and codename not in channel_meta:
+                        channel_meta[codename] = {
+                            "title": title,
+                            "codename": codename,
+                            "logo": logo
+                        }
+
+                    if codename:
+                        prog_title = tile.get("title") or tile.get("subTitle") or tile.get("subtitle") or ""
+                        start_dt = parse_iso_local(tile.get("start"))
+                        stop_dt = parse_iso_local(tile.get("stop"))
+                        epg_by_channel.setdefault(codename, []).append({
+                            "title": prog_title,
+                            "start_dt": start_dt,
+                            "stop_dt": stop_dt
                         })
 
-        channels.sort(key=lambda x: x['title'].lower())
+        channels = sorted(channel_meta.values(), key=lambda x: x["title"].lower())
 
         for channel in channels:
-            liz = xbmcgui.ListItem(label=channel['title'])
-            liz.setProperty('IsPlayable', 'true')
-            
+            codename = channel["codename"]
+            plot_text = format_epg_plot(epg_by_channel.get(codename, []), now_local)
+
+            liz = xbmcgui.ListItem(label=channel["title"])
+            liz.setProperty("IsPlayable", "true")
+
             info = liz.getVideoInfoTag()
-            info.setTitle(channel['title'])
-            info.setMediaType('video')
-            
-            if channel['logo']:
-                liz.setArt({'icon': channel['logo'], 'thumb': channel['logo']})
-            
-            play_url = f"{addon_url}?action=play&codename={channel['codename']}&token={token}"
+            info.setTitle(channel["title"])
+            info.setMediaType("video")
+            if plot_text:
+                info.setPlot(plot_text)
+
+            if channel["logo"]:
+                liz.setArt({"icon": channel["logo"], "thumb": channel["logo"]})
+
+            play_url = f"{addon_url}?action=play&codename={urllib.parse.quote(codename)}"
             xbmcplugin.addDirectoryItem(handle=addon_handle, url=play_url, listitem=liz, isFolder=False)
-                
+
     except Exception:
         pass
 
-    xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=True)
+    xbmcplugin.endOfDirectory(addon_handle)
 
-def play_channel(codename, token):
-    try:
-        headers = api_headers.copy()
-        headers["Authorization"] = f"Bearer {token}"
 
-        dev_key = devicekey()
+def extract_stream_and_drm(res_data):
+    stream_url = ""
+    license_server_url = ""
+    custom_data = ""
 
-        acquire_url = f"{API_BASE}/v1/Player/AcquireContent?platformCodename=www&deviceKey={dev_key}&token={token}&codename={codename}"
-        resp = requests.get(acquire_url, headers=headers, timeout=15)
-        
-        if resp.status_code == 200:
-            res_data = resp.json()
-            stream_url = ""
-            license_server_url = ""
-            custom_data = ""
-            
-            def find_url(obj):
-                nonlocal stream_url
-                if stream_url:
+    def find_url(obj):
+        nonlocal stream_url
+        if stream_url:
+            return
+        if isinstance(obj, dict):
+            for v in obj.values():
+                if isinstance(v, str) and ("http://" in v or "https://" in v) and any(
+                    ext in v.lower() for ext in (".mpd", ".m3u8", "manifest", "playlist")
+                ):
+                    stream_url = v
                     return
-                if isinstance(obj, dict):
-                    for k, v in obj.items():
-                        if isinstance(v, str) and ('http://' in v or 'https://' in v) and ('.mpd' in v.lower() or '.m3u8' in v.lower() or 'manifest' in v.lower() or 'playlist' in v.lower()):
-                            stream_url = v
-                            return
-                        elif isinstance(v, (dict, list)):
-                            find_url(v)
-                elif isinstance(obj, list):
-                    for item in obj:
-                        find_url(item)
+                if isinstance(v, (dict, list)):
+                    find_url(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                find_url(item)
 
-            for media_file in res_data.get('MediaFiles', []) or res_data.get('mediaFiles', []):
-                for fmt in media_file.get('Formats', []) or media_file.get('formats', []):
-                    url = fmt.get('Url', '') or fmt.get('url', '')
-                    if url:
-                        stream_url = url
-                        if '.mpd' in url.lower():
-                            break
-                if stream_url and '.mpd' in stream_url.lower():
+    for media_file in res_data.get("MediaFiles", []) or res_data.get("mediaFiles", []):
+        for fmt in media_file.get("Formats", []) or media_file.get("formats", []):
+            url = fmt.get("Url", "") or fmt.get("url", "")
+            if url:
+                stream_url = url
+                if ".mpd" in url.lower():
                     break
+        if stream_url and ".mpd" in stream_url.lower():
+            break
 
-            if not stream_url:
-                find_url(res_data)
+    if not stream_url:
+        find_url(res_data)
 
-            drm_list = res_data.get('DrmInfo', []) or res_data.get('drmInfo', [])
-            for drm in drm_list:
-                if (drm.get('DrmSystem') or drm.get('drmSystem')) == 'Widevine':
-                    license_server_url = drm.get('LicenseServerUrl') or drm.get('licenseServerUrl')
-                    custom_data = drm.get('DrmChallengeCustomData') or drm.get('drmChallengeCustomData')
-                    break
+    drm_list = res_data.get("DrmInfo", []) or res_data.get("drmInfo", [])
+    for drm in drm_list:
+        if (drm.get("DrmSystem") or drm.get("drmSystem")) == "Widevine":
+            license_server_url = drm.get("LicenseServerUrl") or drm.get("licenseServerUrl")
+            custom_data = drm.get("DrmChallengeCustomData") or drm.get("drmChallengeCustomData")
+            break
+
+    return stream_url, license_server_url, custom_data
+
+
+def play_channel(codename):
+    try:
+        token = get_auth_token()
+        if not token:
+            xbmcplugin.setResolvedUrl(addon_handle, False, listitem=xbmcgui.ListItem())
+            return
+
+        headers = build_auth_headers(token)
+        dev_key = devicekey(token)
+
+        acquire_url = (
+            f"{API_BASE}/v1/Player/AcquireContent"
+            f"?platformCodename={PLATFORM}&deviceKey={dev_key}&token={token}&codename={urllib.parse.quote(codename)}"
+        )
+        resp = requests.get(acquire_url, headers=headers, timeout=15)
+
+        if resp.status_code == 200:
+            stream_url, license_server_url, custom_data = extract_stream_and_drm(resp.json())
 
             if stream_url:
-                is_dash = '.mpd' in stream_url.lower()
-                protocol = 'mpd' if is_dash else 'hls'
-                
-                helper = inputstreamhelper.Helper(protocol, drm='com.widevine.alpha')
+                is_dash = ".mpd" in stream_url.lower()
+                protocol = "mpd" if is_dash else "hls"
+
+                helper = inputstreamhelper.Helper(protocol, drm="com.widevine.alpha")
                 if helper.check_inputstream():
                     liz = xbmcgui.ListItem(path=stream_url)
-                    liz.setMimeType('application/dash+xml' if is_dash else 'application/vnd.apple.mpegurl')
+                    liz.setMimeType("application/dash+xml" if is_dash else "application/vnd.apple.mpegurl")
                     liz.setContentLookup(False)
-                    liz.setProperty('inputstream', helper.inputstream_addon)
-                    liz.setProperty('inputstream.adaptive.stream_type', protocol)
-                    
+                    liz.setProperty("inputstream", helper.inputstream_addon)
+                    liz.setProperty("inputstream.adaptive.stream_type", protocol)
+
                     if license_server_url:
-                        liz.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
-                        
-                        user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                        liz.setProperty("inputstream.adaptive.license_type", "com.widevine.alpha")
                         quoted_custom_data = urllib.parse.quote(custom_data) if custom_data else ""
-                        
-                        license_key = f"{license_server_url}|User-Agent={user_agent}&drmchallengecustomdata={quoted_custom_data}&Content-Type=application/octet-stream|R{{SSM}}|"
-                        liz.setProperty('inputstream.adaptive.license_key', license_key)
+                        license_key = (
+                            f"{license_server_url}|User-Agent={USER_AGENT}"
+                            f"&drmchallengecustomdata={quoted_custom_data}"
+                            f"&Content-Type=application/octet-stream|R{{SSM}}|"
+                        )
+                        liz.setProperty("inputstream.adaptive.license_key", license_key)
 
                     xbmcplugin.setResolvedUrl(addon_handle, True, listitem=liz)
                     return
@@ -293,14 +387,16 @@ def play_channel(codename, token):
     xbmcplugin.setResolvedUrl(addon_handle, False, listitem=xbmcgui.ListItem())
     xbmcgui.Dialog().ok("SimpliTV", "Fehler beim Abspielen. Stream konnte nicht gestartet werden.")
 
+
 def router(paramstring):
     params = dict(urllib.parse.parse_qsl(paramstring[1:]))
-    action = params.get('action')
+    action = params.get("action")
 
     if not action:
         list_channels()
-    elif action == 'play':
-        play_channel(params['codename'], params['token'])
+    elif action == "play":
+        play_channel(params["codename"])
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     router(sys.argv[2])

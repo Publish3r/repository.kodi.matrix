@@ -1,4 +1,5 @@
-2026.11.18 - Fix Devicekey
+2026.11.19 - Code bereinigt und Mini-EPG hinzugefügt.
+2026.11.18 - Fix Devicekey.
 2026.11.17 - New API, dirty fix.
 2026.05.29 - Fixed ListItem Override.
 2025.06.16 - Fixed Timeout.
