@@ -19,6 +19,17 @@ TENANT = "simplitv"
 PLATFORM = "www"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:160.0) Gecko/20100101 Firefox/160.0"
 
+FREE_PRODUCT_CODENAMES = {
+    "simplitv-simplitv-streaming-gratis",
+    "simplitv-simpli-free-streaming",
+    "simplitv-simpli-free-streaming-antenne-streaming",
+    "simplitv-free-streaming",
+    "simplitv-simpli-free-streaming-sat-streaming",
+    #"simplitv-gratis-testphase-simpli-free-streaming",
+    "simplitv-free-antenne-streaming",
+    "simplitv-free-sat-streaming",
+}
+
 API_HEADERS = {
     "User-Agent": USER_AGENT,
     "Accept": "application/json, text/plain, */*",
@@ -60,6 +71,45 @@ TILES_PAYLOAD_TEMPLATE = {
     "platformCodename": PLATFORM,
     "requestedTiles": []
 }
+
+
+def get_show_free_only():
+    try:
+        return addon.getSettingBool("show_free_only")
+    except Exception:
+        val = str(addon.getSetting("show_free_only") or "").strip().lower()
+        return val in ("true", "1", "yes")
+
+
+def tile_has_free_product(tile, space_codename=TENANT):
+    if not isinstance(tile, dict):
+        return False
+
+    target_space = str(space_codename or "").lower()
+    space_products = tile.get("spaceProductCodenames") or []
+    found_matching_space = False
+
+    if isinstance(space_products, list):
+        for entry in space_products:
+            if not isinstance(entry, dict):
+                continue
+            if str(entry.get("spaceCodename") or "").lower() == target_space:
+                found_matching_space = True
+                prod_list = entry.get("productCodenames") or []
+                for p in prod_list:
+                    if str(p).lower() in FREE_PRODUCT_CODENAMES:
+                        return True
+
+    if found_matching_space:
+        return False
+
+    flat_products = tile.get("productCodenames") or []
+    if isinstance(flat_products, list):
+        for p in flat_products:
+            if str(p).lower() in FREE_PRODUCT_CODENAMES:
+                return True
+
+    return False
 
 
 def build_auth_headers(token, content_type=None):
@@ -198,6 +248,7 @@ def list_channels():
             xbmcplugin.endOfDirectory(addon_handle)
             return
 
+        show_free_only = get_show_free_only()
         headers = build_auth_headers(token)
 
         now_utc = datetime.now(timezone.utc)
@@ -237,6 +288,7 @@ def list_channels():
 
         channel_meta = {}
         epg_by_channel = {}
+        free_channels = set()
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             futures = [executor.submit(fetch_tile_chunk, chunk, headers) for chunk in chunks]
@@ -256,6 +308,9 @@ def list_channels():
                             "logo": logo
                         }
 
+                    if codename and tile_has_free_product(tile, TENANT):
+                        free_channels.add(codename)
+
                     if codename:
                         prog_title = tile.get("title") or tile.get("subTitle") or tile.get("subtitle") or ""
                         start_dt = parse_iso_local(tile.get("start"))
@@ -267,6 +322,8 @@ def list_channels():
                         })
 
         channels = sorted(channel_meta.values(), key=lambda x: x["title"].lower())
+        if show_free_only:
+            channels = [ch for ch in channels if ch["codename"] in free_channels]
 
         for channel in channels:
             codename = channel["codename"]

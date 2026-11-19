@@ -1,3 +1,4 @@
+2026.11.20 - Addon Setting: Show Free Channels only.
 2026.11.19 - Code bereinigt und Mini-EPG hinzugefügt.
 2026.11.18 - Fix Devicekey.
 2026.11.17 - New API, dirty fix.
