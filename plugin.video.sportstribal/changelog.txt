@@ -1,3 +1,4 @@
+2026.11.24 - New EPG API.
 2025.05.29 - Added Full EPG to Context Menu.
 2025.05.24 - Added Colors to EPG.
 2025.05.23 - Code improved.
