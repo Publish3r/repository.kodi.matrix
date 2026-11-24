@@ -315,7 +315,7 @@ elif mode==5:
     MYSTATIONS()
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 elif mode==6:
-    image = params.get('image')
+    image = params.get('image') or "https://i.postimg.cc/N0MfwFNf/no-image.jpg"
     if "special://" in image:
         image = "https://i.postimg.cc/N0MfwFNf/no-image.jpg"
     ADDSTATION(url, name, image)
